@@ -209,7 +209,8 @@ td:first-child {
  
 ### CSS properties
 
-- `line-height` sets the height of a line box.
+- `line-height` sets the height of a line box
+- `input[type='text']` aka “attribute selector"
 
 ### snippets
 
