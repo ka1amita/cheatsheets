@@ -183,19 +183,27 @@ td:first-child {
 
 ### HTML elements
 
-* ``
-* 
+* `form`
+  * `input`
+  * `label`
+  * `fieldset`
+    * `legend`
+    * `input`
+  * `select`
+    * `option`
 
 ### HTML attributes
 
 * `id`
 * `for` associates the label with input (matches it's `id`); e.g. clicking on it *works*
 * `name` sets the label for the backend
+* `placeholder` hint text in the input field
 * `type`
   * `checkbox`
   * `radio`
-  * ``
-  * ``
+  * `telephone`
+  * `email`
+* `required` validation
  
 ### CSS properties
 
