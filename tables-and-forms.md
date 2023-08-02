@@ -178,8 +178,8 @@ td:first-child {
 
 ## forms <a name="forms"></a>
 
-* [mozilla]()
-* [css-trics]()
+* [internetingishard](https://internetingishard.netlify.app/html-and-css/forms/index.html)
+* [mozilla](https://developer.mozilla.org/en-US/docs/Learn/Forms)
 
 ### HTML elements
 
