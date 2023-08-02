@@ -8,7 +8,7 @@
 * [mozilla](https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Basics)
 * [css-trics](https://css-tricks.com/complete-guide-table-element/)
 
-### elements
+### HTML elements
 
 * `<table>`
   * `<thead>` header row *to semantically indicate that the first row(s) is the header*
@@ -25,7 +25,7 @@
  
 summary at [css-trics](https://css-tricks.com/complete-guide-table-element/#aa-all-table-related-elements)
 
-### attributes
+### HTML attributes
 
 - `colspan` and `colspan`
 
@@ -83,7 +83,7 @@ summary at [css-trics](https://css-tricks.com/complete-guide-table-element/#aa-a
 </table>
 ```
 
-### css
+### CSS properties
 
 * `width`
 * `text-align`
@@ -181,8 +181,28 @@ td:first-child {
 * [mozilla]()
 * [css-trics]()
 
-### elements
+### HTML elements
 
 * ``
+* 
+
+### HTML attributes
+
+* `id`
+* `for` associates the label with input (matches it's `id`); e.g. clicking on it *works*
+* `name` sets the label for the backend
+* `type`
+  * `checkbox`
+  * `radio`
+  * ``
+  * ``
+ 
+### CSS properties
+
+- `line-height` sets the height of a line box.
+
+### snippets
+
+
 
 [top](#top)
