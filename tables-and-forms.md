@@ -3,7 +3,7 @@
 * [tables](#tables)
 * [forms](#forms)
 
-## tables <a name="tables"></a>
+## Tables <a name="tables"></a>
 
 * [mozilla](https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Basics)
 * [css-trics](https://css-tricks.com/complete-guide-table-element/)
@@ -176,10 +176,11 @@ td:first-child {
 
 > Just like colspan and rowspan, span takes a unitless number value that specifies the number of columns you want the styling to apply to
 
-## forms <a name="forms"></a>
+## Forms <a name="forms"></a>
 
 * [internetingishard](https://internetingishard.netlify.app/html-and-css/forms/index.html)
 * [mozilla](https://developer.mozilla.org/en-US/docs/Learn/Forms)
+* [smashingmagazine](https://www.smashingmagazine.com/2011/11/extensive-guide-web-form-usability/)
 
 ### HTML elements
 
