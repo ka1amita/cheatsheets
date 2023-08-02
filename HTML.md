@@ -1,4 +1,4 @@
-# HTML <a name="top"></a>
+# tables and forms <a name="top"></a>
 
 * [tables](#tables)
 * [forms](#forms)
@@ -95,7 +95,11 @@ summary at [css-trics](https://css-tricks.com/complete-guide-table-element/#aa-a
 * `border-collpase`
   * `collapse`
 * `padding`
+* `selector:first-child` or `last-child`
 * `tr:nth*child(even)` or `(odd)` styles only overy evn or odd row
+* `<colgroup>`
+  * `<col />`
+    * `span`
 
 #### snippets
 
@@ -157,5 +161,28 @@ td:first-child {
 ```css
   font-weight: 100;
 ```
+
+##### custom styling of columns
+
+```html
+  <colgroup>
+    <col />
+    <col style="background-color: yellow" />
+    <col style="background-color: red" span="2"/>
+  </colgroup>
+```
+
+>  We are not styling the first column, but we still have to include a blank <col> element — if we didn't, the styling would just be applied to the first column.
+
+> Just like colspan and rowspan, span takes a unitless number value that specifies the number of columns you want the styling to apply to
+
+## forms <a name="forms"></a>
+
+* [mozilla]()
+* [css-trics]()
+
+### elements
+
+* ``
 
 [top](#top)
