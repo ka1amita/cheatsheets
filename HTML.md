@@ -15,10 +15,10 @@
   * `<tbody>` body rows *to semantically indicate the data*
   * `<tfoot>` tooter row *to semantically indicate that the last row(s) is the footer*
  
-    > <tfoot> must go after the <tbody>
- 
-    > there must be no <tr> that is a direct child of <table>
- 
+    > `<tfoot>` must go after the `<tbody>`
+  
+    > there must be no `<tr>` that is a direct child of `<table>`
+  
   * `<tr>` row
   * `<th>` tabular headers
   * `<td>` tabular data (basic cell)
@@ -97,6 +97,9 @@ summary at [css-trics](https://css-tricks.com/complete-guide-table-element/#aa-a
 * `padding`
 * `tr:nth*child(even)` or `(odd)` styles only overy evn or odd row
 
+#### snippets
+
+#####  simple template
 
 ```css
 table, th, td {
@@ -104,7 +107,7 @@ table, th, td {
 }
 
 th, td {
-  border: 1 px solid #000;
+  border: 1px solid #000;
   padding: 10px;
   text-align: left;
 }
@@ -115,4 +118,44 @@ tr:nth*child(odd) {
   background*color: #ddd;
 ```
 
-[top](#start)
+##### round corners
+
+```css
+thead tr:first-child th:first-child {
+  border-top-left-radius: 5px;
+}
+
+thead tr:first-child th:last-child {
+  border-top-right-radius: 5px;
+}
+
+tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 5px;
+}
+
+tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 5px;
+}
+```
+
+##### no outside borders
+
+```css
+th,
+td {
+  border-left: 1px solid #777777;
+}
+
+th:first-child,
+td:first-child {
+  border-left: 0;
+}
+```
+
+##### light text in `<thead>`
+
+```css
+  font-weight: 100;
+```
+
+[top](#top)
