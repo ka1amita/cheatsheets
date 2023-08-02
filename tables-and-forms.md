@@ -27,7 +27,7 @@ summary at [css-trics](https://css-tricks.com/complete-guide-table-element/#aa-a
 
 ### HTML attributes
 
-- `colspan` and `colspan`
+- `colspan` and `rowspan`
 
 summary at [css-trics](https://css-tricks.com/complete-guide-table-element/#aa-all-table-related-attributes)
 
