@@ -1,4 +1,4 @@
-# tables and forms <a name="top"></a>
+# Tables and Forms <a name="top"></a>
 
 * [tables](#tables)
 * [forms](#forms)
