@@ -5,8 +5,8 @@
 
 ## tables <a name="tables"></a>
 
-* [mozilla](https://developer.mozilla.org/en*US/docs/Learn/HTML/Tables/Basics)
-* [css-trics](https://css*tricks.com/complete*guide*table*element/)
+* [mozilla](https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Basics)
+* [css-trics](https://css-tricks.com/complete-guide-table-element/)
 
 ### elements
 
