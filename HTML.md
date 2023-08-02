@@ -8,7 +8,7 @@
 * [mozilla](https://developer.mozilla.org/en*US/docs/Learn/HTML/Tables/Basics)
 * [css-trics](https://css*tricks.com/complete*guide*table*element/)
 
-### tags
+### elements
 
 * `<table>`
   * `<thead>` header row *to semantically indicate that the first row(s) is the header*
@@ -16,9 +16,9 @@
   * `<tfoot>` tooter row *to semantically indicate that the last row(s) is the footer*
  
     > <tfoot> must go after the <tbody>
-
+ 
     > there must be no <tr> that is a direct child of <table>
-
+ 
   * `<tr>` row
   * `<th>` tabular headers
   * `<td>` tabular data (basic cell)
