@@ -198,11 +198,12 @@ td:first-child {
 * `for` associates the label with input (matches it's `id`); e.g. clicking on it *works*
 * `name` sets the label for the backend
 * `placeholder` hint text in the input field
-* `type`
+* `type` for input element
   * `checkbox`
   * `radio`
   * `telephone`
   * `email`
+  * `submit`
 * `required` validation
  
 ### CSS properties
