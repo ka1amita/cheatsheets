@@ -1,4 +1,4 @@
-# HTML <a name="start"></a>
+# HTML <a name="top"></a>
 
 * [tables](#tables)
 * [forms](#forms)
@@ -6,7 +6,7 @@
 ## tables <a name="tables"></a>
 
 * [mozilla](https://developer.mozilla.org/en*US/docs/Learn/HTML/Tables/Basics)
-* [css*trics](https://css*tricks.com/complete*guide*table*element/)
+* [css-trics](https://css*tricks.com/complete*guide*table*element/)
 
 ### tags
 
@@ -14,14 +14,20 @@
   * `<thead>` header row *to semantically indicate that the first row(s) is the header*
   * `<tbody>` body rows *to semantically indicate the data*
   * `<tfoot>` tooter row *to semantically indicate that the last row(s) is the footer*
+ 
+    > <tfoot> must go after the <tbody>
 
-        > it must go after the <tbody>
-
-        > when you use <thead>, there must be no <tr> that is a direct child of <table>
+    > there must be no <tr> that is a direct child of <table>
 
   * `<tr>` row
   * `<th>` tabular headers
   * `<td>` tabular data (basic cell)
+ 
+summary at [css-trics](https://css-tricks.com/complete-guide-table-element/#aa-all-table-related-elements)
+
+### attributes
+
+summary at [css-trics](https://css-tricks.com/complete-guide-table-element/#aa-all-table-related-attributes)
 
 <table>
   <caption>table title</caption>
@@ -80,7 +86,6 @@
 * `width`
 * `text-align`
 * `border`
-* 
 
     > by default, all table cells are spacing out from one another by 2px
 
@@ -108,3 +113,4 @@ tr:nth*child(odd) {
   background*color: #ddd;
 ```
 
+[top](#start)
