@@ -198,7 +198,7 @@ td:first-child {
 * `for` associates the label with input (matches it's `id`); e.g. clicking on it *works*
 * `name` sets the label for the backend
 * `placeholder` hint text in the input field
-* `type` for input element
+* `type` for input elements
   * `checkbox`
   * `radio`
   * `telephone`
@@ -212,6 +212,45 @@ td:first-child {
 
 ### snippets
 
+#### radio box
 
+```html
+    <input type="radio" id="male" name="gender"/>
+    <label for="male">Male</label><br/>
+    <input type="radio" id="female" name="gender"/>
+    <label for="female">Female</label>
+```
+
+#### checkbox
+
+```html
+    <div class="interest">
+        <input type="checkbox" id="web"/>
+        <label for="web">Web development</label><br/>
+        <input type="checkbox" id="photoshop"/>
+        <label for="photoshop">Photoshop</label><br/>
+    </div>
+```
+
+#### field set
+
+```html
+    <fieldset class="contact-info">
+        <legend>Contact Info</legend>
+        <input type="email" placeholder="Email" required/>
+        <span class="tick"></span>
+        <input type="telephone" placeholder="Phone number" required/>
+        <span class="tick"></span>
+    </fieldset>
+```
+
+#### select box
+
+```html
+    <select>
+        <option>By email</option>
+        <option>By telephone</option>
+    </select>
+```
 
 [top](#top)
