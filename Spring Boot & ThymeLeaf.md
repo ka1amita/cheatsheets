@@ -1,8 +1,6 @@
 # Spring Boot
 
-## ???
-
-
+* `return: "redirect:"`
 
 # Thymeleaf
 
@@ -12,8 +10,8 @@
 
 ### expression syntax
 
-* `"argument"`
-+ `" 'text' "`
+* `"argument"` use `"` around arguments
++ `" 'text' "` use `'` around the text within
 
 * `${...}` : **Variable**
 * `*{...}` : **Selection**
