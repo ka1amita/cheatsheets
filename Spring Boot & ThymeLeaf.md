@@ -9,7 +9,7 @@
 ## Expression Syntax
 
 * `"argument"` use `"` around arguments
-+ `" 'text' "` use `'` around the text within
++ `" 'text' "` use `'` around the text within including cases when using text as argument
 
 * `${...}` : **Variable**
 * `*{...}` : **Selection**
@@ -46,9 +46,10 @@
 * `th:with` allows to define a variable(s)
 * `th:object` allows to ommit the object name in the later statements
 * `th:if` and `th:unless`
+* `th:switch` together with `th:case` note that `switch` must be inside parent element relative to `case` lements
 * `th:attr` ???
 * `th:insert` ???
-* `th:style=`
+* `th:style`
 * `th:styleappend`
 
 
