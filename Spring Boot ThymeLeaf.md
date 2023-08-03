@@ -21,12 +21,20 @@
 * `th:text`
 * `th:utext` **doesn't escape** user input (not secure)
 * `th:each`
-  * `iter` ????
-* `th:with`
-    * `th:with="id='#'+${iter.count}"`
-* `th:object` allows to ommit the object name
+  * `iter`
+    * `iter.count`
+* `th:with` allows to define a variable(s)
+* `th:object` allows to ommit the object name in the later statements
+* `th:if` and `th:unless`
 
 ### snippets
+
+#### condition
+
+```html
+<p th:if="$(cars.isEmpty]">There are no cars to show</p>
+<p th:unless="$(cars.isEmpty]">There are no cars to show</p>
+```
 
 #### example
 
