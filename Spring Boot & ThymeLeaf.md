@@ -73,7 +73,7 @@ ${#numbers.formatDecimal(abc.value, 1, 'DEFAULT', 2, 'DEFAULT')}
 
 #### operator
 
-```html
+```java
 th:text = "${(car.isDriveable ()) ? 'Driveable' : 'Not Driveable'}"
 ```
 
