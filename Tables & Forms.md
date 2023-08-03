@@ -195,6 +195,8 @@ td:first-child {
 
 ### HTML attributes
 
+* `method` e.g `post`
+* `action` e.g. `/add-car`
 * `id`
 * `for` associates the label with input (matches it's `id`); e.g. clicking on it *works*
 * `name` sets the label for the backend
