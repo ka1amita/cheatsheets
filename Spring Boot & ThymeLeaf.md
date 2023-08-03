@@ -47,7 +47,7 @@
 
 #### conditional styling using styleappend
 
-```thymeleaf
+```html
 <td th:styleappend="${condition} ? 'color: red; font-size: 20px;' : 'color: black; font-size: 30px;'"
 ```
 
@@ -56,18 +56,18 @@
 ##### using Stat suffix
 
 ```html
-<tr th:each="account : ${accounts}" th:with="id=${accountStat.count}"
+th:each="account : ${accounts}" th:with="id=${accountStat.count}"
 ```
 
 ##### using iter property
 
 ```html
-<tr th:each="car, iter : ${cars}" th:with="id='#'+${iter.count}">
+th:each="car, iter : ${cars}" th:with="id='#'+${iter.count}"
 ```
 
 #### number format
 
-```html
+```java
 ${#numbers.formatDecimal(abc.value, 1, 'DEFAULT', 2, 'DEFAULT')}
 ```
 
