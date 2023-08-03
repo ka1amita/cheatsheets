@@ -39,9 +39,17 @@
 * `th:if` and `th:unless`
 * `th:attr` ???
 * `th:insert` ???
+* `th:style=`
+* `th:styleappend`
 
 
 ### snippets
+
+#### conditional styling using styleappend
+
+```thymeleaf
+<td th:styleappend="${condition} ? 'color: red; font-size: 20px;' : 'color: black; font-size: 30px;'"
+```
 
 #### iteration
 
