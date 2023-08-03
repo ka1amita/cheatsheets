@@ -55,25 +55,25 @@
 
 ##### using Stat suffix
 
-```html
+```
 th:each="account : ${accounts}" th:with="id=${accountStat.count}"
 ```
 
 ##### using iter property
 
-```html
+```
 th:each="car, iter : ${cars}" th:with="id='#'+${iter.count}"
 ```
 
 #### number format
 
-```java
+```
 ${#numbers.formatDecimal(abc.value, 1, 'DEFAULT', 2, 'DEFAULT')}
 ```
 
 #### operator
 
-```java
+```
 th:text = "${(car.isDriveable ()) ? 'Driveable' : 'Not Driveable'}"
 ```
 
