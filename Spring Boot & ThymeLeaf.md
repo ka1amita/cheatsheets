@@ -6,9 +6,7 @@
 
 [thymeleaf.org](https://www.thymeleaf.org/doc/articles/standarddialect5minutes.html)
 
-## Frontend - Backend
-
-### expression syntax
+## Expression Syntax
 
 * `"argument"` use `"` around arguments
 + `" 'text' "` use `'` around the text within
@@ -18,6 +16,14 @@
 * `#{...}` : **Message** (i18n)
 * `@{...}` : **Link** (URL)
 * `~{...}` : **Fragment**
+
+## Operators
+
+* `(value) ?: (defaultvalue)`
+* `(if) ? (then)`
+* `(if) ? (then) : (else)`
+
+## Frontend - Backend
 
 ### attributes
 
@@ -29,13 +35,20 @@
 * `th:with` allows to define a variable(s)
 * `th:object` allows to ommit the object name in the later statements
 * `th:if` and `th:unless`
+* `th:attr` ???
+* `th:insert` ???
 
 ### snippets
 
-#### ternary statements
+#### operator
 
 ```html
 th:text = "${(car.isDriveable ()) ? 'Driveable' : 'Not Driveable'}"
+```
+
+### th:each
+```html
+<li th:each= "book : ${books}">
 ```
 
 #### condition
