@@ -1,7 +1,6 @@
 # Spring Boot
 
 * `return: "redirect:"` e.g. after posting (w/ POST method) redirect to home page
-* ›
 
 # Thymeleaf
 
@@ -46,7 +45,7 @@ th:text = "${(car.isDriveable ()) ? 'Driveable' : 'Not Driveable'}"
 <p th:unless="$(cars.isEmpty]">There are no cars to show</p>
 ```
 
-#### example
+#### table filled from DB
 
 ```html
 <tabale>
@@ -63,4 +62,35 @@ th:text = "${(car.isDriveable ()) ? 'Driveable' : 'Not Driveable'}"
     </tr>
   </tbody>
 </table>
+```
+
+#### form creating an object
+
+form
+
+```html
+<form method="post" action="/add-car" th:object="${car}">
+  <label for="brand">Brand</label>
+  <input type="text" name="brand" id="car-brand" th:field="*{brand} " required>
+</form>
+```
+
+default Car constructor
+
+```java
+public Car(String brand, String model, int year, boolean driveable, String image) {
+  this.brand = brand;
+  this.model = model;
+  this.year = year;
+  this.driveable = driveable;
+  this.image = image;
+}
+```
+
+Controller method
+
+```java
+public void addCar(Car car){
+  cars.add (car);
+}
 ```
