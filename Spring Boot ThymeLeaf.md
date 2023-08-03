@@ -6,9 +6,14 @@
 
 # Thymeleaf
 
+[thymeleaf.org](https://www.thymeleaf.org/doc/articles/standarddialect5minutes.html)
+
 ## HTML
 
 ### expression syntax
+
+* `"argument"`
++ `" 'text' "`
 
 * `${...}` : **Variable**
 * `*{...}` : **Selection**
@@ -16,7 +21,7 @@
 * `@{...}` : **Link** (URL)
 * `~{...}` : **Fragment**
 
-### xxx
+### attributes
 
 * `th:text`
 * `th:utext` **doesn't escape** user input (not secure)
