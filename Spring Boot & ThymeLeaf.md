@@ -6,7 +6,7 @@
 
 [thymeleaf.org](https://www.thymeleaf.org/doc/articles/standarddialect5minutes.html)
 
-## HTML
+## Frontend - Backend
 
 ### expression syntax
 
@@ -94,3 +94,20 @@ public void addCar(Car car){
   cars.add (car);
 }
 ```
+
+## HTML Fragments
+
+* `th:fragment`
+
+```html
+<div xmlns:th="http://www.thymeleaf.org/" th:fragment="navigationFragment">
+  <a th:href="@{/]">Home</a>
+  <a th:href="@{/add-car}">Add new car</a>
+</div>
+```
+
+```html
+<header th:replace="~{fragments/navigation :: navigationFragment}"></header>
+```
+
+
