@@ -23,6 +23,15 @@
 * `(if) ? (then)`
 * `(if) ? (then) : (else)`
 
+### snippets
+
+```
+*{getBalance()} < 0 ? true : false
+```
+```
+*{getBalance() < 0} ? true : false
+```
+
 ## Frontend - Backend
 
 ### attributes
