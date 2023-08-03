@@ -27,18 +27,35 @@
 
 ### attributes
 
+* `th:fragment`
 * `th:text`
 * `th:utext` **doesn't escape** user input (not secure)
 * `th:each`
   * `iter`
-    * `iter.count`
+    * `iter.count` starts from 1
+    * `instanceStat.index` starts from 0
 * `th:with` allows to define a variable(s)
 * `th:object` allows to ommit the object name in the later statements
 * `th:if` and `th:unless`
 * `th:attr` ???
 * `th:insert` ???
 
+
 ### snippets
+
+#### iteration
+
+##### using Stat suffix
+
+```html
+<tr th:each="account : ${accounts}" th:with="id=${accountStat.count}"
+```
+
+##### using iter property
+
+```html
+<tr th:each="car, iter : ${cars}" th:with="id='#'+${iter.count}">
+```
 
 #### number format
 
@@ -116,7 +133,6 @@ public void addCar(Car car){
 
 ## HTML Fragments
 
-* `th:fragment`
 
 ```html
 <div xmlns:th="http://www.thymeleaf.org/" th:fragment="navigationFragment">
