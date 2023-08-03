@@ -1,6 +1,7 @@
 # Spring Boot
 
-* `return: "redirect:"`
+* `return: "redirect:"` e.g. after posting (w/ POST method) redirect to home page
+* ›
 
 # Thymeleaf
 
@@ -31,6 +32,12 @@
 * `th:if` and `th:unless`
 
 ### snippets
+
+#### ternary statements
+
+```html
+th:text = "${(car.isDriveable ()) ? 'Driveable' : 'Not Driveable'}"
+```
 
 #### condition
 
