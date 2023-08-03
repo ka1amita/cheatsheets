@@ -40,6 +40,12 @@
 
 ### snippets
 
+#### number format
+
+```html
+${#numbers.formatDecimal(abc.value, 1, 'DEFAULT', 2, 'DEFAULT')}
+```
+
 #### operator
 
 ```html
