@@ -6,7 +6,9 @@
 
 [thymeleaf.org](https://www.thymeleaf.org/doc/articles/standarddialect5minutes.html)
 
-## Expression Syntax
+## Geberal Syntax
+
+### Expressions
 
 * `"argument"` use `"` around arguments
 + `" 'text' "` use `'` around the text within including cases when using text as argument
@@ -17,7 +19,7 @@
 * `@{...}` : **Link** (URL)
 * `~{...}` : **Fragment**
 
-## Operators
+### Operators
 
 * `(value) ?: (defaultvalue)`
 * `(if) ? (then)`
@@ -32,7 +34,7 @@
 *{getBalance() < 0} ? true : false
 ```
 
-## Frontend - Backend
+## HTML Template
 
 ### attributes
 
