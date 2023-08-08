@@ -2,6 +2,9 @@
 
 ## Syntax
 
+* **statemnents**
+  * **queries** are statements with `SELECT` 
+
 * <i>**not** case sensitive</i>
 * `;` and of statement
 * `-- comment ` line comment
@@ -48,14 +51,21 @@
 
 > If you decide to **leave out** the `WHERE` constraint, then **all** rows are removed, which is a quick and easy way to clear out a table completely (if intentional).
 
-### operators
+### Operators
 
 * `=`
 * `!=` or `<>`
 * `LIKE '<pattern>'` accepts `%` wildcart
 * `OR`, `AND`
-* 
 
+### Joins
+
+* `FROM <table1>,<table2> WHERE <condition>` corresponds to **cross product**; deprecated in favour of `JOIN`s
+* `JOIN`s
+  * `LEFT JOIN`
+  * `RIGHT JOIN`
+  * `INNER JOIN`
+  * `CROSS JOIN`   
 
 
 #### snippets
@@ -77,23 +87,28 @@ ALTER TABLE albums ADD (release_year INT);
 ```
 ```sql
 DROP TABLE table;
+
 DROP SCHEMA IF EXISTS database;
 ```
 ```sql
 ALTER TABLE table
-RENAME TO new_table;
+  RENAME TO new_table;
 ```
 ```sql
 INSERT INTO bands (name)
-VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!;
+  VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!;
 ```
 ```sql
 INSERT INTO albums (name, release_year, band_id) --more robust way (in case of future column modification)
-VALUES (...);
+  VALUES (...);
 ```
 ```sql
 UPDATE albums
 SET release year = 1982
-WHERE id = 1;
+  WHERE id = 1;
+```
+```sql
+DELETE FROM mytable
+  WHERE condition;
 ```
 
