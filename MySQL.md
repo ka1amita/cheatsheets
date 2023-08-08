@@ -37,19 +37,25 @@
 
 ### *CRUD* Keywords
 
-* `CREATE ` vs `DROP`
-  * `TABLE <table>`
-  * `DATABASE <databese>` == `SCHEMA <schema>`
-* `ALTER TABLE <table>`
+* `CREATE` vs `DROP`
+  * `TABLE` <table>
+  * `DATABASE` <databese> == `SCHEMA` <schema>
+* `ALTER TABLE` <table>
   * `ADD <column>`
-  * `RENAME TO <new_table>`;
-* `UPDATE <table>`
-  * `SET <column> = <value>`
-    * `WHERE <consition>`
-  * `RENAME TO <new_table>`
-* `DELETE FROM <table>`
+  * `RENAME TO` <new_table>
+* `UPDATE` <table>
+  * `SET` <column> = <value>
+    * `WHERE` <consition>
+  * `RENAME TO` <new_table>
+* `DELETE FROM` <table>
 
 > If you decide to **leave out** the `WHERE` constraint, then **all** rows are removed, which is a quick and easy way to clear out a table completely (if intentional).
+
+### Other Keywords
+
+* `ORDER BY` <column>
+  * `ASC`, `DESC`
+* `LIMIT` <number>
 
 ### Operators
 
@@ -57,16 +63,27 @@
 * `!=` or `<>`
 * `LIKE '<pattern>'` accepts `%` wildcart
 * `OR`, `AND`
+* ... many more
 
 ### Joins
 
 * `FROM <table1>,<table2> WHERE <condition>` corresponds to **cross product**; deprecated in favour of `JOIN`s
 * `JOIN`s
+  * `INNER JOIN`  == `JOIN`
   * `LEFT JOIN`
   * `RIGHT JOIN`
-  * `INNER JOIN`
   * `CROSS JOIN`   
 
+### Agregate **Functions**
+
+go with `GROUP BY` and the columns must be usually listed in the `GROUP BY` statemnet
+
+* `DISTINCT` *use without ()*
+* `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, ... many more icl. statistical
+* `FIRST`, `LAST` returns the **first** or the **last** value of a column in a group
+* `CONCAT`, `GROUP_CONCAT`
+* `COALESCE` takes **any number** of arguments and returns the **first not null** value.
+* `IFNULL` takes **two** arguments and returns the first value that is not null.
 
 #### snippets
 
@@ -110,5 +127,8 @@ SET release year = 1982
 ```sql
 DELETE FROM mytable
   WHERE condition;
+```
+```sql
+COALESCE(party,'None')
 ```
 
