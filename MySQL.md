@@ -1,5 +1,12 @@
 # MySQL <a name="top"></a>
 
+## Syntax
+
+* <i>**not** case sensitive</i>
+* `;` and of statement
+* `-- comment ` line comment
+* `/* comment */` multiline comment
+
 ##Datatypes
 
 * `INT`
@@ -9,14 +16,6 @@
 * `TEXT`
 * ... many more
 
-## Syntax
-
-* <i>**not** case sensitive</i>
-* `;` and of statement
-* `-- comment ` line comment
-* `/* comment */` multiline comment
-
-
 ### Keywords
 
 * `CREATE ` vs `DROP`
@@ -25,7 +24,7 @@
 * `ALTER TABLE <table>`
   * `ADD <column>`
   * `RENAME TO <new_table>`;
-* 
+* `AS`
 
 ### chatching errors
 
@@ -39,7 +38,6 @@
 * `DEFAULT <value>`
 * `PRIMARY KEY(<id>)` goes at the end of declaration
 * `FOREIGN KEY (band_id) REFERENCES <TABLE>(<id>)` as above
-
 
 #### snippets
 
@@ -66,4 +64,9 @@ DROP SCHEMA IF EXISTS database;
 ```sql
 ALTER TABLE table
 RENAME TO new_table;
+```
+
+```sql
+INSERT INTO bands (name)
+VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!
 ```
