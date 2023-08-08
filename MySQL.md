@@ -10,7 +10,7 @@
 * `AS <alias>` can be imitted
 * `WITH <alias>`
 
-##Datatypes
+## Column Datatypes
 
 * `INT`
   * `UNSIGNED`
@@ -18,6 +18,19 @@
 * `CHAR(size)`, `VARCHAR(max_size)` e.g. `VARCHAR(255)`
 * `TEXT`
 * ... many more
+
+### Column Modifiers
+  
+* `NOT NULL`
+* `AUTO_INCREMENT`
+* `DEFAULT <value>`
+* `PRIMARY KEY(<id>)` goes at the end of declaration
+* `FOREIGN KEY (band_id) REFERENCES <TABLE>(<id>)` as above
+
+### chatching errors
+
+* `IF EXISTS`
+* `IF NOT EXISTS`
 
 ### *CRUD* Keywords
 
@@ -34,19 +47,9 @@
 
 ### operators
 * `LIKE '<pattern>'` accepts `%` wildcart
+* `OR`, `AND`
 
-### chatching errors
 
-* `IF EXISTS`
-* `IF NOT EXISTS`
-
-### column modifiers
-  
-* `NOT NULL`
-* `AUTO_INCREMENT`
-* `DEFAULT <value>`
-* `PRIMARY KEY(<id>)` goes at the end of declaration
-* `FOREIGN KEY (band_id) REFERENCES <TABLE>(<id>)` as above
 
 #### snippets
 
