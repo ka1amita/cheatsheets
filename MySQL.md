@@ -11,10 +11,10 @@
 
 ## Syntax
 
+* > **not** case sensitive
 * `;` and of statement
 * `-- comment ` line comment
 * `/* comment */` multiline comment
-* 
 
 
 ### Keywords
