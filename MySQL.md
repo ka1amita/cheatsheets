@@ -27,16 +27,19 @@
   * `RENAME TO <new_table>`;
 * 
 
-### 
+### chatching errors
 
-* IF EXISTS
-* IF **NOT** EXISTS
+* `IF EXISTS`
+* `IF NOT EXISTS`
 
 ### column modifiers
   
 * `NOT NULL`
 * `AUTO_INCREMENT`
-* `PRIMARY KEY(id)`
+* `DEFAULT <value>`
+* `PRIMARY KEY(<id>)` goes at the end of declaration
+* `FOREIGN KEY (band_id) REFERENCES <TABLE>(<id>)` as above
+
 
 #### snippets
 
