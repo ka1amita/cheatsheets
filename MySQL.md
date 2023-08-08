@@ -45,28 +45,30 @@
 
 ```sql
 CREATE DATABASE IF NOT EXISTS database;
+
 USE databese;
+
 CREATE TABLE table (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY(id)
 );
-DROP TABLE table;
 ```
 ```sql
 ALTER TABLE albums ADD (release_year INT);
 ```
-
 ```sql
 DROP TABLE table;
 DROP SCHEMA IF EXISTS database;
 ```
-
 ```sql
 ALTER TABLE table
 RENAME TO new_table;
 ```
-
 ```sql
 INSERT INTO bands (name)
-VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!
+VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!;
+```
+```sql
+INSERT INTO albums (name, release_year, band_id) --more robust way (in case of future column modification)
+VALUES (...);
 ```
