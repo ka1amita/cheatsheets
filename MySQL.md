@@ -11,7 +11,7 @@
 
 ## Syntax
 
-* > **not** case sensitive
+* <i>**not** case sensitive</i>
 * `;` and of statement
 * `-- comment ` line comment
 * `/* comment */` multiline comment
@@ -19,7 +19,8 @@
 
 ### Keywords
 
-* `CREATE ` vs `DROP` works with both `DATABASE` and `TABLE`
+* `CREATE ` vs `DROP`
+  * `TABLE`
   * `DATABASE` == `SCHEMA`
 * `ALTER TABLE <table>`
   * `ADD <column>`
