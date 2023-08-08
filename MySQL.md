@@ -7,6 +7,9 @@
 * `-- comment ` line comment
 * `/* comment */` multiline comment
 
+* `AS <alias>` can be imitted
+* `WITH <alias>`
+
 ##Datatypes
 
 * `INT`
@@ -16,15 +19,21 @@
 * `TEXT`
 * ... many more
 
-### Keywords
+### *CRUD* Keywords
 
 * `CREATE ` vs `DROP`
-  * `TABLE`
-  * `DATABASE` == `SCHEMA`
+  * `TABLE <table>`
+  * `DATABASE <databese>` == `SCHEMA <schema>`
 * `ALTER TABLE <table>`
   * `ADD <column>`
   * `RENAME TO <new_table>`;
-* `AS`
+* `UPDATE <table>`
+  * `SET <column> = <value>`
+    * `WHERE <consition>`
+  * `RENAME TO <new_table>`
+
+### operators
+* `LIKE '<pattern>'` accepts `%` wildcart
 
 ### chatching errors
 
@@ -71,4 +80,9 @@ VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!;
 ```sql
 INSERT INTO albums (name, release_year, band_id) --more robust way (in case of future column modification)
 VALUES (...);
+```
+```sql
+UPDATE albums
+SET release year = 1982
+WHERE id = 1;
 ```
