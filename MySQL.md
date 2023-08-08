@@ -44,10 +44,17 @@
   * `SET <column> = <value>`
     * `WHERE <consition>`
   * `RENAME TO <new_table>`
+* `DELETE FROM <table>`
+
+> If you decide to **leave out** the `WHERE` constraint, then **all** rows are removed, which is a quick and easy way to clear out a table completely (if intentional).
 
 ### operators
+
+* `=`
+* `!=` or `<>`
 * `LIKE '<pattern>'` accepts `%` wildcart
 * `OR`, `AND`
+* 
 
 
 
@@ -89,3 +96,4 @@ UPDATE albums
 SET release year = 1982
 WHERE id = 1;
 ```
+
