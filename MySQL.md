@@ -15,6 +15,10 @@
 * \*..\*
   * by using **junction (join) table** with *foreighn key*
 
+## Style Guide
+
+[sqlstyle](https://www.sqlstyle.guide/)
+
 ## Syntax
 
 * **statemnents**
