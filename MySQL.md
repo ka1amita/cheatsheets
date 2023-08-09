@@ -265,6 +265,10 @@ WHERE column
 * avoid data **modification issues**
 * **simplyfy queries**
 
+**But!**
+> There are times when you’ll intentionally **denormalize data**.
+> If you need to **present** **summarized data** to a user, and that data is very time **consuming** or **resource intensive** to **create**, it may make sense to **maintain** this data **separately**.
+
 ### Anomalies
 
   * **insertion** anomaly
@@ -280,17 +284,17 @@ WHERE column
 * multi-value -->> e.g. man -->> nationality 
 
 ## Normalization Forms
-> The forms are progressive, meaning that to qualify for 3rd normal form a table must first satisfy the rules for 2nd normal form, and 2nd normal form must adhere to those for 1st normal form. 
+> The forms are **progressive**, meaning that to **qualify** for **2nd** normal form a table must first satisfy the rules for **1st** normal form etc.
 
 * 1NF
   > row **order** must **not** convey **information**
-  > **mixing** **data types** is not allowed
+  > **mixing** **data types** is not allowed, i.e. they are *atomic values*[^2]
   > table must have a **primary keys** (can be conbination of more columns)
   > table must not have **repeating group** on a **single row**
 * 2NF
   > each **non-key attribute**[^1] must **depend** on the **entire** **primary key**
 * 3NF
-  > each (**non-key**) **attribute** must **depend** on the the primary key, the whole primary key, and **nothing but** the **primary key**
+  > each (**non-key**) **attribute** must **depend** on the the primary key, the entire primary key, and **nothing but** the **primary key**
   > *transiont dependencies* are **not allowed**
 * 4NF
   > only allowed **multivalued dependencies** in a table must be multivalued dependencies **on the key**
@@ -299,3 +303,4 @@ WHERE column
   > e.g person, favourite brands and favourite flavours can't be together in single 
 
 [^1]: non-key attributes == non-key columns
+[^2]: we can’t further subdivide the value, e.g. the value "Chicago” **is** atomic whereas “Chicago; Los Angeles; New York” **is not**.
