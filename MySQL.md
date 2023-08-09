@@ -102,6 +102,7 @@
   * `LEFT JOIN`
   * `RIGHT JOIN`
   * `CROSS JOIN`
+  * **OUTER JOIN** does't exist, use `UNION` with two `JOIN`s [stack overflow](https://stackoverflow.com/questions/4796872/how-can-i-do-a-full-outer-join-in-mysql)
 
 ### Cross Product
 
@@ -185,5 +186,15 @@ COALESCE(party,'None')
   UNION  
 (SELECT stud_name, subject, marks FROM student2)  
   sORDER BY marks;
+```
+##### **FULL OUTER JOIN**
+```sql
+SELECT *
+  FROM t1 LEFT JOIN t2
+    ON t1.id = t2.id
+UNION
+SELECT *
+  FROM t1 RIGHT JOIN t2
+    ON t1.id = t2.id
 ```
 
