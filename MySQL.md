@@ -241,30 +241,6 @@ CREATE TABLE table (
 );
 ```
 
-#### Troubleshooting
-
-##### drop schema
-```sql
-DROP SCHEMA IF EXISTS database;
-```
-##### drop table
-```sql
-DROP TABLE table;
-```
-##### add column
-```sql
-ALTER TABLE albums ADD (release_year INT);
-```
-##### rename table
-```sql
-ALTER TABLE table
-  RENAME TO new_table;
-```
-##### modify column
-```sql
-ALTER TABLE todos 
-  CHANGE COLUMN column new_name DATATYPE MODIFIERS; -- both necessary! it rewrites whole column definition
-```
 #### CRUD
 ##### insert row
 ```sql
@@ -322,6 +298,30 @@ FROM mytable
 WHERE column
   NOT IN (SELECT another_column
             FROM another_table);
+```
+
+#### Troubleshooting
+##### drop schema
+```sql
+DROP SCHEMA IF EXISTS database;
+```
+##### drop table
+```sql
+DROP TABLE table;
+```
+##### add column
+```sql
+ALTER TABLE albums ADD (release_year INT);
+```
+##### rename table
+```sql
+ALTER TABLE table
+  RENAME TO new_table;
+```
+##### modify column
+```sql
+ALTER TABLE todos 
+  CHANGE COLUMN column new_name DATATYPE MODIFIERS; -- both necessary! it rewrites whole column definition
 ```
 
 [^1]: non-key attributes == non-key columns
