@@ -5,13 +5,14 @@
 * instead od deleting a `deleted` row, column deleted with value `false`; it should be indexed for faster performence
 
 ## Table Relationship
-* 1:1
+
+* 1..1
   * by using `UNIQUE INDEX`
 
-* many:1
+* \*..1
   * by using `FOREIGN KEY` `REFERENCES` so the DB is checking for *Constraint* and it **doesn't** allow removing the entry **until** the *relatonship* is removed!
 
-* many:many
+* \*..\*
   * by using **junction table** with *foreighn key*
 
 ## Syntax
