@@ -74,15 +74,15 @@
 
 ### *CRUD* Keywords
 
+* `INSERT INTO` \<table> (\<column>) `VALUES` (\<value>)
 * `CREATE` vs `DROP`
   * `TABLE` \<table>
   * `DATABASE` \<databese> == `SCHEMA` \<schema>
 * `ALTER TABLE` \<table>
   * `ADD <column>`
   * `RENAME TO` \<new_table>
-* `UPDATE` \<table>
-  * `SET` \<column> = \<value>
-    * `WHERE` \<consition>
+  * `CHANGE COLUMN` \<column> \<new_name> `DATATYPE` `MODIFIERS` necessary!, it rewrites the whole definition
+* `UPDATE` \<table> `SET` \<column> = \<value> `WHERE` \<consition>
   * `RENAME TO` \<new_table>
 * `DELETE FROM` \<table>
 
@@ -179,7 +179,9 @@ go with `GROUP BY` and the columns **must be** for most functions listed in the 
 
 ### Snippets
 
-##### start *i.e.* create and use databese (schema), create
+#### Init
+
+##### create and use databese (schema), create table
 
 ```sql
 CREATE DATABASE IF NOT EXISTS database;
@@ -191,35 +193,54 @@ CREATE TABLE table (
   PRIMARY KEY(id)
 );
 ```
+
+#### Troubleshooting
+
+##### drop schema
+```sql
+DROP SCHEMA IF EXISTS database;
+```
+##### drop table
+```sql
+DROP TABLE table;
+```
+##### add column
 ```sql
 ALTER TABLE albums ADD (release_year INT);
 ```
-```sql
-DROP TABLE table;
-
-DROP SCHEMA IF EXISTS database;
-```
+##### rename table
 ```sql
 ALTER TABLE table
   RENAME TO new_table;
 ```
+##### modify column
 ```sql
-INSERT INTO bands (name)
-  VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!;
+ALTER TABLE todos 
+  CHANGE COLUMN column new_name DATATYPE MODIFIERS; -- both necessary! it rewrites whole column definition
 ```
+#### CRUD
+##### insert row
 ```sql
 INSERT INTO albums (name, release_year, band_id) --more robust way (in case of future column modification)
   VALUES (...);
 ```
+##### insert multiple rows
+```sql
+INSERT INTO bands (name)
+  VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!;
+```
+##### modify values
 ```sql
 UPDATE albums
-SET release year = 1982
+  SET release_year = 1982
   WHERE id = 1;
 ```
+##### delete rows
 ```sql
-DELETE FROM mytable
+DELETE FROM mytable -- always do a dry run with SELECT!
   WHERE condition;
 ```
+
 ```sql
 COALESCE(party,'None')
 ```
