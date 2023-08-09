@@ -90,11 +90,29 @@
   * `INNER JOIN`  == `JOIN`
   * `LEFT JOIN`
   * `RIGHT JOIN`
-  * `CROSS JOIN`   
+  * `CROSS JOIN`
 
-### Agregate **Functions**
+### Cross Product
 
-go with `GROUP BY` and the columns must be usually listed in the `GROUP BY` statemnet
+> CROSS JOINs are used to combine **each row** of one table with **each row** of another table, and return the *Cartesian product*
+
+* `CROSS JOIN`
+
+### Set Operations
+
+> set operations **combine results** of multiple query blocks into a **single result**
+
+* `UNION`, `UNION ALL`
+  > `UNION` returns **all distinct** rows (omitting any duplicates), in contrast, `UNION ALL` returns **all** rows, including **duplicates** rows
+* `INTERSECT`
+  > returns rown **in common**, omitting any duplicates.
+* `EXCEPT`
+  > returns rows **from A** which are **not in B**, omitting any duplicates.
+
+
+### Group By and gregate Functions
+
+go with `GROUP BY` and the columns **must be** for most functions listed in the `GROUP BY` statemnet
 
 * `DISTINCT` *use without ()*
 * `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, ... many more icl. statistical
@@ -148,5 +166,11 @@ DELETE FROM mytable
 ```
 ```sql
 COALESCE(party,'None')
+```
+```sql
+(SELECT stud_name, subject, marks FROM students)  
+  UNION  
+(SELECT stud_name, subject, marks FROM student2)  
+  sORDER BY marks;
 ```
 
