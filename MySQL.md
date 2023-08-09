@@ -39,24 +39,24 @@
 ### *CRUD* Keywords
 
 * `CREATE` vs `DROP`
-  * `TABLE` <table>
-  * `DATABASE` <databese> == `SCHEMA` <schema>
-* `ALTER TABLE` <table>
+  * `TABLE` \<table>
+  * `DATABASE` \<databese> == `SCHEMA` \<schema>
+* `ALTER TABLE` \<table>
   * `ADD <column>`
-  * `RENAME TO` <new_table>
-* `UPDATE` <table>
-  * `SET` <column> = <value>
-    * `WHERE` <consition>
-  * `RENAME TO` <new_table>
-* `DELETE FROM` <table>
+  * `RENAME TO` \<new_table>
+* `UPDATE` \<table>
+  * `SET` \<column> = \<value>
+    * `WHERE` \<consition>
+  * `RENAME TO` \<new_table>
+* `DELETE FROM` \<table>
 
 > If you decide to **leave out** the `WHERE` constraint, then **all** rows are removed, which is a quick and easy way to clear out a table completely (if intentional).
 
 ### Other Clasuse Keywords
 
-* `ORDER BY` <column>
+* `ORDER BY` \<column>
   * `ASC`, `DESC`
-* `LIMIT` <number>
+* `LIMIT` \<number>
 
 ### Operators
 
@@ -65,7 +65,7 @@
 * `LIKE '<pattern>'` accepts `%` wildcart
 * `OR`, `AND`
 * `CASE` *value* `WHEN` *compare_value* `THEN` *result* `ELSE` *result* `END` don't forget the `END`! there is alse `CASE` 
-* `CASE` `WHEN` <condition> `THEN` <result> `ELSE` <result> `END` there is alse `CASE` *Statement*
+* `CASE` `WHEN` \<condition> `THEN` \<result> `ELSE` \<result> `END` there is alse `CASE` *Statement*
 * ... many more
 
 ### Joins
