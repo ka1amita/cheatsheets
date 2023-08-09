@@ -17,7 +17,7 @@
   * by using `FOREIGN KEY` so the DB is checking for *Constraint* and it **doesn't** allow removing the entry **until** the *relatonship* is removed!
 
 * \*..\*
-  * by using **junction (join) table** with *foreighn key*
+  * by using **junction (join) table** with `FOREIGN KEY`s
 
 ## Normalization
 
@@ -113,7 +113,9 @@
 * `DEFAULT` *\<value>*
 * `PRIMARY KEY`*(\<id>)* goes at the end of declaration
 * `FOREIGN KEY` *(\<foreign_id>)* `REFERENCES` *\<table>*(*\<id>*) note above; the DB is checking for Constraint and it doesn't allow removing the entry before removing the relatonship!
+  * `CONSTRAINT` \<name> optional naming
 * `UNIQUE INDEX` *(\<foreign_id>)*
+* 
 
 ### chatching errors
 
@@ -235,9 +237,10 @@ CREATE DATABASE IF NOT EXISTS database;
 
 USE databese;
 
-CREATE TABLE table (
+CREATE TABLE orders (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY(id)
+  CONSTRAINT FK_person_order FOREIGN KEY(persons_id) REFERENCES persons(id) -- optional naming of constraint
 );
 ```
 ##### insert row
@@ -328,6 +331,12 @@ ALTER TABLE table
 ALTER TABLE todos 
   CHANGE COLUMN column new_name DATATYPE MODIFIERS; -- both necessary! it rewrites whole column definition
 ```
+##### add foreign key constraint to existing column
+```sql
+ALTER TABLE Orders
+  ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+```
+
 
 [^1]: non-key attributes == non-key columns
 [^2]: we can’t further subdivide the value, e.g. the value "Chicago” **is** atomic whereas “Chicago; Los Angeles; New York” **is not**.
