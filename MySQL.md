@@ -4,6 +4,8 @@
 
 * instead od deleting a `deleted` row, column deleted with value `false`; it should be indexed for faster performence
 
+* **primary key** can be **combination of more columns** that is **unique**! e.g. palyer_inventory table with player-item pairs
+
 ## Table Relationship
 
 * 1..1
@@ -254,11 +256,21 @@ WHERE column
 ## Normalization
 
 * 1NF
-  * > row order should **not** convey **information**
-  * > mixing data types
-  * > table without a primary keys
+  * > row order must **not** convey **information**
+  * > **mixing** **data types** is not allowed
+  * > table must have a **primary keys** (can be conbination of more columns)
+  * > able must not have **repeating group** on a **single row**
 * 2NF
+  > each **non-key attribute**[^1] must **depend** on the **entire** primary key
+  * deletion anomaly
+  * update anomaly
+  * insertion anomaly
 * 3NF
+  > every **non-key attribute** must **depend** on the the primary key, the whole primary key and **nothing but** the **primary key**
+  > e.g. no *transiont dependencies*
 * 4NF
+  * ?
 * 5NF
+  * ?
 
+[^1]: non-key attributes == non-key columns
