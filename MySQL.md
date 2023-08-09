@@ -95,7 +95,8 @@
 * `TEXT`
 * `BOOLEAN`
 * `FLOAT`
-* `DATE` `DATETIME`
+* `DATE` supported range is '1000-01-01' to '9999-12-31'
+* `DATETIME`
 * `BLOB` Binary Large Objects
 * ... many more
 
@@ -105,7 +106,7 @@
 
 ## KEYWORDS
 
-### Column Modifiers
+### Column Constraints (Modifiers)
   
 * `NOT NULL`
 * `AUTO_INCREMENT`
@@ -126,10 +127,11 @@
   * `TABLE` \<table>
   * `DATABASE` \<databese> == `SCHEMA` \<schema>
 * `ALTER TABLE` \<table>
-  * `ADD <column>`
+  * `ADD` \<column>
   * `RENAME TO` \<new_table>
   * `CHANGE COLUMN` \<column> \<new_name> `DATATYPE` `MODIFIERS` necessary!, it rewrites the whole definition
-* `UPDATE` \<table> `SET` \<column> = \<value> `WHERE` \<consition>
+* `UPDATE` \<table>
+  * `SET` \<column> = \<value> `WHERE` \<consition>
   * `RENAME TO` \<new_table>
 * `DELETE FROM` \<table>
 
@@ -226,10 +228,8 @@ go with `GROUP BY` and the columns **must be** for most functions listed in the 
 
 ### Snippets
 
-#### Init
-
+#### CRUD
 ##### create and use databese (schema), create table
-
 ```sql
 CREATE DATABASE IF NOT EXISTS database;
 
@@ -240,8 +240,6 @@ CREATE TABLE table (
   PRIMARY KEY(id)
 );
 ```
-
-#### CRUD
 ##### insert row
 ```sql
 INSERT INTO albums (name, release_year, band_id) --more robust way (in case of future column modification)
@@ -300,7 +298,13 @@ WHERE column
   NOT IN (SELECT another_column
             FROM another_table);
 ```
-
+#### get doday's date
+```sql
+CAST(NOW() as DATE);
+```
+```sql
+created DATE NOT NULL DEFAULT (CAST(NOW() as DATE)),
+```
 #### Troubleshooting
 ##### drop schema
 ```sql
