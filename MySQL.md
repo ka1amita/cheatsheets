@@ -255,29 +255,45 @@ WHERE column
 ```
 ## Normalization
 
+### Reasons
+
+* minimaze **duplicate data**
+  * **increases storage** and **decreases performance**
+  * difficult to **maintain**
+* avoid data **modification issues**
+* **simplyfy queries**
+
+### Anomalies
+
+  * **insertion** anomaly
+    > there are facts we cannot record until we know information for the entire row.
+  * **update** anomaly
+    > the same information is recorded in multiple rows
+  * **deletion** anomaly
+    > removal of row results in removal of more than one set of facts
+
 ### Dependencies
 
 * dependency --> e.g. man --> age
 * multi-value -->> e.g. man -->> nationality 
 
-## Normalization Levels
+## Normalization Forms
+> The forms are progressive, meaning that to qualify for 3rd normal form a table must first satisfy the rules for 2nd normal form, and 2nd normal form must adhere to those for 1st normal form. 
 
-* 1.NF
-  * > row order must **not** convey **information**
-  * > **mixing** **data types** is not allowed
-  * > table must have a **primary keys** (can be conbination of more columns)
-  * > table must not have **repeating group** on a **single row**
-* 2.NF
-  > each **non-key attribute**[^1] must **depend** on the **entire** primary key
-  * deletion anomaly
-  * update anomaly
-  * insertion anomaly
-* 3.NF
+* 1NF
+  > row **order** must **not** convey **information**
+  > **mixing** **data types** is not allowed
+  > table must have a **primary keys** (can be conbination of more columns)
+  > table must not have **repeating group** on a **single row**
+* 2NF
+  > each **non-key attribute**[^1] must **depend** on the **entire** **primary key**
+* 3NF
   > each (**non-key**) **attribute** must **depend** on the the primary key, the whole primary key, and **nothing but** the **primary key**
-  > e.g. no *transiont dependencies*
-* 4.NF
+  > *transiont dependencies* are **not allowed**
+* 4NF
   > only allowed **multivalued dependencies** in a table must be multivalued dependencies **on the key**
-* 5.NF
-  > the table (in 4.NF) musn't be **describable** as the logical result of **joining** some **other tables** together
+* 5NF
+  > the table (in 4NF) musn't be **describable** as the logical result of **joining** some **other tables** together (contain **independen't** attributers)
+  > e.g person, favourite brands and favourite flavours can't be together in single 
 
 [^1]: non-key attributes == non-key columns
