@@ -51,7 +51,7 @@
 
 > If you decide to **leave out** the `WHERE` constraint, then **all** rows are removed, which is a quick and easy way to clear out a table completely (if intentional).
 
-### Other Keywords
+### Other Clasuse Keywords
 
 * `ORDER BY` <column>
   * `ASC`, `DESC`
@@ -63,6 +63,7 @@
 * `!=` or `<>`
 * `LIKE '<pattern>'` accepts `%` wildcart
 * `OR`, `AND`
+* `CASE` <variable> `WHEN` <condition> `THEN` <value> `ELSE` <value> `END` don't forget the `END`! there is alse `CASE` *Statement*
 * ... many more
 
 ### Joins
