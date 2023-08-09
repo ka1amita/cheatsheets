@@ -88,15 +88,15 @@
 
 * `=`
 * `!=` or `<>`
-* `LIKE '<pattern>'` accepts `%` wildcart
+* `LIKE` \<pattern> accepts `%` wildcart
 * `OR`, `AND`
-* `CASE` `<value>` `WHEN` `<compare_value>` `THEN` `<result>` `ELSE` `<result>` `END` don't forget the `END`! there is alse `CASE` 
+* `CASE` \<value> `WHEN` <compare_value> `THEN` \<result> `ELSE` \<result> `END` don't forget the `END`! there is alse `CASE` 
 * `CASE` `WHEN` \<condition> `THEN` \<result> `ELSE` \<result> `END` there is alse `CASE` *Statement*
 * ... many more
 
 ### Joins
 
-* `FROM <table1>,<table2> WHERE <condition>` corresponds to **cross product**; deprecated in favour of `JOIN`s
+* `FROM` \<table1>,\<table2> `WHERE` \<condition> corresponds to **cross product**; deprecated in favour of `JOIN`s
 * `JOIN`s
   * `INNER JOIN`  == `JOIN`
   * `LEFT JOIN`
@@ -122,6 +122,8 @@
 
 
 ### Group By and gregate Functions
+
+* `GROUP BY` \<column>
 
 go with `GROUP BY` and the columns **must be** for most functions listed in the `GROUP BY` statemnet
 
