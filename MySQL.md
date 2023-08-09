@@ -240,4 +240,11 @@ SELECT *
                     FROM employees AS dept_employees
                     WHERE dept_employees.department = employees.department);
 ```
+```sql
+SELECT *, …
+FROM mytable
+WHERE column
+  NOT IN (SELECT another_column
+            FROM another_table);
+```
 
