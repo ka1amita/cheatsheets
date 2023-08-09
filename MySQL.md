@@ -28,7 +28,7 @@
 * `AUTO_INCREMENT`
 * `DEFAULT <value>`
 * `PRIMARY KEY(<id>)` goes at the end of declaration
-* `FOREIGN KEY (band_id) REFERENCES <TABLE>(<id>)` as above
+* `FOREIGN KEY` (<foregn_id>) `REFERENCES` <table>(<id>) note above
 
 ### chatching errors
 
