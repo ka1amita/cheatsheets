@@ -7,13 +7,13 @@
 ## Table Relationship
 
 * 1..1
-  * by using `UNIQUE INDEX`
+  * by using `FOREIGN KEY` together with `UNIQUE INDEX`
 
 * \*..1
-  * by using `FOREIGN KEY` `REFERENCES` so the DB is checking for *Constraint* and it **doesn't** allow removing the entry **until** the *relatonship* is removed!
+  * by using `FOREIGN KEY` so the DB is checking for *Constraint* and it **doesn't** allow removing the entry **until** the *relatonship* is removed!
 
 * \*..\*
-  * by using **junction table** with *foreighn key*
+  * by using **junction (join) table** with *foreighn key*
 
 ## Syntax
 
