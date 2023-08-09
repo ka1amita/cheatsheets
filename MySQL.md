@@ -255,22 +255,29 @@ WHERE column
 ```
 ## Normalization
 
-* 1NF
+### Dependencies
+
+* dependency --> e.g. man --> age
+* multi-value -->> e.g. man -->> nationality 
+
+## Normalization Levels
+
+* 1.NF
   * > row order must **not** convey **information**
   * > **mixing** **data types** is not allowed
   * > table must have a **primary keys** (can be conbination of more columns)
-  * > able must not have **repeating group** on a **single row**
-* 2NF
+  * > table must not have **repeating group** on a **single row**
+* 2.NF
   > each **non-key attribute**[^1] must **depend** on the **entire** primary key
   * deletion anomaly
   * update anomaly
   * insertion anomaly
-* 3NF
-  > every **non-key attribute** must **depend** on the the primary key, the whole primary key and **nothing but** the **primary key**
+* 3.NF
+  > each (**non-key**) **attribute** must **depend** on the the primary key, the whole primary key, and **nothing but** the **primary key**
   > e.g. no *transiont dependencies*
-* 4NF
-  * ?
-* 5NF
-  * ?
+* 4.NF
+  > only allowed **multivalued dependencies** in a table must be multivalued dependencies **on the key**
+* 5.NF
+  > the table (in 4.NF) musn't be **describable** as the logical result of **joining** some **other tables** together
 
 [^1]: non-key attributes == non-key columns
