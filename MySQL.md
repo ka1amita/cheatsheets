@@ -254,9 +254,9 @@ WHERE column
 ## Normalization
 
 * 1NF
-> row order should **not** convey **information**
-> mixing data types
-> table without a primary keys
+  * > row order should **not** convey **information**
+  * > mixing data types
+  * > table without a primary keys
 * 2NF
 * 3NF
 * 4NF
