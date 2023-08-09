@@ -156,12 +156,20 @@ go with `GROUP BY` and the columns **must be** for most functions listed in the 
 
 ## Subqueries
 
-> A subquery can be referenced anywhere a normal table can be referenced. Inside a FROM clause, you can JOIN subqueries with other tables, inside a WHERE or HAVING constraint, you can test expressions against the results of the subquery, and even in expressions in the SELECT clause.
+> A *subquery* can be referenced anywhere a normal table can be referenced.
+> Inside a `FROM` clause, you can `JOIN` subqueries with other tables, inside a `WHERE` or `HAVING` constraint, you can test expressions against the results of the subquery, and even in expressions in the SELECT clause.
 
-### Correlated subqueries
-> in which the inner query references, and is dependent on, a column or alias from the outer query. Unlike the subqueries above, each of these inner queries need to be run for each of the rows in the outer query, since the inner query is dependent on the current outer query row.
+### Correlated Subqueries
 
-#### Snippets
+> In *correlated Subqueries* the inner query **references**, and is dependent on, a **column** or **alias** from the **outer query**.
+> Unlike the subqueries above, **each** of these **inner querie**s need to be **run** for **each** of the of the **outer query row**s
+ 
+> Five **meaningful aliases** to the temporary values and tables.
+
+> In addition, correlated subqueries can be difficult to optimize, so performance characteristics may vary across different databases.
+
+
+### Snippets
 
 ##### start *i.e.* create and use databese (schema), create
 
@@ -211,7 +219,7 @@ COALESCE(party,'None')
 (SELECT stud_name, subject, marks FROM students)  
   UNION  
 (SELECT stud_name, subject, marks FROM student2)  
-  sORDER BY marks;
+  ORDER BY marks;
 ```
 ##### **FULL OUTER JOIN**
 ```sql
@@ -222,5 +230,14 @@ UNION
 SELECT *
   FROM t1 RIGHT JOIN t2
     ON t1.id = t2.id
+```
+
+##### Correlated Subquery
+```sql
+SELECT *
+  FROM employees
+  WHERE salary > (SELECT AVG(revenue_generated)
+                    FROM employees AS dept_employees
+                    WHERE dept_employees.department = employees.department);
 ```
 
