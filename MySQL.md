@@ -28,14 +28,25 @@
 * `AS <alias>` can be imitted
 * `WITH <alias>`
 
-## Column Datatypes
+## Datatypes
+
+* [mysql docs](https://dev.mysql.com/doc/refman/8.0/en/data-types.html)
+* [3schools](https://www.w3schools.com/sql/sql_datatypes.asp)
 
 * `INT`
   * `UNSIGNED`
 * `DOUBLE`
 * `CHAR(size)`, `VARCHAR(max_size)` e.g. `VARCHAR(255)`
 * `TEXT`
+* `BOOLEAN`
+* `FLOAT`
+* `DATE` `DATETIME`
+* `BLOB` Binary Large Objects
 * ... many more
+
+## Functions
+
+* [3schools](https://www.w3schools.com/sql/sql_ref_mysql.asp)
 
 ### Column Modifiers
   
