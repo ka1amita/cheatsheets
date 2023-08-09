@@ -52,6 +52,8 @@
 
 * [3schools](https://www.w3schools.com/sql/sql_ref_mysql.asp)
 
+## KEYWORDS
+
 ### Column Modifiers
   
 * `NOT NULL`
@@ -116,7 +118,7 @@
 
 ### Set Operations
 
-> set operations **combine results** of multiple query blocks into a **single result**
+> set operations **combine results** of multiple query blocks into a **single result** assuming that they have the same column **count**, **order** and **data type**
 
 * `UNION`, `UNION ALL`
   > `UNION` returns **all distinct** rows (omitting any duplicates), in contrast, `UNION ALL` returns **all** rows, including **duplicates** rows
@@ -124,7 +126,6 @@
   > returns rown **in common**, omitting any duplicates.
 * `EXCEPT`
   > returns rows **from A** which are **not in B**, omitting any duplicates.
-
 
 ### Group By and gregate Functions
 
@@ -139,7 +140,21 @@ go with `GROUP BY` and the columns **must be** for most functions listed in the 
 * `COALESCE` takes **any number** of arguments and returns the **first not null** value.
 * `IFNULL` takes **two** arguments and returns the first value that is not null.
 
-#### snippets
+## Order of Execution
+
+[sqlbolt](https://sqlbolt.com/lesson/select_queries_order_of_execution)
+
+1. FROM and JOINs
+2. WHERE
+3. GROUP BY
+4. HAVING
+5. SELECT
+6. DISTINCT
+7. UNION
+8. ORDER BY
+9. LIMIT / OFFSET
+
+#### Snippets
 
 ##### start *i.e.* create and use databese (schema), create
 
