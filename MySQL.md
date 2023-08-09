@@ -63,7 +63,7 @@
 * `!=` or `<>`
 * `LIKE '<pattern>'` accepts `%` wildcart
 * `OR`, `AND`
-* `CASE` <value> `WHEN` <compare_value> `THEN` <result> `ELSE` <result> `END` don't forget the `END`! there is alse `CASE` 
+* `CASE` *value* `WHEN` *compare_value* `THEN` *result* `ELSE` *result* `END` don't forget the `END`! there is alse `CASE` 
 * `CASE` `WHEN` <condition> `THEN` <result> `ELSE` <result> `END` there is alse `CASE` *Statement*
 * ... many more
 
