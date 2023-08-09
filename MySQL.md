@@ -245,10 +245,20 @@ SELECT *
                     WHERE dept_employees.department = employees.department);
 ```
 ```sql
-SELECT *, …
+SELECT *,
 FROM mytable
 WHERE column
   NOT IN (SELECT another_column
             FROM another_table);
 ```
+## Normalization
+
+* 1NF
+> row order should **not** convey **information**
+> mixing data types
+> table without a primary keys
+* 2NF
+* 3NF
+* 4NF
+* 5NF
 
