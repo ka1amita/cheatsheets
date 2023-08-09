@@ -263,17 +263,18 @@ UPDATE albums
 DELETE FROM mytable -- always do a dry run with SELECT!
   WHERE condition;
 ```
-
+##### COALESCE
 ```sql
 COALESCE(party,'None')
 ```
+##### UNION
 ```sql
 (SELECT stud_name, subject, marks FROM students)  
   UNION  
 (SELECT stud_name, subject, marks FROM student2)  
   ORDER BY marks;
 ```
-##### **FULL OUTER JOIN**
+##### FULL OUTER JOIN emulation
 ```sql
 SELECT *
   FROM t1 LEFT JOIN t2
@@ -283,7 +284,6 @@ SELECT *
   FROM t1 RIGHT JOIN t2
     ON t1.id = t2.id
 ```
-
 ##### Correlated Subquery
 ```sql
 SELECT *
@@ -292,6 +292,7 @@ SELECT *
                     FROM employees AS dept_employees
                     WHERE dept_employees.department = employees.department);
 ```
+##### Subquery
 ```sql
 SELECT *,
 FROM mytable
