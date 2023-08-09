@@ -102,6 +102,10 @@
 
 ### Joins
 
+>  Returns all records from the right table, and the matching records from the left table
+
+> It does'm mean tha there is (exactly) only one row from the right table. E.g. the rows from right table are "copied" as long as there are unique rows in left table with corresponding match.
+
 * `FROM` \<table1>,\<table2> `WHERE` \<condition> corresponds to **cross product**; deprecated in favour of `JOIN`s
 * `JOIN`s
   * `INNER JOIN`  == `JOIN`
