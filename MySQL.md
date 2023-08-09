@@ -154,6 +154,13 @@ go with `GROUP BY` and the columns **must be** for most functions listed in the 
 8. ORDER BY
 9. LIMIT / OFFSET
 
+## Subqueries
+
+> A subquery can be referenced anywhere a normal table can be referenced. Inside a FROM clause, you can JOIN subqueries with other tables, inside a WHERE or HAVING constraint, you can test expressions against the results of the subquery, and even in expressions in the SELECT clause.
+
+### Correlated subqueries
+> in which the inner query references, and is dependent on, a column or alias from the outer query. Unlike the subqueries above, each of these inner queries need to be run for each of the rows in the outer query, since the inner query is dependent on the current outer query row.
+
 #### Snippets
 
 ##### start *i.e.* create and use databese (schema), create
