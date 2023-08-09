@@ -1,5 +1,19 @@
 # MySQL <a name="top"></a>
 
+## General notes
+
+* instead od deleting a `deleted` row, column deleted with value `false`; it should be indexed for faster performence
+
+## Table Relationship
+* 1:1
+  * by using `UNIQUE INDEX`
+
+* many:1
+  * by using `FOREIGN KEY` `REFERENCES` so the DB is checking for *Constraint* and it **doesn't** allow removing the entry **until** the *relatonship* is removed!
+
+* many:many
+  * by using **junction table** with *foreighn key*
+
 ## Syntax
 
 * **statemnents**
@@ -28,7 +42,7 @@
 * `AUTO_INCREMENT`
 * `DEFAULT` \<value>
 * `PRIMARY KEY`(\<id>) goes at the end of declaration
-* `FOREIGN KEY` (\<foreign_id>) `REFERENCES` \<table>(\<id>) note above
+* `FOREIGN KEY` (\<foreign_id>) `REFERENCES` \<table>(\<id>) note above; the DB is checking for Constraint and it doesn't allow removing the entry before removing the relatonship!
 * `UNIQUE INDEX` (\<foreign_id>)
 
 ### chatching errors
@@ -64,7 +78,7 @@
 * `!=` or `<>`
 * `LIKE '<pattern>'` accepts `%` wildcart
 * `OR`, `AND`
-* `CASE` `<value>` `WHEN` `<compare_value>``THEN` `<result>` `ELSE` `<result>` `END` don't forget the `END`! there is alse `CASE` 
+* `CASE` `<value>` `WHEN` `<compare_value>` `THEN` `<result>` `ELSE` `<result>` `END` don't forget the `END`! there is alse `CASE` 
 * `CASE` `WHEN` \<condition> `THEN` \<result> `ELSE` \<result> `END` there is alse `CASE` *Statement*
 * ... many more
 
