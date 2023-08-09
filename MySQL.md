@@ -28,7 +28,8 @@
 * `AUTO_INCREMENT`
 * `DEFAULT <value>`
 * `PRIMARY KEY(<id>)` goes at the end of declaration
-* `FOREIGN KEY` (<foregn_id>) `REFERENCES` <table>(<id>) note above
+* `FOREIGN KEY` (\<foreign_id>) `REFERENCES` <table>(<id>) note above
+* `UNIQUE INDEX (<foreign_id>)`
 
 ### chatching errors
 
