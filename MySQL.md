@@ -4,7 +4,7 @@
 
 ## General notes
 
-* instead od deleting a `deleted` row, column deleted with value `false`; it should be indexed for faster performence
+* **instead** od **deleting** a row, column *deleted* is set to **false**; it should be **indexed** for faster performence
 
 * **primary key** can be **combination of more columns** that is **unique**! e.g. palyer_inventory table with player-item pairs
 
