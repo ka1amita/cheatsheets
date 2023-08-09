@@ -56,10 +56,10 @@
   
 * `NOT NULL`
 * `AUTO_INCREMENT`
-* `DEFAULT` \<value>
-* `PRIMARY KEY`(\<id>) goes at the end of declaration
-* `FOREIGN KEY` (\<foreign_id>) `REFERENCES` \<table>(\<id>) note above; the DB is checking for Constraint and it doesn't allow removing the entry before removing the relatonship!
-* `UNIQUE INDEX` (\<foreign_id>)
+* `DEFAULT` *\<value>*
+* `PRIMARY KEY`*(\<id>)* goes at the end of declaration
+* `FOREIGN KEY` *(\<foreign_id>)* `REFERENCES` *\<table>*(*\<id>*) note above; the DB is checking for Constraint and it doesn't allow removing the entry before removing the relatonship!
+* `UNIQUE INDEX` *(\<foreign_id>)*
 
 ### chatching errors
 
