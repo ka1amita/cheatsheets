@@ -1,4 +1,6 @@
 # MySQL <a name="top"></a>
+(#General-notes)
+(#normalization-forms)
 
 ## General notes
 
