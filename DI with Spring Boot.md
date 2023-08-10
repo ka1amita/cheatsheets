@@ -9,7 +9,7 @@
 * FileOutputStream
 
 #### Serialization
-##### saving to file
+##### saving object to a file
 ```java
 public void saveTaskToFile (TodoTask todoTask) {
   try {
@@ -20,6 +20,7 @@ public void saveTaskToFile (TodoTask todoTask) {
     objectoutputStream.close();
   } catch (Exception e) {...}
 ```
+##### reading object from a file
 ```java
 public TodoTask readTaskFromFile {
   try {
