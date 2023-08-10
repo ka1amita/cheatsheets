@@ -28,10 +28,12 @@
 * `@ComponentScan`
 * `@Component` indicates to Spring to manage the dependency
   
-* * `@Configuration` indicates to Spring that the class can be used as a source of bean definitions1
+* `@Configuration` indicates to Spring that the class can be used as a source of bean definitions1
 * `@Beans` marks method that returns an object registered as a **bean** in the Spring application context
   * [stackoverflow](https://stackoverflow.com/questions/17193365/what-in-the-world-are-spring-beans)
   * an altrnative to XML configuration
+* `@Import` annotation allows for loading `@Bean` definitions from another configuration class
+* `@Scope` specifies bean scope; default scope is **singleton**
 
 ## CommandLineRunner
   
@@ -127,6 +129,35 @@ public TodoTask readTaskFromFile {
     objectInputStream.close();
     return todoTask;
   } catch (Exception e) {...}
+```
+##### lifecycle callbacks
+```java
+public class Foo {
+   public void init() {
+      // initialization logic
+   }
+   public void cleanup() {
+      // destruction logic
+   }
+}
+@Configuration
+public class AppConfig {
+   @Bean(initMethod = "init", destroyMethod = "cleanup" )
+   public Foo foo() {
+      return new Foo();
+   }
+}
+```
+##### specifying bean scope
+```java
+@Configuration
+public class AppConfig {
+   @Bean
+   @Scope("prototype")
+   public Foo foo() {
+      return new Foo();
+   }
+}
 ```
 
 
