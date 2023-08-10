@@ -1,11 +1,11 @@
 ## IoC[^1], DI[^2]
 
-> Inversion of Control is a key part of what makes a framework different to a library. A library is essentially , a set of functions that you can call, these days usually organized into classes. Each call does some work and returns control to the client.[^4]
+> Inversion of Control is a key part of what makes a framework different to a library. A library is essentially , a set of functions that you can call, these days usually organized into classes. Each call does some work and returns control to the client.[^3]
 
-**Inversion of Control**[^3]
+**Inversion of Control**
 
 > **High-Level** modules should **not depend** on **low-level** modules. Both should depend on **abstractions**.
-> Abstractions should not depend on details. **Details** should **depend** upon **abstractions**.
+> Abstractions should not depend on details. **Details** should **depend** upon **abstractions**.[^4]
 
 **Hollywood principle**
 > Don't call us, **we'll call you**.
@@ -97,5 +97,5 @@ public TodoTask readTaskFromFile {
 ```
 [^1]: Inversion of Control
 [^2]: Dependency Injection
-[^3]: by Robert C. Martin aka *Uncle Bob*
-[^4]: by Martin Fowler
+[^3]: by Martin Fowler
+[^4]: by Robert C. Martin aka *Uncle Bob*
