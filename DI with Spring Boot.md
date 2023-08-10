@@ -1,8 +1,8 @@
 ## IoC[^1], DI[^2]
 
 Dependency Inversion Principle by Robert C. Martin aka *Uncle Bob*
-• **High-Level** modules should **not depend** on **low-level** modules. Both should depend on **abstractions**.
-• Abstractions should not depend on details. **Details** should **depend** upon **abstractions**.
+> **High-Level** modules should **not depend** on **low-level** modules. Both should depend on **abstractions**.
+> Abstractions should not depend on details. **Details** should **depend** upon **abstractions**.
 
 Hollywood principle
 > Don't call us, we'll vallo you.
