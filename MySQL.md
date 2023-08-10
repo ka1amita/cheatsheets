@@ -75,6 +75,12 @@
 * **statemnents**
   * **queries** are statements with `SELECT` 
 
+* \`\` aka backticks (can be) are used to **quote** table and column names
+  > that becomes necessary when useing **reserved keywords** as names, e.g. table
+* `''` aka single quotes are used for **string input**
+  > **not reccomanded** for number type as it has to be **type converted** and can result in some inconsistencies
+  
+  
 * <i>**not** case sensitive</i>
 * `;` and of statement
 * `-- comment ` line comment
