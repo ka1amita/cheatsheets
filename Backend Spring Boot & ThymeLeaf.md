@@ -1,10 +1,15 @@
 # Spring Boot
 
+
+
+* `@RequestParam`
+  * `(required = flase)` good idea to combine with `Optional<T>`
+
 ## Redirections
 * `return: "redirect:"` e.g. after posting (w/ POST method) redirect to home page
 
 * `RedirectAttributes`
-* 
+  
 ### Snippets
 #### redirect with model attribute
 ```java
