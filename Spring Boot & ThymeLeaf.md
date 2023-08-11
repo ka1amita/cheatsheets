@@ -25,13 +25,13 @@
 * `(if) ? (then)`
 * `(if) ? (then) : (else)`
 
-### snippets
+#### operator snippets
 
 ```
-*{getBalance()} < 0 ? true : false
+"{getBalance()} < 0 ? 'true' : 'false'"
 ```
 ```
-*{getBalance() < 0} ? true : false
+"{getBalance() < 0} ? 'true' : 'false'"
 ```
 
 ## HTML Template
