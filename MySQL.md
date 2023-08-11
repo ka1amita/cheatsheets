@@ -6,9 +6,15 @@
 
 ### MySQL Locations[^3]
 
-`/usr/local/mysql/bin`
+` /usr/local/mysql/bin```
 
 ### Add mysql to your PATH[^3]
+
+### login
+
+```bash
+mysql -u root -p
+```
 
 #### Current Session
 
