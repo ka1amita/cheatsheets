@@ -8,7 +8,17 @@
 ## Redirections
 * `return: "redirect:"` e.g. after posting (w/ POST method) redirect to home page
 
+> If you redirect from one controller to another controller the values in model object won't be available in the other controller. So if you want to share the model object values then you have to say in first controller.
+
 * `RedirectAttributes`
+  * `addAttribute()`
+    > it will pass the values as *requestparameters* instead of *model*,so when you add some using `addAttribute` you can access those values from `request.getParameter`
+    > it essentially constructs request parameters out of your attributes and redirects to the desired page with the request parameters
+  * `addFlashAttribute()`
+    > it actually stores the attributes in a flashmap (which is internally maintained in the **users session** and **removed** once the next redirected request gets fulfilled)
+
+
+  > So the advantage of `addFlashAttribute()` will be that you can store pretty much **any object** in your flash attribute (as it is not serialized into request params at all, but maintained as an object), whereas with `addAttribute()` since the object that you add gets transformed to a normal request param, you are pretty limited to the object types like **String or primitives**.
   
 ### Snippets
 #### redirect with model attribute
