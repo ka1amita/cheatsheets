@@ -2,15 +2,25 @@
 [](#General-notes)
 [](#normalization-forms)
 
-## MySQL Locations[^3]
-/usr/local/mysql/bin
+## Instalation
 
-## Add mysql to your PATH[^3]
+### MySQL Locations[^3]
 
-### Current Session
+`/usr/local/mysql/bin`
+
+### Add mysql to your PATH[^3]
+
+#### Current Session
+
+```bash
 export PATH=${PATH}:/usr/local/mysql/bin
-#33 Permanantly
+```
+
+#### Permanantly
+
+```bash
 echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
+```
 
 ## General notes
 
