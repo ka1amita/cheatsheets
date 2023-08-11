@@ -1,6 +1,18 @@
 # Spring Boot
 
+## Redirections
 * `return: "redirect:"` e.g. after posting (w/ POST method) redirect to home page
+
+* `RedirectAttributes`
+* 
+### Snippets
+#### redirect with model attribute
+```java
+if (!message.isPresent() || !favColor.isPresent()) {
+  redirectAttributes.addFlashAttribute(attributeName:"errorMessage', attributeValue: "please fill in all fields!")
+  return "redirect:/";
+}
+```
 
 # Thymeleaf
 
