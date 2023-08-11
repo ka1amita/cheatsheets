@@ -17,6 +17,7 @@
   * `addFlashAttribute()`
     > it actually stores the attributes in a flashmap (which is internally maintained in the **users session** and **removed** once the next redirected request gets fulfilled)
 
+  > A FlashMap provides a way for one request to store attributes intended for use in another. This is most commonly needed when redirecting from one URL to another -- e.g. the Post/Redirect/Get pattern. A FlashMap is saved before the redirect (typically in the session) and is made available after the redirect and removed immediately.
 
   > So the advantage of `addFlashAttribute()` will be that you can store pretty much **any object** in your flash attribute (as it is not serialized into request params at all, but maintained as an object), whereas with `addAttribute()` since the object that you add gets transformed to a normal request param, you are pretty limited to the object types like **String or primitives**.
   
