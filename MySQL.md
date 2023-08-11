@@ -2,6 +2,16 @@
 [](#General-notes)
 [](#normalization-forms)
 
+## MySQL Locations[^3]
+/usr/local/mysql/bin
+
+## Add mysql to your PATH[^3]
+
+### Current Session
+export PATH=${PATH}:/usr/local/mysql/bin
+#33 Permanantly
+echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
+
 ## General notes
 
 * **instead** od **deleting** a row, column *deleted* is set to **false**; it should be **indexed** for faster performence
@@ -346,3 +356,4 @@ ALTER TABLE Orders
 
 [^1]: non-key attributes == non-key columns
 [^2]: we can’t further subdivide the value, e.g. the value "Chicago” **is** atomic whereas “Chicago; Los Angeles; New York” **is not**.
+[^3]: [bradtraversy](https://gist.github.com/bradtraversy/c831baaad44343cc945e76c2e30927b3)
