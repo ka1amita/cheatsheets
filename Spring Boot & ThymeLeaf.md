@@ -101,6 +101,13 @@ th:text = "${(car.isDriveable ()) ? 'Driveable' : 'Not Driveable'}"
 <p th:unless="$(cars.isEmpty]">There are no cars to show</p>
 ```
 
+#### dynamic URI
+```html
+<th:block th:with="id=${42774564}">
+  <a th:href="@{https://stackoverflow.com/questions/{id}(id=${id})}">Stack Overflow</a>
+</th:block>
+```
+
 #### table filled from DB
 
 ```html
@@ -152,7 +159,6 @@ public void addCar(Car car){
 ```
 
 ## HTML Fragments
-
 
 ```html
 <div xmlns:th="http://www.thymeleaf.org/" th:fragment="navigationFragment">
