@@ -31,7 +31,7 @@
 * `@Configuration` indicates to Spring that the class can be used as a source of bean definitions1
 * `@Beans` marks method that returns an object registered as a **bean** in the Spring application context
   * [stackoverflow](https://stackoverflow.com/questions/17193365/what-in-the-world-are-spring-beans)
-  * an altrnative to XML configuration
+  > direct analog of the XML <bean/> element.
 * `@Import` annotation allows for loading `@Bean` definitions from another configuration class
 * `@Scope` specifies bean scope; default scope is **singleton**
 
@@ -129,6 +129,22 @@ public TodoTask readTaskFromFile {
     objectInputStream.close();
     return todoTask;
   } catch (Exception e) {...}
+```
+##### @Beans with dependencies on one another
+```java
+@Configuration
+public class AppConfig {
+    @Bean
+    public Foo foo() {
+        return new Foo(bar());
+    }
+
+    @Bean
+    public Bar bar() {
+        return new Bar();
+    }
+}
+     
 ```
 ##### lifecycle callbacks
 ```java
