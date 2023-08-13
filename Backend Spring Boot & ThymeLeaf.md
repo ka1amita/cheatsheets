@@ -61,6 +61,9 @@ if (!message.isPresent() || !favColor.isPresent()) {
 ```
 "{getBalance() < 0} ? 'true' : 'false'"
 ```
+```
+th:selected="${drink == currentDrink}
+```
 
 ## HTML Template
 
