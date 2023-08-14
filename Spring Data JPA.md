@@ -1,4 +1,5 @@
-#Java (J...) Persistance API
+# Spring Data JPA (Jakarta Persistance API)
+
 ## Hibernate App
 
 ### Set-up
