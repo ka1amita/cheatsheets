@@ -1,6 +1,10 @@
 # Spring Data JPA (Jakarta Persistance API)
 
-## Hibernate App
+## Hibernate ORM
+
+**ORM** == **Object Relational Mapping**
+
+> **framework** that anables to **map** **objects** to **rows** in relational **DSs**
 
 ### Set-up
 #### DB Credentials
@@ -123,6 +127,13 @@ public interface DepartmentRepository extends CrudRepository<Department, Long> {
 List<Fox> findAllRedFoxes ();
 @Query(value = "SELECT * FROM foxes WHERE color = 'Red', nativeQuery = true)
 List<Fox> findAllRedFoxesNative();
+```
+##### custom queries
+```java
+List<Post> findAllByAuthorFirstName(String first);
+List<Post> findAllByAuthorFirstNameIgnoreCase(String first);
+List<Post> findAllByAuthorFirstNameIgnoreCaseOrderByPostedOnDesc(String first);
+List<Post> findAllByAuthorFirstNameAndAuthorLastName(String first, String last);|
 ```
 
 
