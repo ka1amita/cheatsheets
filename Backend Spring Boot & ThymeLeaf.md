@@ -1,7 +1,15 @@
 # Spring Boot
 
+## Controller
 
+* `@Controller`
+* `@RequestMapping`
+* `@GetMapping`, `@PostMapping` or specific and therefore more readable 
+* `@ResponseBody`
 
+## XXX
+
+*@PathVariable`
 * `@RequestParam`
   * `(required = flase)` good idea to combine with `Optional<T>`
 
@@ -201,5 +209,8 @@ public void addCar(Car car){
 ```html
 <header th:replace="~{fragments/navigation :: navigationFragment}"></header>
 ```
-
-
+##### controller annotation with *sub*-URL
+```java
+@Controller
+@RequestMapping("todo")
+```
