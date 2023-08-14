@@ -26,6 +26,8 @@ spring.jpa.properties.hibernate.format_sql=true
   * `GeneratedValue`
     * `strategy` 
       * GenerationType
+      * Identify
+      * 
       * ...
 * `@Column` specifies column metadata
   * `name`
@@ -42,19 +44,37 @@ spring.jpa.properties.hibernate.format_sql=true
   > In cases where the id carries some **business information**,e.g. a phone number
 * provide only the non-primarykey values and *Hibernate* provides the value of primary key column **automatically**
 
-### Default methods
+### Queries
 
-use @Override annotation
+#### Default methods (queries)
 
-`extends CrudRepository` \<ClassName, Id_Datatype> optionally combined with `@Repository`
+> use @Override annotation
 
-* `createFox` (Fox fox)}
+> `extends CrudRepository`\<ModelClass, IdDatatype>
+
+  > `@Repository` optional
+
+* `createFox`
 * `save`
 * `findAll`
 * `findById`
 * `count()`
-* `deleteById` (Long id) 
-* `updateFoxById` (Long id)
+* `deleteById` 
+* `updateFoxById`
+
+#### Custom methods (queries)
+
+extracts the **query** from the **method's name**
+[spring docs](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
+
+> `extends JpaRepository`\<ModelClass, IdDatatype>
+
+> `findFoxByNameContainsIgnoreCase`
+
+##### JPQL vs Native queries
+
+> JPQL queri works across databeses, native is specific
+
 
 #### Snippets
 ##### name DB table
@@ -83,6 +103,13 @@ public class EntityExample {
 ##### extend CrudRepository
 ```java
 public interface DepartmentRepository extends CrudRepository<Department, Long> {...}
+```
+##### JPA queries
+```java
+@Query("SELECT f FROM Fox f WHERE f.color = 'Red'")
+List<Fox> findAllRedFoxes ();
+@Query(value = "SELECT * FROM foxes WHERE color = 'Red', nativeQuery = true)
+List<Fox> findAllRedFoxesNative();
 ```
 
 
