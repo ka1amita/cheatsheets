@@ -2,7 +2,10 @@
 ## Hibernate App
 
 ### Set-up
-##### DB Credentials
+#### DB Credentials
+##### 
+in `/recources/application.properties`
+
 ```java
 spring.datasource.url=jdbc:mysql://localhost:3307/foxfarm?serverTimezone=UTC
 spring.datasource.username=root
@@ -12,11 +15,18 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.show-sql=true // sets queries to be visible in command line while running the program
 spring.jpa.properties.hibernate.format_sql=true
 ```
+##### H2
+navigate to `localhost:8080/h2-console/login.do`
 
+```java
+spring.datasource.url=jdbc:h2:mem:foxfarm
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+```
 ### Dependencies
 
-* **Spring Data JPA**
-* **MySQL Driver**
+* Spring Data JPA
+* MySQL Driver
 
 ### Annotations
 * `@Entity`
@@ -26,8 +36,10 @@ spring.jpa.properties.hibernate.format_sql=true
   * `GeneratedValue`
     * `strategy` 
       * GenerationType
-      * Identify
-      * 
+        * `AUTO` default (based on DB)
+        * `IDENTITY`
+        * `TABLE`
+        * `SEQUENCE`
       * ...
 * `@Column` specifies column metadata
   * `name`
@@ -35,7 +47,8 @@ spring.jpa.properties.hibernate.format_sql=true
   * ...
 * `Transient` DB ignores column
 * `...Date` suffix to the field name sets filetype to `DATETIME`
-* `@Temporal` sets datatype to `DATE`
+* `@Temporal`
+* (temporalType.DATE) sets datatype to `DATE`
 * `@Enumerated`
 
 ### Assigning Primary Key values
@@ -48,19 +61,18 @@ spring.jpa.properties.hibernate.format_sql=true
 
 #### Default methods (queries)
 
-> use @Override annotation
+> create new interface and extend `CrudRepository`\<ModelClass, IdDatatype> (optionally include `@Repository`)
 
-> `extends CrudRepository`\<ModelClass, IdDatatype>
+> use `@Override` annotation
 
-  > `@Repository` optional
-
-* `createFox`
-* `save`
-* `findAll`
-* `findById`
-* `count()`
-* `deleteById` 
-* `updateFoxById`
+* `.createFox`
+* `.save` works bot for UPDATE and INSERT besed on whether the entry exists or not
+* `.findAll` combine with `.forEach`(someList::add)
+* `.findOne`
+* `.findById`
+* `.count`
+* `.delete` 
+* `.updateFoxById`
 
 #### Custom methods (queries)
 
