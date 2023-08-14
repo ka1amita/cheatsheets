@@ -86,9 +86,11 @@ echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
   > *transiont dependencies* are **not allowed**
 * 4NF
   > only allowed **multivalued dependencies** in a table must be multivalued dependencies **on the key**
+  > e.g. student id student's classes and student's hobbies
 * 5NF
   > the table (in 4NF) musn't be **describable** as the logical result of **joining** some **other tables** together (contain **independen't** attributers)
-  > e.g person, favourite brands and favourite flavours can't be together in single 
+  > e.g person, favourite brands and favourite flavours can't be together in single table in **not 5NF**
+  > but e.g. particular supplier suppling a particular part to a particular customer (signel order) is in **5NF**
 
 ## Style Guide
 
