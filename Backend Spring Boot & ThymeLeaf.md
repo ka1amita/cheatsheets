@@ -2,12 +2,14 @@
 
 ## Controller
 
+### Endpoint Annotation
+
 * `@Controller`
 * `@RequestMapping`
 * `@GetMapping`, `@PostMapping` or specific and therefore more readable 
 * `@ResponseBody`
 
-## XXX
+### XXX
 
 *@PathVariable`
 * `@RequestParam`
