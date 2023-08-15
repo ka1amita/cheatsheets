@@ -1,20 +1,51 @@
 # Docker
 
 **Images**
-> The file system and configuration of our application which are used to create containers. 
+> The **file system** and **configuration** of our application which are used to **create containers**.
+
+**Containers**
+> Running **instances** of Docker **images** — containers run the actual applications. A container **includes** an **application** and all of its **dependencies**. It **shares the kernel** with other containers, and runs as an **isolated process** in user space on the host OS.
+
+**Docker Daemon** - The background **service** running on the host that **manages** **building**, **running** and **distributing** Docker **containers**.
+
+**Docker Client**
+> The **command line** tool that allows the user to interact with the Docker daemon.
+
+**Docker Hub**
+> Store is, among other things, a registry of Docker images. You can think of the registry as a directory of all available Docker images.
+
+**Dockerfile**
+> A text file that contains all the instructions to build an image.
+
+**Image Layers**
+> Some of these intermediate images will become layers in your final container image. In the history command output, the original Alpine layers are at the bottom of the list and then each customization we added in our Dockerfile is its own step in the output. This is a powerful concept because it means that if we need to make a change to our application, it may only affect a single layer!
+
+Using **Cache**
+> Docker recognized that we had already built some of these layers in our earlier image builds and since nothing had changed in those layers it could simply use a cached version of the layer, rather than pulling down code a second time and running those steps
+> Docker is intelligent enough to build the container in the most efficient way possible, as opposed to repeatedly building an image from the ground up each and every time.
 
 ## Docker Syntax
 
 > Instead of using the full container ID you can use just the first few characters, as long as they are enough to uniquely ID a container.
 
+* `image`
+  * `ls`
+  * `tag` \<image-id> <\tag>
+  * `history` \<image-id> 
+  * 
+* `container`
+  * `ls` or `ls -a`
+  * `diff` \<container-id>
 
 * `pull`
-* `start` \<container ID>
+* `build` `--tag` or `-t` \<name>:\<tag> \<location>
+* `start` \<container-id>
 * `exec` execute command inside a container
   * MYSQL-CONTAINER-ID COMMAND
 * `run`or `run` \<image> \<command>
   * `--detach` or `-d`
   * `--publish` or `-p`\<[host-ip:]host-port:docker-port>
+
 
 ## Dockerfile Syntax
 
@@ -130,7 +161,8 @@ docker network create todo-app
 # Material Review
 
 * How can I create a new container image?
-  > Using parent image and Dockerfile or ...
+  > Manually installing software in a container and then committing.
+  > Using Dockerfile.
   > An image is basically a diff.
 * What is a parent image and how can I decide on the right one?
   > A parent image is the image that your image is based on. It refers to the contents of the FROM directive in the Dockerfile.
