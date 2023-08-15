@@ -1,11 +1,22 @@
 # Docker
-
+## docker syntax
 * `exec` execute command inside a container
   * MYSQL-CONTAINER-ID COMMAND
 * `run`
   * `--detach` or `-d`
   * `--publish` or `-p`
- 
+
+## Dockerfile syntax
+
+* `FROM` image
+* `WORKDIR` directory
+* `COPY` source destination # relative to current position and container root
+* `RUN` verb parameter etc
+  > Allows you to **install** your **application** and **packages** required for it. It executes any command in top of current image and creates **new layer** by commiting the results.
+* `CMD` ["stored","as","list"]
+  > It allows you set a **default command**, which will be **executed** only **when** you **run** a **container** without specifying a command. If container **runs with a command** then the default CMD command will be **ignored**.
+* `ENTRYPOINT` ["verbs","and","parameters"]
+  > Similar to CMD because it allows specify a command with parameters. Only difference is that when container runs ENTRYPOINT commands and parameters are **not ignored**.
   
 #### Snippets
 ##### Getting sterted
@@ -28,7 +39,7 @@ docker build -t getting-started .
 ```
 3. ##### start a new container
 ```bash
-ddocker run -dp 127.0.0.1:3000:3000 getting-started
+docker run -dp 127.0.0.1:3000:3000 getting-started # or just docker run -dp 3000:3000 getting-started
 ```
 > the `-d` flag (short for `--detach`) runs the container in the background. The `-p` flag (short for `--publish`) creates a port mapping between the host and the container. The `-p` flag takes a string value in the format of HOST:CONTAINER, where HOST is the address on the host, and CONTAINER is the port on the container.
 ##### list containers
@@ -42,7 +53,7 @@ docker rm <the-container-id>
 docker rm -f <the-container-id> # You can stop and remove a container in a single command by adding the force flag 
 ```
 
-##### push to Docker HGub
+##### push to Docker Gub
 ```bash
 docker login -u <my-user-name>.
 
