@@ -117,4 +117,30 @@ The following are a few reasons to run the container separately:
 ```bash
 docker network create todo-app
 ```
+# Material Review
 
+* How can I create a new container image?
+  > Using parent image and Dockerfile or ...
+  > An image is basically a diff.
+* What is a parent image and how can I decide on the right one?
+  > A parent image is the image that your image is based on. It refers to the contents of the FROM directive in the Dockerfile.
+  > search on Docker Hub, ...
+* How can I copy files to an image?
+  > `COPY` keyword in Dockerfile, ...
+* How can I run commands during the building process?
+  > `RUN` in Dockerfile, ...
+* How can I specify what commands should be ran when a container starts up?
+  > `CMD` or `ENTRYPOINT` in Dockerfile, ...
+* What does it mean that image files have a layered structure, and what consequences does it have?
+  > Each layer is an image itself, just one without a human-assigned tag. They have auto-generated IDs though.
+  > Each layer stores the changes compared to the image it’s based on.
+  > Each instruction in a Dockerfile results in a layer. (Except for multi-stage builds, where usually only the layers in the final image are pushed, or when an image is squashed to a single layer).
+  > Layers are used to avoid transferring redundant information and skip build steps which have not changed (according to the Docker cache).
+* What is the difference between the RUN and CMD commands?
+  > *see above* [Dockerfile syntax](#Dockerfile-syntax)
+* What are Docker tags and what are they used for?
+  > A tag points to a single Docker image.
+* How can I run a container, in a way that it's immediately deleted after it's stopped running?
+  > `docker run --rm IMAGE-NAME` [powercms.com](https://www.powercms.in/article/how-automatically-delete-docker-container-after-running-it)
+* How to Deploy a Docker container to Heroku?
+  > 
