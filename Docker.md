@@ -1,12 +1,22 @@
 # Docker
-## docker syntax
+
+**Images**
+> The file system and configuration of our application which are used to create containers. 
+
+## Docker Syntax
+
+> Instead of using the full container ID you can use just the first few characters, as long as they are enough to uniquely ID a container.
+
+
+* `pull`
+* `start` \<container ID>
 * `exec` execute command inside a container
   * MYSQL-CONTAINER-ID COMMAND
-* `run`
+* `run`or `run` \<image> \<command>
   * `--detach` or `-d`
-  * `--publish` or `-p`
+  * `--publish` or `-p`\<[host-ip:]host-port:docker-port>
 
-## Dockerfile syntax
+## Dockerfile Syntax
 
 [Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
 
@@ -143,4 +153,4 @@ docker network create todo-app
 * How can I run a container, in a way that it's immediately deleted after it's stopped running?
   > `docker run --rm IMAGE-NAME` [powercms.com](https://www.powercms.in/article/how-automatically-delete-docker-container-after-running-it)
 * How to Deploy a Docker container to Heroku?
-  > 
+  > Heroku is a popular platform with a great pipeline for deploying sites.
