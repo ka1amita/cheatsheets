@@ -8,12 +8,19 @@
 
 ## Dockerfile syntax
 
+[Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
+
 * `FROM` image
-* `WORKDIR` directory
+* `WORKDIR`
+  * `WORKDIR` /path/to/workdir
+  > sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD
+  * combination with `ADD`, `COPY` etc.:`ADD test.txt /absoluteDir/` or * `ADD test.txt relativeDir/`
 * `COPY` source destination # relative to current position and container root
+  * `COPY [--chown=<user>:<group>] [--chmod=<perms>] ["<src>",... "<dest>"]`
 * `RUN` verb parameter etc
   > Allows you to **install** your **application** and **packages** required for it. It executes any command in top of current image and creates **new layer** by commiting the results.
-* `CMD` ["stored","as","list"]
+* `CMD`
+  * * `CMD ["stored","as","list"]`
   > It allows you set a **default command**, which will be **executed** only **when** you **run** a **container** without specifying a command. If container **runs with a command** then the default CMD command will be **ignored**.
 * `ENTRYPOINT` ["verbs","and","parameters"]
   > Similar to CMD because it allows specify a command with parameters. Only difference is that when container runs ENTRYPOINT commands and parameters are **not ignored**.
@@ -35,11 +42,11 @@ EXPOSE 3000
 ```
 2. ##### build image
 ```bash
-docker build -t getting-started .
+docker build -t IMAGE-NAME .
 ```
 3. ##### start a new container
 ```bash
-docker run -dp 127.0.0.1:3000:3000 getting-started # or just docker run -dp 3000:3000 getting-started
+docker run -dp 127.0.0.1:3000:3000 IMAGE-NAME # or just docker run -dp 3000:3000 IMAGE-NAME
 ```
 > the `-d` flag (short for `--detach`) runs the container in the background. The `-p` flag (short for `--publish`) creates a port mapping between the host and the container. The `-p` flag takes a string value in the format of HOST:CONTAINER, where HOST is the address on the host, and CONTAINER is the port on the container.
 ##### list containers
