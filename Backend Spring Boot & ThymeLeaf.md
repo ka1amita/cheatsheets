@@ -1,5 +1,13 @@
 # Spring Boot
 
+## Introduction
+
+### General and Tips
+
+* **inject** *Service Interfaces* into the *Controllers*, **not** *Repositories*
+* make *Services* **imlement** the *Service Interfaces* (*IoC principle*)
+* **separate Services** for **each Repository** and let them **comunicate** between each other
+  
 ## Controller
 
 ### Endpoint Annotation
