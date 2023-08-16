@@ -17,11 +17,16 @@
 **Dockerfile**
 > A text file that contains all the instructions to build an image.
 
+**Volumes**
+> A special Docker container **layer** that allows **data to persist** and be shared separately from the container itself. Think of volumes as a way to abstract and manage your persistent data separately from the application itself.
+
 **Image Layers**
-> Some of these intermediate images will become layers in your final container image. In the history command output, the original Alpine layers are at the bottom of the list and then each customization we added in our Dockerfile is its own step in the output. This is a powerful concept because it means that if we need to make a change to our application, it may only affect a single layer!
+> A Docker **image is built** up from a series of **layers**. Each layer represents an **instruction** in the image’s **Dockerfile**. Each layer except the last one is **read-only**.
+
+> This is a powerful concept because it means that if we need to make a change to our application, it may only affect a single layer!
 
 Using **Cache**
-> Docker recognized that we had already built some of these layers in our earlier image builds and since nothing had changed in those layers it could simply use a cached version of the layer, rather than pulling down code a second time and running those steps
+> Docker recognized that we had already built some of these layers in our earlier image builds and since nothing had changed in those layers it could simply use a cached version of the layer, rather than pulling down code a second time and running those steps.
 > Docker is intelligent enough to build the container in the most efficient way possible, as opposed to repeatedly building an image from the ground up each and every time.
 
 ## Docker Syntax
@@ -32,7 +37,7 @@ Using **Cache**
   * `ls`
   * `tag` \<image-id> <\tag>
   * `history` \<image-id> 
-  * 
+  * `inspect` \<image> returns details on the container image, the commands it runs, the OS and more
 * `container`
   * `ls` or `ls -a`
   * `diff` \<container-id>
@@ -166,7 +171,7 @@ docker network create todo-app
   > An image is basically a diff.
 * What is a parent image and how can I decide on the right one?
   > A parent image is the image that your image is based on. It refers to the contents of the FROM directive in the Dockerfile.
-  > search on Docker Hub, ...
+  > search on Docker Store / Docker Hub, as well as Docker Trusted Registries that you might run in your own environmen.
 * How can I copy files to an image?
   > `COPY` keyword in Dockerfile, ...
 * How can I run commands during the building process?
