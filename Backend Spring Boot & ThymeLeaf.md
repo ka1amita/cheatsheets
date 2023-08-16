@@ -4,8 +4,9 @@
 
 ### General and Tips
 
-* **inject** *Service Interfaces* into the *Controllers*, **not** *Repositories*
-* make *Services* **imlement** the *Service Interfaces* (*IoC principle*)
+* make *Controllers* depend on *Service Interfaces*, **not** on *Repositories*
+* inject *Services* as **imlemententation** of the *Service Interfaces* (*IoC principle*)
+* **Repositories** as *Interfaces*
 * **separate Services** for **each Repository** and let them **comunicate** between each other
   
 ## Controller
