@@ -45,14 +45,16 @@ Spring Data JPA (Jakarta Persistance API)
 
 ##### set *application.properties* file
 
-> in `/recources/application.properties` type `DB_username=root;DB_password=password`
+* in `/recources/application.properties`
+* `${\<variable>}` notation
 
 ```java
 spring.datasource.url=jdbc:mysql://localhost:3307/foxfarm?serverTimezone=UTC
 spring.datasource.username=root
 spring.datasource.password=password
-spring.datasource.username=${DB_USERNAME} // set by Environment Varibales
-spring.datasource.password=${DB_PASSWORD} // set by Environment Varibales
+spring.datasource.username=${DB_USERNAME} // set by Environment Varibales: DB_username=root
+
+spring.datasource.password=${DB_PASSWORD} // set by Environment Varibales: DB_password=password
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.show-sql=true // sets queries to be visible in command line while running the program
