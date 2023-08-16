@@ -97,6 +97,12 @@ spring.h2.console.path=/h2-console
 
 #### Table Relationship Annotations
 
+##### setting ON DELETE or ON UPDATE bahaviour
+
+* [mysql:FOREIGN KEY Constraints:Referential Actions](https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html#foreign-key-referential-actions)(
+* [stackoverflow](https://stackoverflow.com/questions/9944137/have-jpa-hibernate-to-replicate-the-on-delete-set-null-functionality)
+* [stackoverflow](https://stackoverflow.com/questions/8243400/on-delete-set-null-in-hibernate-in-onetomany))
+
 ##### 1..1 `+--+`
 
 * `@OneTone`
@@ -108,6 +114,9 @@ spring.h2.console.path=/h2-console
   * `mappedBy` together with `@JoinColumn` below ?
 * `@JoinColumn`
   * `name` together with `@OneTone`(`mappedBy`) above ?
+
+ 
+
  
 ##### \*..1 `>--+`
 * **Unidirectional**
