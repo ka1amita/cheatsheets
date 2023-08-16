@@ -5,6 +5,15 @@ Spring Data JPA (Jakarta Persistance API)
 
 ### Definitions
 
+* Bidirectional Relationships
+> In a bidirectional relationship, each entity has a relationship field or property that refers to the other entity. Through the relationship field or property, an entity class’s code can access its related object. If an entity has a related field, the entity is said to “know” about its related object. For example, if Order knows what LineItem instances it has and if LineItem knows what Order it belongs to, they have a bidirectional relationship.
+ 
+* Unidirectional Relationships
+> In a unidirectional relationship, only one entity has a relationship field or property that refers to the other. For example, LineItem would have a relationship field that identifies Product, but Product would not have a relationship field or property for LineItem. In other words, LineItem knows about Product, but Product doesn’t know which LineItem instances refer to it.
+
+[oracle](https://docs.oracle.com/cd/E19798-01/821-1841/bnbqi/index.html#:~:text=A%20bidirectional%20relationship%20has%20both,the%20relationship%20in%20the%20database.)
+
+
 * **ORM** == **Object Relational Mapping**
   > **framework** that anables to **map** **objects** to **rows** in relational **DSs**
 
