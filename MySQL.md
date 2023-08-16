@@ -38,7 +38,7 @@ echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
   * by using `FOREIGN KEY` together with `UNIQUE INDEX`
 
 * \*..1
-  * by using `FOREIGN KEY` `REFERENCES` so the DB is checking for *constraint* and it **doesn't allow removing** the entry **until** the *relatonship* is **removed**
+  * by using `FOREIGN KEY` so the DB is checking for *constraint* and it **doesn't allow removing** the entry **until** the *relatonship* is **removed**
 
 * \*..\*
   * by using **junction (join) table** with `FOREIGN KEY`s
