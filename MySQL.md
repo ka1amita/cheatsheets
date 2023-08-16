@@ -1,46 +1,43 @@
-# MySQL <a name="top"></a>
+MySQL <a name="top"></a>
+=====
+
 [](#General-notes)
 [](#normalization-forms)
 
-## Instalation
+#### Instalation
 
-### MySQL Locations[^3]
+##### MySQL locations[^3]
 
-` /usr/local/mysql/bin```
+`/usr/local/mysql/bin`
 
-### Add mysql to your PATH[^3]
+##### add mysql to your PATH[^3]
 
-### login
+`echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile`
+
+##### login
 
 `mysql -u root -p`
 
-#### Current Session
-
-```bash
-export PATH=${PATH}:/usr/local/mysql/bin
-```
-
-#### Permanantly
-
-```bash
-echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
-```
-
-## General notes
+#### General Notes
 
 * **instead** od **deleting** a row, column *deleted* is set to **false**; it should be **indexed** for faster performence
 
 * **primary key** can be **combination of more columns** that is **unique**! e.g. palyer_inventory table with player-item pairs
 
+#### Material Review
+
+* Questions
+  > Answers 
+
 ## Table Relationship
 
-* 1..1
+* 1..1 `+--+`
   * by using `FOREIGN KEY` together with `UNIQUE INDEX`
 
-* \*..1
+* \*..1 `>--+`
   * by using `FOREIGN KEY` so the DB is checking for *constraint* and it **doesn't allow removing** the entry **until** the *relatonship* is **removed**
 
-* \*..\*
+* \*..\* `>--<`
   * by using **junction (join) table** with `FOREIGN KEY`s
 
 ## Normalization
@@ -90,7 +87,7 @@ echo 'export PATH="/usr/local/mysql/bin:$PATH"' >> ~/.bash_profile
 * 5NF
   > the table (in 4NF) musn't be **describable** as the logical result of **joining** some **other tables** together (contain **independen't** attributers)
   > e.g person, favourite brands and favourite flavours can't be together in single table in **not 5NF**
-  > but e.g. particular supplier suppling a particular part to a particular customer (signel order) is in **5NF**
+  > but e.g. particular supplier suppling a particular part to a particular customer (signel order) **is** in **5NF**
 
 ## Style Guide
 
