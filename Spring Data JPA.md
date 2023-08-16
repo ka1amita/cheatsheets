@@ -1,4 +1,30 @@
-# Spring Data JPA (Jakarta Persistance API)
+Spring Data JPA (Jakarta Persistance API)
+===============
+
+## Introduction
+
+### Material Review
+
+- What is a **Foreign Key**?
+  > A column or set of columns that **refer** to a **primary key** in another table
+  > FC constraints: ensures data **integrity**, prevent **orphan records**
+- Relationships between tables
+  - When should we use one-to-one relationship?
+  - What database elements do we need to create a one-to-one relationship?
+  - When should we use one-to-many relationship?
+  - What database elements do we need to create a one-to-many relationship?
+  - When should we use many-to-many relationship?
+  - What database elements do we need to create a many-to-many relationship?
+- JPA
+  - `@OneToOne, @OneToMany, @ManyToOne, @ManyToMany`
+  - CascadeType
+  - FetchType
+  - mappedBy attribute
+  - `@JoinColumn`
+  - `@Temporal`
+- Hibernate
+- Web Layer, Service Layer
+
 
 ## Hibernate ORM
 
@@ -8,7 +34,7 @@
 
 ### Set-up
 #### DB Credentials
-##### 
+##### path to settings
 in `/recources/application.properties`
 
 ```java
@@ -38,23 +64,45 @@ spring.h2.console.path=/h2-console
 * `@Table`
   * `name`
 * `@Id`
-  * `GeneratedValue`
-    * `strategy` 
-      * GenerationType
+  * `GeneratedValue`()
+    * `strategy` =
+      * `GenerationType.`
         * `AUTO` default (based on DB)
         * `IDENTITY`
         * `TABLE`
         * `SEQUENCE`
       * ...
 * `@Column` specifies column metadata
-  * `name`
+  * `name` = \<name>
   * `nullable`
   * ...
 * `Transient` DB ignores column
-* `...Date` suffix to the field name sets filetype to `DATETIME`
+* <column_name>`Date` **suffix** to the field name sets filetype to `DATETIME`
 * `@Temporal`
-* (temporalType.DATE) sets datatype to `DATE`
-* `@Enumerated`
+  * (temporalType.DATE) sets datatype to `DATE`
+* `@Enumerated`()
+  * `EnumType.STRING` 
+
+
+#### Table Relationship Annotations
+
+##### 1..1 `+--+`
+
+* `@OneTone`
+  * `fetch` = `FetchType`.`LAZY`
+  * `cascade` = `CascadeType`.`ALL`
+  * `mappedBy` = "userProfile" is together with `@JoinColumn` below ?
+* `@JoinColumn`
+  * `name` = \<"userprofile_id"> is together with `@OneTone`(`mappedBy`) above ?
+ 
+##### \*..1 `>--+`
+* **Unidirectional**
+  > `@OneToMany` together with `@JoinColumn` annotation
+**Bidirectional**
+  > `@OneToMany` together with `@ManyToOne` annotation
+
+##### \*..\* `>--<`
+* 
 
 ### Assigning Primary Key values
 
@@ -135,6 +183,14 @@ List<Post> findAllByAuthorFirstNameIgnoreCase(String first);
 List<Post> findAllByAuthorFirstNameIgnoreCaseOrderByPostedOnDesc(String first);
 List<Post> findAllByAuthorFirstNameAndAuthorLastName(String first, String last);|
 ```
+#### Ralationships
 
+##### 1..1
+```sql
+@OneTone(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+@JoinColumn(name ="userprofile_id")
+second_object_id(...)
 
-
+@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userProfile")
+first_object_id(...)
+```
