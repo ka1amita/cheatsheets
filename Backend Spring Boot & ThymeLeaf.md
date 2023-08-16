@@ -19,7 +19,7 @@
 
 ### XXX
 
-*@PathVariable`
+* @PathVariable`
 * `@RequestParam`
   * `(required = flase)` good idea to combine with `Optional<T>`
 
