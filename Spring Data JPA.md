@@ -33,14 +33,25 @@ Spring Data JPA (Jakarta Persistance API)
 > **framework** that anables to **map** **objects** to **rows** in relational **DSs**
 
 ### Set-up
+
 #### DB Credentials
-##### path to settings
-in `/recources/application.properties`
+
+
+
+##### set *Environment Variables* in IntelliJ Spring Boot project
+
+> unbder `Run / Debug Configurations... > Modify options / Enviromental Variables` [stackoverflow](https://stackoverflow.com/questions/71450194/how-do-i-add-environment-variables-in-intellij-spring-boot-project)
+
+##### set *application.properties* file
+
+> in `/recources/application.properties`
 
 ```java
 spring.datasource.url=jdbc:mysql://localhost:3307/foxfarm?serverTimezone=UTC
 spring.datasource.username=root
 spring.datasource.password=password
+spring.datasource.username=${DB_USERNAME} // set by Environment Varibales
+spring.datasource.password=${DB_PASSWORD} // set by Environment Varibales
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.show-sql=true // sets queries to be visible in command line while running the program
@@ -89,7 +100,10 @@ spring.h2.console.path=/h2-console
 ##### 1..1 `+--+`
 
 * `@OneTone`
-  * `fetch` = `FetchType`.`LAZY`
+  * `fetch`
+    * `FetchType`.`EAGER` the field **fetched** (loaded) **together** with the rest of the fields; **default**
+    * `FetchType`.`LAZY` load fetched on-demand (when you call the university's `getStudents()`)
+    * [stackoverflow](https://stackoverflow.com/questions/2990799/difference-between-fetchtype-lazy-and-eager-in-java-persistence-api)
   * `cascade` = `CascadeType`.`ALL`
   * `mappedBy` together with `@JoinColumn` below ?
 * `@JoinColumn`
@@ -187,6 +201,7 @@ List<Post> findAllByAuthorFirstNameAndAuthorLastName(String first, String last);
 
 ##### 1..1
 ```sql
+@Entity
 public class User {
   @Id
   @Generted Value(strategy = GeneratedValue.IDENTITY)
@@ -196,6 +211,8 @@ public class User {
   @JoinColumn(name ="userprofile_id")
   private UserProfile userProfile;
 }
+
+@Entity
 public class UserProfile {
   @Id
   @Generted Value(strategy = GeneratedValue.IDENTITY)
@@ -203,5 +220,28 @@ public class UserProfile {
   ...
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userProfile")
   private User user;
+}
+```
+##### 1..*
+```sql
+@Entity
+public class Course {
+  @Id
+  @Generted Value(strategy = GeneratedValue.IDENTITY)
+  private long id;
+  ...
+  @ManyToOne (mappedBy = "")
+  private List<Device> devices; // List of !
+}
+
+@Entity
+public class Device {
+  @Id
+  @Generted Value(strategy = GeneratedValue.IDENTITY)
+  private long id;
+  ...
+  @
+  private 
+
 }
 ```
