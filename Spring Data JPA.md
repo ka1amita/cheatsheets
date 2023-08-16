@@ -101,6 +101,8 @@ spring.h2.console.path=/h2-console
 * <column_name>`Date` **suffix** to the field name sets filetype to `DATETIME`
 * `@Temporal`
   * (temporalType.DATE) sets datatype to `DATE`
+* `@DateTimeFormat` both by the `@Entry` class and `@Controller` above the endpoint method! necessary e.g. for `<input type="date">` to work 
+  * (`pattern` = `"yyyy-MM-dd"`) 
 * `@Enumerated`()
   * `EnumType`.`STRING` 
 
