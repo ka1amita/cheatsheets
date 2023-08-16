@@ -4,7 +4,9 @@ MySQL <a name="top"></a>
 [](#General-notes)
 [](#normalization-forms)
 
-#### Instalation
+## Introduction
+
+### Instalation
 
 ##### MySQL locations[^3]
 
@@ -18,13 +20,13 @@ MySQL <a name="top"></a>
 
 `mysql -u root -p`
 
-#### General Notes
+### Definitionas and General Notes
 
 * **instead** od **deleting** a row, column *deleted* is set to **false**; it should be **indexed** for faster performence
 
 * **primary key** can be **combination of more columns** that is **unique**! e.g. palyer_inventory table with player-item pairs
 
-#### Material Review
+### Material Review
 
 * Questions
   > Answers 
@@ -256,10 +258,10 @@ go with `GROUP BY` and the columns **must be** for most functions listed in the 
 
 > In addition, correlated subqueries can be difficult to optimize, so performance characteristics may vary across different databases.
 
-
-### Snippets
+## Snippets
 
 #### CRUD
+
 ##### create and use databese (schema), create table
 ```sql
 CREATE DATABASE IF NOT EXISTS database;
@@ -337,7 +339,9 @@ CAST(NOW() as DATE);
 ```sql
 created DATE NOT NULL DEFAULT (CAST(NOW() as DATE)),
 ```
+
 #### Troubleshooting
+
 ##### drop schema
 ```sql
 DROP SCHEMA IF EXISTS database;
@@ -365,7 +369,6 @@ ALTER TABLE todos
 ALTER TABLE Orders
   ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
 ```
-
 
 [^1]: non-key attributes == non-key columns
 [^2]: we can’t further subdivide the value, e.g. the value "Chicago” **is** atomic whereas “Chicago; Los Angeles; New York” **is not**.
