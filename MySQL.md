@@ -52,7 +52,7 @@ MySQL <a name="top"></a>
 * avoid data **modification issues**
 * **simplyfy queries**
 
-**But!**
+### But!
 > There are times when you’ll intentionally **denormalize data**.
 > If you need to **present** **summarized data** to a user, and that data is very time **consuming** or **resource intensive** to **create**, it may make sense to **maintain** this data **separately**.
 
