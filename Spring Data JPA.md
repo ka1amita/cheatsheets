@@ -3,6 +3,11 @@ Spring Data JPA (Jakarta Persistance API)
 
 ## Introduction
 
+### Definitions
+
+* **ORM** == **Object Relational Mapping**
+  > **framework** that anables to **map** **objects** to **rows** in relational **DSs**
+
 ### Material Review
 
 - What is a **Foreign Key**?
@@ -10,9 +15,12 @@ Spring Data JPA (Jakarta Persistance API)
   > FC constraints: ensures data **integrity**, prevent **orphan records**
 - Relationships between tables
   - When should we use one-to-one relationship?
+    > 
   - What database elements do we need to create a one-to-one relationship?
+    > 
   - When should we use one-to-many relationship?
-  - What database elements do we need to create a one-to-many relationship?
+    > 
+   - What database elements do we need to create a one-to-many relationship?
   - When should we use many-to-many relationship?
   - What database elements do we need to create a many-to-many relationship?
 - JPA
@@ -25,18 +33,11 @@ Spring Data JPA (Jakarta Persistance API)
 - Hibernate
 - Web Layer, Service Layer
 
-
 ## Hibernate ORM
-
-**ORM** == **Object Relational Mapping**
-
-> **framework** that anables to **map** **objects** to **rows** in relational **DSs**
 
 ### Set-up
 
 #### DB Credentials
-
-
 
 ##### set *Environment Variables* in IntelliJ Spring Boot project
 
@@ -77,22 +78,20 @@ spring.h2.console.path=/h2-console
 * `@Id`
   * `GeneratedValue`()
     * `strategy` =
-      * `GenerationType.`
+      * `GenerationType`.
         * `AUTO` default (based on DB)
         * `IDENTITY`
         * `TABLE`
         * `SEQUENCE`
-      * ...
 * `@Column` specifies column metadata
   * `name` = \<name>
   * `nullable`
-  * ...
 * `Transient` DB ignores column
 * <column_name>`Date` **suffix** to the field name sets filetype to `DATETIME`
 * `@Temporal`
   * (temporalType.DATE) sets datatype to `DATE`
 * `@Enumerated`()
-  * `EnumType.STRING` 
+  * `EnumType`.`STRING` 
 
 
 #### Table Relationship Annotations
@@ -114,9 +113,6 @@ spring.h2.console.path=/h2-console
   * `mappedBy` together with `@JoinColumn` below ?
 * `@JoinColumn`
   * `name` together with `@OneTone`(`mappedBy`) above ?
-
- 
-
  
 ##### \*..1 `>--+`
 * **Unidirectional**
@@ -125,7 +121,9 @@ spring.h2.console.path=/h2-console
   > `@OneToMany` together with `@ManyToOne` annotation
 
 ##### \*..\* `>--<`
-* 
+* `@ManyToMany`
+* `@JoinTable`(`name`, `joinColumn`, `inverseJoinColumns`)
+* `@ManyToMany`(`mappedBy`)
 
 ### Assigning Primary Key values
 
@@ -141,14 +139,14 @@ spring.h2.console.path=/h2-console
 
 > use `@Override` annotation
 
-* `.createFox`
-* `.save` works bot for UPDATE and INSERT besed on whether the entry exists or not
-* `.findAll` combine with `.forEach`(someList::add)
-* `.findOne`
-* `.findById`
-* `.count`
-* `.delete` 
-* `.updateFoxById`
+* .`createFox`
+* .`save` works bot for UPDATE and INSERT besed on whether the entry exists or not
+* .`findAll` combine with .`forEach`(someList::`add`)
+* .`findOne`
+* .`findById`
+* .`count`
+* .`delete` 
+* .`updateFoxById`
 
 #### Custom methods (queries)
 
@@ -254,3 +252,8 @@ public class Device {
 
 }
 ```
+
+##### *..*
+```sql
+
+``` 
