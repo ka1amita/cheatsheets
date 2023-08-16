@@ -91,9 +91,9 @@ spring.h2.console.path=/h2-console
 * `@OneTone`
   * `fetch` = `FetchType`.`LAZY`
   * `cascade` = `CascadeType`.`ALL`
-  * `mappedBy` = "userProfile" is together with `@JoinColumn` below ?
+  * `mappedBy` together with `@JoinColumn` below ?
 * `@JoinColumn`
-  * `name` = \<"userprofile_id"> is together with `@OneTone`(`mappedBy`) above ?
+  * `name` together with `@OneTone`(`mappedBy`) above ?
  
 ##### \*..1 `>--+`
 * **Unidirectional**
@@ -187,10 +187,21 @@ List<Post> findAllByAuthorFirstNameAndAuthorLastName(String first, String last);
 
 ##### 1..1
 ```sql
-@OneTone(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-@JoinColumn(name ="userprofile_id")
-second_object_id(...)
-
-@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userProfile")
-first_object_id(...)
+public class User {
+  @Id
+  @Generted Value(strategy = GeneratedValue.IDENTITY)
+  private long id;
+  ...
+  @OneTone(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name ="userprofile_id")
+  private UserProfile userProfile;
+}
+public class UserProfile {
+  @Id
+  @Generted Value(strategy = GeneratedValue.IDENTITY)
+  private long id;
+  ...
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userProfile")
+  private User user;
+}
 ```
