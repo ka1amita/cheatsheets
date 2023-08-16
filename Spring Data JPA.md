@@ -45,7 +45,7 @@ Spring Data JPA (Jakarta Persistance API)
 
 ##### set *application.properties* file
 
-> in `/recources/application.properties`
+> in `/recources/application.properties` type `DB_username=root;DB_password=password`
 
 ```java
 spring.datasource.url=jdbc:mysql://localhost:3307/foxfarm?serverTimezone=UTC
@@ -117,10 +117,13 @@ spring.h2.console.path=/h2-console
 ##### \*..1 `>--+`
 * **Unidirectional**
   > `@OneToMany` together with `@JoinColumn` annotation
-**Bidirectional**
+* **Bidirectional**
   > `@OneToMany` together with `@ManyToOne` annotation
+  >
+`cascade`
 
 ##### \*..\* `>--<`
+
 * `@ManyToMany`
 * `@JoinTable`(`name`, `joinColumn`, `inverseJoinColumns`)
 * `@ManyToMany`(`mappedBy`)
