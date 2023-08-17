@@ -207,11 +207,23 @@ public class EntityExample {
 public interface DepartmentRepository extends CrudRepository<Department, Long> {...}
 ```
 ##### JPA queries
+[spring](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.sample-app.finders.strategies)
 ```java
-@Query("SELECT f FROM Fox f WHERE f.color = 'Red'")
+@Query("SELECT f FROM Fox f WHERE f.color = 'Red'") // requires @Table(name = <table_name>) of the @Entry Class
 List<Fox> findAllRedFoxes ();
 @Query(value = "SELECT * FROM foxes WHERE color = 'Red', nativeQuery = true)
 List<Fox> findAllRedFoxesNative();
+```
+##### JPA queries with params
+```java
+@Query (value = "SELECT f FROM Fox f WHERE f.color = :color")
+List<Fox› findAIIRedFoxesNative (@Param("color") String color);
+
+@Query (value = "SELECT * FROM foxes WHERE color = ?1, nativeQuery = true)
+List<Fox› findAIIRedFoxesNative (@Param("color") String color);
+
+List<Fox› findAllByColorEqual (String color);
+
 ```
 ##### custom queries
 ```java
