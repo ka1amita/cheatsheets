@@ -208,6 +208,11 @@ public interface DepartmentRepository extends CrudRepository<Department, Long> {
 ```
 ##### JPA queries
 [spring](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.sample-app.finders.strategies)
+
+##### native save()
+```java
+Fox save(Fox) = repo.save(Fox fox); // saves and return a object with id included!
+```
 ```java
 @Query("SELECT f FROM Fox f WHERE f.color = 'Red'") // requires @Table(name = <table_name>) of the @Entry Class
 List<Fox> findAllRedFoxes ();
