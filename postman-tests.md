@@ -20,8 +20,6 @@
 
 ## Notes
 
----
-
 ##### get (from) a *response body*
 
 `responseBody` // as a string(?)
@@ -71,24 +69,32 @@ function(arg) {
 
 ---
 
-##### get envs (outside javascript)
+##### using envs (outside javascript)
 
-`{{my_env_key}}`
++ surround them with *double curly braces* `{{my_env_key}}`
+
++ inside request body add *double-quotes* around `"{{my_env_key}}"`
+
++ dynamic variables like `{{$timestamp}}:`, `{{$randomInt}}` start with `$`
+
++ log them with `console.log(pm.variables.get("my_var_key"));`
+
++ check [docs on dynamic variables](https://learning.postman.com/docs/writing-scripts/script-references/variables-list/)
 
 ---
 
 ##### set / get / unset envs inside *javascript*
 
 ```js
-pm.collectionVariables.set("my_env_key", myValue);
+pm.collectionVariables.set("my_var_key", myValue);
 
-pm.variables.set("my_env_key", JSON.stringify(myPojo));
+pm.variables.set("my_var_key", JSON.stringify(myPojo));
 
-pm.environment.unset("my_env_key");
+pm.environment.unset("my_var_key");
 
-let myVariable = pm.globals.get("my_env_key");
+let myVariable = pm.globals.get("my_var_key");
 
-let myPojo = JSON.parse(pm.collectionVariables.get("my_env_key"));
+let myPojo = JSON.parse(pm.collectionVariables.get("my_var_key"));
 ```
 
 > postman stores variables as strings, if you store objects or arrays:
@@ -133,6 +139,7 @@ pm.expect(notNullValue).not.eq(null);
 pm.expect(notYetDefinedVariable).is.undefined;
 // ...
 ```
+
 + [docs on writing test scripts](https://learning.postman.com/docs/writing-scripts/test-scripts/)
 
 + [examples of test scripts](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)
