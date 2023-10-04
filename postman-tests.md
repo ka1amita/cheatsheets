@@ -2,6 +2,8 @@
 
 ---
 
+## Quickstart Guide
+
 ### Add integration tests
 
 1. Add a collection template
