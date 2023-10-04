@@ -82,12 +82,19 @@ function(arg) {
 ```js
 pm.collectionVariables.set("my_env_key", myValue);
 
-pm.variables.set("my_env_key", myValue);
+pm.variables.set("my_env_key", JSON.stringify(myPojo));
 
 pm.environment.unset("my_env_key");
 
-let myVariable = pm.globals.get("my_env_key")
+let myVariable = pm.globals.get("my_env_key");
+
+let myPojo = JSON.parse(pm.collectionVariables.get("my_env_key"));
 ```
+
+> postman stores variables as strings, if you store objects or arrays:
+> + `JSON.stringify()` them before storing
+> + `JSON.parse()` them when you retrieve
+
 ![Env operations](img/postman-tests/image-4.png)
 
 + [docs on using variables](https://learning.postman.com/docs/sending-requests/variables/)
@@ -132,6 +139,10 @@ pm.expect(notYetDefinedVariable).is.undefined;
 
 ---
 
+## Examples
+
+---
+
 ##### filter / find inside response JSON body
 
 ```js
@@ -139,10 +150,6 @@ let user = pm.response.json().find(user => user.id === userId);
 
 let user = pm.response.json().filter(user => user.id === userId)[0]; // note the [0]!
 ```
-
----
-
-## Examples
 
 ---
 
