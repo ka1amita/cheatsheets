@@ -5,16 +5,16 @@
 ### Add integration tests
 
 1. Add a collection template
-![Use a template](image.png)
+![Use a template](img/postman-tests/image.png)
 
 1. Set environment (and global) envs
-![Set envs](image-2.png)
+![Set envs](img/postman-tests/image-2.png)
 
 1. Set collection envs
-![Alt text](image-3.png)
+![Alt text](img/postman-tests/image-3.png)
 
 1. Run Tests
-![Run tests](image-1.png)
+![Run tests](img/postman-tests/image-1.png)
 
 ---
 
@@ -88,7 +88,7 @@ pm.environment.unset("my_env_key");
 
 let myVariable = pm.globals.get("my_env_key")
 ```
-![Env operations](image-4.png)
+![Env operations](img/postman-tests/image-4.png)
 
 + [docs on using variables](https://learning.postman.com/docs/sending-requests/variables/)
 + [post on chaining requests](https://blog.postman.com/how-to-make-money-using-postman-chaining-requests/)
