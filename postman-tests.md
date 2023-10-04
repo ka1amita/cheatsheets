@@ -2,6 +2,8 @@
 
 ---
 
+## Quickstart Guide
+
 ### Add integration tests
 
 1. Add a collection template
@@ -19,8 +21,6 @@
 ---
 
 ## Notes
-
----
 
 ##### get (from) a *response body*
 
