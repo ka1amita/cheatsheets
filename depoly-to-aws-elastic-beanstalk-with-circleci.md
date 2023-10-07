@@ -118,14 +118,14 @@ String endpoint = System.getProperty("API_ENDPOINT");
 
 ##### basic Buildfile
 
-```
+```bash
 build: gradle assembly:assembly -DdescriptorId=jar-with-dependencies
 ```
 [docs][3]
 
 ##### basic Procfile
 
-```
+```bash
 web: java -jar path/to/my_app.jar
 ```
 [docs][2]
@@ -179,8 +179,14 @@ web: java -jar build/libs/my_app.jar
 
 ##### DB credentials
 
-JDBC uses a connection string in the following format:
-`jdbc:,driver://hostname:port/schema?user=username&password=password`
+JDBC connection definition:
+```bash
+jdbc:,driver://hostname:port/schema?user=username&password=password
+```
+```bash
+spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?user=${RDS_USERNAME}&password=${RDS_PASSWORD}
+```
+
 
 | Environment Variable | Description                                        | Amazon RDS Console                   |
 |----------------------|----------------------------------------------------|--------------------------------------|
@@ -190,11 +196,7 @@ JDBC uses a connection string in the following format:
 | `RDS_USERNAME`       | DB username                                        | Configuration/**Master username**    |
 | `RDS_PASSWORD`       | DB password                                        | *Not available*                      |
 
-![Environment Properties](img/aws-elastic-beanstalk/image.png)
 
-```
-spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?user=${RDS_USERNAME}&password=${RDS_PASSWORD}
-```
 
 ---
 
