@@ -93,7 +93,7 @@ Using the *zip* command including **hidden** **files** and **folders**
 
 ##### environment configuration
 
-inside `.ebextensions/env.config`
+filepath: `.ebextensions/*.config`
 
 ```yml
 option_settings:
@@ -181,6 +181,16 @@ web: java -jar build/libs/my_app.jar
 
 JDBC uses a connection string in the following format:
 `jdbc:,driver://hostname:port/schema?user=username&password=password`
+
+| Environment Variable | Description                                        | Amazon RDS Console                   |
+|----------------------|----------------------------------------------------|--------------------------------------|
+| `RDS_HOSTNAME`       | DB instance hostname                               | Connectivity & Security/**Endpoint** |
+| `RDS_PORT`           | DB instance connections port (**varies** by engine)| Connectivity & Security/**Port**     |
+| `RDS_DB_NAME`        | Schema name (`ebdb`)                               | Configuration/**DB Name**            |
+| `RDS_USERNAME`       | DB username                                        | Configuration/**Master username**    |
+| `RDS_PASSWORD`       | DB password                                        | *Not available*                      |
+
+![Environment Properties](img/aws-elastic-beanstalk/image.png)
 
 ```
 spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?user=${RDS_USERNAME}&password=${RDS_PASSWORD}
