@@ -7,7 +7,7 @@ password: hqbE3VueBE8AvKS
 
 ## Glossary
 
-+ **JAR** == Java Archive
++ **JAR** == *Java Archive*
 
 ---
 
@@ -97,7 +97,7 @@ filepath: `.ebextensions/*.config`
 
 ```yml
 option_settings:
-  my_scope:
+  my:scope:
     MY_KEY: my_value
 
 ```
@@ -109,11 +109,13 @@ option_settings:
 ```java
 // Java SE – System.getenv
 String endpoint = System.getenv("API_ENDPOINT");
-
+```
+```java
 //Tomcat – System.getProperty
 String endpoint = System.getProperty("API_ENDPOINT");
 ```
 [Accessing environment properties][11]
+
 ---
 
 ##### basic Buildfile
@@ -136,7 +138,7 @@ web: java -jar path/to/my_app.jar
 
 ---
 
-##### ?.config
+##### loadbalancer config
 
 filepath: `.abextensions/*.config`
 
@@ -148,9 +150,10 @@ option_settings:
 
 specifies */images* to serve files at subdomain `.eleasticbeanstalk.com/images`from a `static` folder at the **top level** of your source bundle.
 
-##### environment configuration
+##### environment config
 
-filepath: `.ebextensions/env.config`
+filepath: `.ebextensions/{}.config`
+e.g. `env`, `environment`,`development`,...
 
 ```yml
 option_settings:
@@ -159,6 +162,7 @@ option_settings:
     USER_USERNAME: Matej
     USER_PASSWORD: 51c0e357-e949-4f04
 ```
+
 [docs][1]
 
 ---
@@ -171,7 +175,7 @@ build: gradle assembly:assembly -DdescriptorId=jar-with-dependencies
 
 ##### Procfile
 
-```
+```bash
 web: java -jar build/libs/my_app.jar
 ```
 
@@ -196,11 +200,11 @@ spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?us
 | `RDS_USERNAME`       | DB username                                        | Configuration/**Master username**    |
 | `RDS_PASSWORD`       | DB password                                        | *Not available*                      |
 
-
-
 ---
 
 # Elastic Beanstalk CLI
+
+---
 
 ### How-to ...use EB CLI...
 
@@ -236,6 +240,8 @@ ERROR: ServiceError - Create environment operation is complete, but with errors.
 
 # Circle CI
 
+---
+...
 ---
 
 [1]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-cfg-staticfiles.html
