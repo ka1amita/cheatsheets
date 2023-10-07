@@ -21,13 +21,13 @@ password: hqbE3VueBE8AvKS
 > + Not exceed 500 MB
 > + Not include a parent folder or top-level directory (subdirectories are fine)
 
-```
+```bash
 my_app.zip
-|-- .ebextensions
-|   `-- env.config
-|-- my_app.jar
-|-- static/
-`-- README.md
+├── .ebextensions
+│   └── env.config
+├── my_app.jar
+├── static/
+└── README.md
 ```
 
 [docs][9]
@@ -81,9 +81,10 @@ Using the *zip* command including **hidden** **files** and **folders**
 > each key only once per file but can be in multiple files at once
 
 + [Configuring Elastic Beanstalk environments (advanced)][5]
+    + [General options for all environments][7]
 + [Environment properties and other software settings][6]
-    + [General options for all environments][7]   
-
+    + [Software setting namespaces][10]
+    
 ---
 
 ## Snippets
@@ -112,7 +113,7 @@ String endpoint = System.getenv("API_ENDPOINT");
 //Tomcat – System.getProperty
 String endpoint = System.getProperty("API_ENDPOINT");
 ```
-
+[Accessing environment properties][11]
 ---
 
 ##### basic Buildfile
@@ -137,7 +138,7 @@ web: java -jar path/to/my_app.jar
 
 ##### ?.config
 
-filepath: `?`
+filepath: `.abextensions/*.config`
 
 ```yml
 option_settings:
@@ -153,13 +154,10 @@ filepath: `.ebextensions/env.config`
 
 ```yml
 option_settings:
-  - namespace:  aws:elasticbeanstalk:application:environment
-    option_name: PORT
-    value: 5000
-  - option_name: USER_USERNAME
-    value: Matej
-  - option_name: USER_PASSWORD
-    value: 51c0e357-e949-4f04
+  aws:elasticbeanstalk:application:environment:
+    PORT: 5000
+    USER_USERNAME: Matej
+    USER_PASSWORD: 51c0e357-e949-4f04
 ```
 [docs][1]
 
@@ -237,3 +235,5 @@ ERROR: ServiceError - Create environment operation is complete, but with errors.
 [7]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html
 [8]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/java-se-platform.html
 [9]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/applications-sourcebundle.html
+[10]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html#environments-cfg-softwaresettings-configfiles
+[11]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html#environments-cfg-softwaresettings-accessing
