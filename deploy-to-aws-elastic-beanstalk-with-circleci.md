@@ -1,7 +1,7 @@
 username: ebroot
 password: hqbE3VueBE8AvKS
 
-# Elastic Beanstalk Cosole
+# Elastic Beanstalk (Console)
 
 ---
 
@@ -85,6 +85,13 @@ Using the *zip* command including **hidden** **files** and **folders**
 + [Environment properties and other software settings][6]
     + [Software setting namespaces][10]
     
+---
+
+### How-to use Load Balancer
+
+> Elastic Beanstalk creates and configures the load balancer to **listen** for HTTP traffic on **port 80** and **forward** this traffic to instances on **the same port**[^2].
+
+[^2]: From which it is forwarded further by *nginx* server reverse proxy to the **application port** (default **5000** for Java SE)
 ---
 
 ## Snippets
@@ -183,6 +190,11 @@ web: java -jar build/libs/my_app.jar
 
 ##### DB credentials
 
+> Launch a DB instance **with** *Amazon RDS* completely **independent** of *Elastic Beanstalk* and your *EB environments*. This means that you can use **any** DB **engine** and instance **type** supported by *Amazon RDS*, even those that aren't used by *Elastic Beanstalk*.
+> Or start with a database that was previously **created by** *Elastic Beanstalk* (and optionally subsequently *decoupled*).
+
+[Using Elastic Beanstalk with Amazon RDS][12]
+
 JDBC connection definition:
 ```bash
 jdbc:,driver://hostname:port/schema?user=username&password=password
@@ -191,7 +203,6 @@ jdbc:,driver://hostname:port/schema?user=username&password=password
 spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?user=${RDS_USERNAME}&password=${RDS_PASSWORD}
 ```
 
-
 | Environment Variable | Description                                        | Amazon RDS Console                   |
 |----------------------|----------------------------------------------------|--------------------------------------|
 | `RDS_HOSTNAME`       | DB instance hostname                               | Connectivity & Security/**Endpoint** |
@@ -199,6 +210,8 @@ spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?us
 | `RDS_DB_NAME`        | Schema name (`ebdb`)                               | Configuration/**DB Name**            |
 | `RDS_USERNAME`       | DB username                                        | Configuration/**Master username**    |
 | `RDS_PASSWORD`       | DB password                                        | *Not available*                      |
+
+> To allow the *Amazon EC2* instances in your environment to connect to an outside database, **configure** an **additional** *security group* for the *Auto Scaling group* that's associated with your **environment**. You can **attach** the same *security group* that's attached to your **database** instance. Or, you can use a **separate** *security group*. If you attach a different *security group*, you must configure the *security group* that's attached to your database to allow inbound access from this *security group*.
 
 ---
 
@@ -255,3 +268,4 @@ ERROR: ServiceError - Create environment operation is complete, but with errors.
 [9]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/applications-sourcebundle.html
 [10]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html#environments-cfg-softwaresettings-configfiles
 [11]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html#environments-cfg-softwaresettings-accessing
+[12]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.RDS.html
