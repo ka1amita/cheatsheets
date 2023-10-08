@@ -29,7 +29,7 @@ my_app.zip
 
 [docs][9]
 
-#### Creating a source bundle from the command line
+#### Creating a Source Bundle from a CLI
 
 Using the *zip* command including **hidden** **files** and **folders** 
 
@@ -255,15 +255,39 @@ When this variable is set, the EB CLI reads credentials from the specified profi
 
 ---
 
-### How-to ...use EB CLI...
+### How-to configure AIM User for EB application
 
-1. add user *eb-admin* to a *eb-admins* group with permissions:
+1. add user *eb-admin* to a *eb-admins* group with permissions in IAM Console:
     + *AdministratorAccess-AWSElasticBeanstalk*[^0]
     + *AmazonEC2FullAccess*[^1]
     + *AmazonS3FullAccess*[^2]
     + *AWSCodeCommitFullAccess*[^3]
 
-    
+---
+
+### How-to configure EB CLI configuration settings and precedence
+
+> The EB CLI uses a provider chain to look for AWS credentials in a number of different places, including system or user environment variables and local AWS configuration files.
+
+The EB CLI looks for credentials and configuration settings in the following order:
+
++ *Command line options* – Specify a named profile by using `--profile` to **override** **default** settings.
++ *Environment variables* – `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
++ The *AWS credentials file* – At `~/.aws/credentials`. This file can contain **multiple** *named profiles* in **addition** to a *default profile*.
++ The *AWS CLI* configuration file – At` ~/.aws/config`. This file can contain a *default profile*, *named profiles*, and *AWS CLI***–specific** configuration parameters **for each**.
+
+Legacy *EB CLI* configuration file – At `~/.elasticbeanstalk/config`.
+
+*Instance profile credentials* – These credentials can be used on *Amazon EC2* instances with an assigned instance role, and are delivered through the Amazon EC2 metadata service. The instance profile must have **permission** to use Elastic Beanstalk.
+
+If the credentials file contains a named profile with the name **"eb-cli"**, the EB CLI will **prefer** that profile over the **default** profile. If no profiles are found, or a profile is found but does not have **permission** to use Elastic Beanstalk, the EB CLI prompts you to **enter** *keys*.
+
+[Configure the EB CLI][14]
+
+---
+
+### How-to Deploy
+
 [^0]: quoted in the quickstart guide
 [^1]: for storing keys during `eb init`
 [^2]: for `eb deploy`
@@ -275,9 +299,13 @@ When this variable is set, the EB CLI reads credentials from the specified profi
 
 1. use the *Access key pair* as credentials
 
-1. specify .ebignore or use .gitignore
+1. specify *.ebignore* or use *.gitignore* or both (see the [.ebignore file](#ebignore-file) section)
 
 1. `eb create <my_env>`
+
+1. `eb use <my_env>`
+
+1. `eb deply`
 
 ```
 2023-10-05 19:28:37    ERROR   Instance deployment failed. For details, see 'eb-engine.log'.
@@ -300,11 +328,50 @@ ERROR: ServiceError - Create environment operation is complete, but with errors.
 
     ```bash
     deploy:
-    artifact: path/to/buildartifact.zip # or .war or .jar
+      artifact: path/to/buildartifact.zip # or .war or .jar
     ```
 1. run `en deploy`
 
-note that the file is **changed** during the `eb deploy`!
+note that the file is **updated** by the `eb` commands!
+
+---
+
+## Examples
+
+---
+
+##### .elasticbeanstalk/config.yml
+
+note that the file is updated by `eb` commands (e.g. `eb use <my_env>`)!
+
+```yml
+branch-defaults:
+  develop:
+    environment: elastic-beanstalk-demo-env
+  main:
+    environment: elastic-beanstalk-demo-prod
+
+deploy:
+  artifact: build/zips/new.zip
+
+environment-defaults:
+  elastic-beanstalk-demo-env:
+    branch: null
+    repository: null
+global:
+  application_name: elastic-beanstalk-demo
+  default_ec2_keyname: aws-eb
+  default_platform: Corretto 17 running on 64bit Amazon Linux 2023
+  default_region: eu-central-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  sc: git
+  workspace_type: Application
+```
+
 
 ---
 
@@ -327,3 +394,4 @@ note that the file is **changed** during the `eb deploy`!
 [11]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html#environments-cfg-softwaresettings-accessing
 [12]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.RDS.html
 [13]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/rds-external-defaultvpc.html
+[14]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html
