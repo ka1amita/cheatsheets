@@ -301,7 +301,6 @@ If the credentials file contains a named profile with the name **"eb-cli"**, the
 
 + **unset** by removing the correpponding lines in `.elasticbeanstalk/config.yml`
 
-
 ### How-to Deploy
 
 1. `eb init`
@@ -315,7 +314,15 @@ If the credentials file contains a named profile with the name **"eb-cli"**, the
     + > If you want to **deploy** to your environment **without** *committing*,
     + > If you have [configured](#set-to-deploy-only-an-artifact-instead-of-the-project-folder) the *EB CLI* to **deploy** an *artifact*, and you **don't commit** the *artifact* to your git repositor:
 
-> By default, the *EB CLI* deploys the **latest** *commit* in the **current** *branch*, **using** the *commit ID* and *message* as the application *version* *label* and *description*, respectively. If you want to deploy to your environment **without** committing, you can use the `--staged` option to deploy changes that have been added to the staging area.
+> By default, the *EB CLI* deploys the **latest** *commit* in the **current** *branch*, **using** the *commit ID* and *message* as the application *version* *label* and *description*, respectively. If you want to deploy to your environment **without** committing, you can use the `--staged` option to deploy changes that have been added to the *staging area*.
+
+---
+
+### How-to assigning *Git* tags to your *Application Version*
+
+---
+
+`git tag -a v1.0 -m "My version 1.0"`
 
 ---
 
@@ -376,9 +383,23 @@ global:
 # Circle CI
 
 ---
+
+## How-to
+
+### How-to build only *pull requests*
+
+got ot: `circleci.com web app/Project Settings/Advanced/Only build pull requests`
+
+> Will **only** build *branches* that have associated *pull requests* open.
+> For your **default** *branch* and *tags*, we will always build **all** *commits*
+
+> By **default**, we will build **all** the *commits* for this project.
+
+[Docs: Only build pull requests][15]
+[Forum: Only build pull requests][16]
 ...
 ---
-
+<!-- AWS EB -->
 [1]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-cfg-staticfiles.html
 [2]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/java-se-procfile.html
 [3]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/java-se-buildfile.html
@@ -393,3 +414,6 @@ global:
 [12]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.RDS.html
 [13]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/rds-external-defaultvpc.html
 [14]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html
+<!-- CircleCI -->
+[15]: https://circleci.com/docs/oss/#only-build-pull-requests
+[16]: https://discuss.circleci.com/t/is-it-possible-to-run-workflows-when-github-prs-are-opened/38106
