@@ -1,6 +1,3 @@
-username: ebroot
-password: hqbE3VueBE8AvKS
-
 # Elastic Beanstalk (Console)
 
 ---
@@ -72,13 +69,17 @@ Using the *zip* command including **hidden** **files** and **folders**
 
 ### How-to create Configuration files
 
+> *Configuration files* are **YAML**- or **JSON**-formatted documents with a `.config` file **extension** that you place in a **folder** named `.ebextensions` and **deploy** in the **root** of your *application source bundle*.
+
 + keys and values are **case sensitive**.
-+  some characters that need to be **escaped**
++ some characters that need to be **escaped**
     + \ — `\\`
     + ' — `\'`
     + " — `\"`
 
-> each key only once per file but can be in multiple files at once
+> When you are **developing** or **testing** new *configuration files*, launch a **clean** *environment* running the **default** *application* and deploy to that. **Poorly formatted** *configuration files* will cause a new environment launch to **fail unrecoverably**.
+
+> Use each **key** only **once** in each *configuration* **file**. **Combine** duplicate sections into a single one, or place them in **separate** configuration **files**.
 
 + [Configuring Elastic Beanstalk environments (advanced)][5]
     + [General options for all environments][7]
@@ -103,12 +104,12 @@ Using the *zip* command including **hidden** **files** and **folders**
 filepath: `.ebextensions/*.config`
 
 ```yml
-option_settings:
+my_section:
   my:scope:
     MY_KEY: my_value
-
 ```
 
+sections: `option_settings`, `packages`, `sources`, `files`, `users`, `groups`, `commands`, `container_commands`, and `services`
 ---
 
 ##### accessing environment properties
@@ -147,19 +148,22 @@ web: java -jar path/to/my_app.jar
 
 ##### loadbalancer config
 
-filepath: `.abextensions/*.config`
+filepath: `.abextensions/load-balancer.config`
 
 ```yml
 option_settings:
   aws:elasticbeanstalk:environment:proxy:staticfiles:
-    /static: static
+    /static: static 
+    # e.g. ....com/static/static.html
+  aws:elasticbeanstalk:environment:
+    LoadBalancerType: network
 ```
 
-specifies */images* to serve files at subdomain `.eleasticbeanstalk.com/images`from a `static` folder at the **top level** of your source bundle.
+specifies */static* to serve files at *subdomain* `.eleasticbeanstalk.com/static` from a `static` folder at the **top level** of your *source bundle*. 
 
 ##### environment config
 
-filepath: `.ebextensions/{}.config`
+filepath: `.ebextensions/env.config`
 e.g. `env`, `environment`,`development`,...
 
 ```yml
@@ -194,6 +198,7 @@ web: java -jar build/libs/my_app.jar
 > Or start with a database that was previously **created by** *Elastic Beanstalk* (and optionally subsequently *decoupled*).
 
 [Using Elastic Beanstalk with Amazon RDS][12]
+[Launching and connecting to an external Amazon RDS instance in a default VPC][13]
 
 JDBC connection definition:
 ```bash
@@ -219,6 +224,37 @@ spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?us
 
 ---
 
+## Glossary
+
+---
+
+### .ebignore file
+
+> You can tell the *EB CLI* to **ignore** certain **files** in your project directory by adding the file *.ebignore* to the directory. This file works like a *.gitignore* file. When you **deploy** your project directory to *Elastic Beanstalk* and create a new application version, the *EB CLI* **doesn't include** files specified by *.ebignore* in the *source bundle* that it creates.
+
+> If *.ebignore* **isn't** present, but *.gitignore* **is**, the *EB CLI* ignores files specified in *.gitignore*.
+> If *.ebignore* is **present**, the *EB CLI* **doesn't** read *.gitignore*.
+
+When *.ebignore* is **present**, the *EB CLI* **doesn't** use *git* commands to create your *source bundle*. This means that *EB CLI* ignores files specified in *.ebignore*, and includes all other files. In particular, it includes uncommitted source files.
+
+---
+
+### Named profiles
+
+If you store your credentials as a named profile in a credentials or config file, you can use the --profile option to explicitly specify a profile
+
+`eb init --profile another_profile`
+
+When this variable is set, the EB CLI reads credentials from the specified profile instead of default or eb-cli.
+
+`export AWS_EB_PROFILE=default_profile`
+
+---
+
+## How-to
+
+---
+
 ### How-to ...use EB CLI...
 
 1. add user *eb-admin* to a *eb-admins* group with permissions:
@@ -226,6 +262,7 @@ spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?us
     + *AmazonEC2FullAccess*[^1]
     + *AmazonS3FullAccess*[^2]
     + *AWSCodeCommitFullAccess*[^3]
+
     
 [^0]: quoted in the quickstart guide
 [^1]: for storing keys during `eb init`
@@ -234,9 +271,11 @@ spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?us
 
 
 1. `eb init`
-    + select no to *CodeCommit* for the time being
+    + select no to 'use *CodeCommit*' option for the time being
 
 1. use the *Access key pair* as credentials
+
+1. specify .ebignore or use .gitignore
 
 1. `eb create <my_env>`
 
@@ -248,6 +287,24 @@ spring.datasource.url=jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?us
                                 
 ERROR: ServiceError - Create environment operation is complete, but with errors. For more information, see troubleshooting documentation.
 ```
+
+## Snippets
+
+---
+
+##### deploying an artifact instead of the project folder
+
+1. add EB CLI config file
+
+    filepath: `.elasticbeanstalk/config.yml`
+
+    ```bash
+    deploy:
+    artifact: path/to/buildartifact.zip # or .war or .jar
+    ```
+1. run `en deploy`
+
+note that the file is **changed** during the `eb deploy`!
 
 ---
 
@@ -269,3 +326,4 @@ ERROR: ServiceError - Create environment operation is complete, but with errors.
 [10]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html#environments-cfg-softwaresettings-configfiles
 [11]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html#environments-cfg-softwaresettings-accessing
 [12]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.RDS.html
+[13]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/rds-external-defaultvpc.html
