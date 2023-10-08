@@ -391,13 +391,17 @@ global:
 got ot: `circleci.com web app/Project Settings/Advanced/Only build pull requests`
 
 > Will **only** build *branches* that have associated *pull requests* open.
-> For your **default** *branch* and *tags*, we will always build **all** *commits*
+> For your **default** *branch* **and** *tags*, we will always build **all** *commits*
 
-> By **default**, we will build **all** the *commits* for this project.
+> **By** **default**, we will build **all** the *commits* for this project.
+> Note, that this is the reson why `when:` *statement* under the *workflow* would **not** work 
+
+> In **reality** **only** builds PR **to** and **from** (sic) **default** *branch*!
 
 [Docs: Only build pull requests][15]
 [Forum: Only build pull requests][16]
 ...
+
 ---
 <!-- AWS EB -->
 [1]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-cfg-staticfiles.html
