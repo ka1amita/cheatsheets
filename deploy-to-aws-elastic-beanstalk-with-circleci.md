@@ -263,6 +263,11 @@ When this variable is set, the EB CLI reads credentials from the specified profi
     + *AmazonS3FullAccess*[^2]
     + *AWSCodeCommitFullAccess*[^3]
 
+[^0]: quoted in the quickstart guide
+[^1]: for storing keys during `eb init`
+[^2]: for `eb deploy`
+[^3]: for `codeCommit` (optional)
+
 ---
 
 ### How-to configure EB CLI configuration settings and precedence
@@ -286,53 +291,46 @@ If the credentials file contains a named profile with the name **"eb-cli"**, the
 
 ---
 
+### How-to Set default EB environment (for different branches)
+
++ **set** by `eb use <my_env>` with [EB CLI with Git](#how-to-deply-using-eb-cli-with-git) or adding the lines to `.elasticbeanstalk/config.yml`
+    ```yml
+      <git_branch>:
+        environment: <eb_env>
+    ```
+
++ **unset** by removing the correpponding lines in `.elasticbeanstalk/config.yml`
+
+
 ### How-to Deploy
 
-[^0]: quoted in the quickstart guide
-[^1]: for storing keys during `eb init`
-[^2]: for `eb deploy`
-[^3]: for `codeCommit` (optional)
-
-
 1. `eb init`
-    + select no to 'use *CodeCommit*' option for the time being
+    + > optional `--profile` to select a [named profile](#Named-profiles)
+    + > select no to 'use *CodeCommit*' option for the time being
+    + use the *Access key pair* as credentials
+    + specify *.ebignore* or use *.gitignore* or both (see the [.ebignore file](#ebignore-file) section)
+1.  run `eb create <my_env>`
+1.  run `eb use <my_env>` with [EB CLI with Git](#how-to-deply-using-eb-cli-with-git) or update [*config.yml*](#how-to-set-default-eb-environment-for-different-branches)
+1. run `eb deply` or `eb deploy --staged`
+    + > If you want to **deploy** to your environment **without** *committing*,
+    + > If you have [configured](#set-to-deploy-only-an-artifact-instead-of-the-project-folder) the *EB CLI* to **deploy** an *artifact*, and you **don't commit** the *artifact* to your git repositor:
 
-1. use the *Access key pair* as credentials
+> By default, the *EB CLI* deploys the **latest** *commit* in the **current** *branch*, **using** the *commit ID* and *message* as the application *version* *label* and *description*, respectively. If you want to deploy to your environment **without** committing, you can use the `--staged` option to deploy changes that have been added to the staging area.
 
-1. specify *.ebignore* or use *.gitignore* or both (see the [.ebignore file](#ebignore-file) section)
-
-1. `eb create <my_env>`
-
-1. `eb use <my_env>`
-
-1. `eb deply`
-
-```
-2023-10-05 19:28:37    ERROR   Instance deployment failed. For details, see 'eb-engine.log'.
-2023-10-05 19:28:40    ERROR   [Instance: i-0bb87d255cc800cac] Command failed on instance. Return code: 1 Output: Engine execution has encountered an error..
-2023-10-05 19:28:40    INFO    Command execution completed on all instances. Summary: [Successful: 0, Failed: 1].
-2023-10-05 19:29:43    ERROR   Create environment operation is complete, but with errors. For more information, see troubleshooting documentation.
-                                
-ERROR: ServiceError - Create environment operation is complete, but with errors. For more information, see troubleshooting documentation.
-```
+---
 
 ## Snippets
 
 ---
 
-##### deploying an artifact instead of the project folder
-
-1. add EB CLI config file
+##### set to deploy only an *Artifact* instead of the project *folder*
 
     filepath: `.elasticbeanstalk/config.yml`
 
     ```bash
     deploy:
-      artifact: path/to/buildartifact.zip # or .war or .jar
+      artifact: path/to/artifact.zip # or .war or .jar
     ```
-1. run `en deploy`
-
-note that the file is **updated** by the `eb` commands!
 
 ---
 
