@@ -112,8 +112,9 @@ my_section:
 sections: `option_settings`, `packages`, `sources`, `files`, `users`, `groups`, `commands`, `container_commands`, and `services`
 ---
 
-##### accessing environment properties
+##### accessing *Environment Variables* and *System Properties*
 
+> note that *environment variables* != *system properties*[^3]
 ```java
 // Java SE – System.getenv
 String endpoint = System.getenv("API_ENDPOINT");
@@ -124,6 +125,11 @@ String endpoint = System.getProperty("API_ENDPOINT");
 ```
 [Accessing environment properties][11]
 
+
+[^3]: *System properties* are **set** on the *Java* **command line** using the `-Dmy_prop=my_value`. They can also be **added** at **runtime** using `System.setProperty("my_prop", "my_value")` or via the various `System.getProperties().load()` **methods**.
+They can be **read** by `System.getProperty("my_prop")` or `System.getProperty("my_prop", "my_def")`.
+*Environment variables* are **set** in the **OS** and unlike properties, may **not be set at runtime**.
+They can be **read** by `System.getenv("my_env")`.
 ---
 
 ##### basic Buildfile
@@ -163,8 +169,8 @@ specifies */static* to serve files at *subdomain* `.eleasticbeanstalk.com/static
 
 ##### environment config
 
-filepath: `.ebextensions/env.config`
-e.g. `env`, `environment`,`development`,...
+filepath: `.ebextensions/${my_name}.config`
+e.g. my_name =  `env` | `environment` | `development` | ...
 
 ```yml
 option_settings:
