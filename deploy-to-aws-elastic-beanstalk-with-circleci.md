@@ -26,7 +26,6 @@ my_app.zip
 ├── static/
 └── README.md
 ```
-
 [docs][9]
 
 #### Creating a Source Bundle from a CLI
@@ -181,7 +180,6 @@ option_settings:
     USER_USERNAME: Matej
     USER_PASSWORD: 51c0e357-e949-4f04
 ```
-
 [docs][1]
 
 ---
