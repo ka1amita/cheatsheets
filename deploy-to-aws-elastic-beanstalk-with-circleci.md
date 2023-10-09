@@ -95,24 +95,7 @@ Using the *zip* command including **hidden** **files** and **folders**
 [^2]: From which it is forwarded further by *nginx* server reverse proxy to the **application port** (default **5000** for Java SE)
 ---
 
-## Snippets
-
----
-
-##### environment configuration
-
-filepath: `.ebextensions/*.config`
-
-```yml
-my_section:
-  my:scope:
-    MY_KEY: my_value
-```
-
-sections: `option_settings`, `packages`, `sources`, `files`, `users`, `groups`, `commands`, `container_commands`, and `services`
----
-
-##### accessing *Environment Variables* and *System Properties*
+##### How to access *Environment Variables* and *System Properties*
 
 > *environment variables* != *system properties*[^3]
 
@@ -131,6 +114,24 @@ String endpoint = System.getProperty("MY_PROP");
 They can be **read** by `System.getProperty("my_prop")` or `System.getProperty("my_prop", "my_def")`.
 *Environment variables* are **set** in the **OS** and unlike properties, may **not be set at runtime**.
 They can be **read** by `System.getenv("my_env")`.
+
+---
+
+## Snippets
+
+---
+
+##### environment configuration
+
+filepath: `.ebextensions/*.config`
+
+```yml
+my_section:
+  my:scope:
+    MY_KEY: my_value
+```
+
+sections: `option_settings`, `packages`, `sources`, `files`, `users`, `groups`, `commands`, `container_commands`, and `services`
 ---
 
 ##### basic Buildfile
