@@ -114,14 +114,15 @@ sections: `option_settings`, `packages`, `sources`, `files`, `users`, `groups`, 
 
 ##### accessing *Environment Variables* and *System Properties*
 
-> note that *environment variables* != *system properties*[^3]
+> *environment variables* != *system properties*[^3]
+
 ```java
-// Java SE – System.getenv
-String endpoint = System.getenv("API_ENDPOINT");
+// Java SE
+String endpoint = System.getenv("MY_ENV");
 ```
 ```java
-//Tomcat – System.getProperty
-String endpoint = System.getProperty("API_ENDPOINT");
+// Tomcat
+String endpoint = System.getProperty("MY_PROP");
 ```
 [Accessing environment properties][11]
 
