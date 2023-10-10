@@ -53,13 +53,14 @@ see *EC2* > *Resources* >  *Instances* > my *Instance id* > *Actions* > *Connect
     + use `ssh instance_user@x.y.z.w` with configured `~/.ssh/config`
     + use `ssh -i path/to/my_key_pair.pem instance_user@in.stan.ce.ip` with a file
         + [Forum][2]
-
 1. **install** *Java* with *yum* Package Manager
     1. `His $` `sudo yum update -y`
     1. `His $` `sudo yum install java-1.8.0-amazon-corretto` or `sudo yum install java-1.8.0-amazon-corretto-devel`
     1. `His $` `java -version`[^java-version]
     + [Docs][1]
     1. do whatever you want
+1. logout
+    + `His $` `logout`
 1. **upload** with *Secure copy*
     + `Matej's $` `scp -i path/to/my_key_pair.pem path/to/my_code.jar instance_userin.stan.ce.ip:file/path`
 1. meanwhile set *ENVs*
@@ -72,10 +73,6 @@ see *EC2* > *Resources* >  *Instances* > my *Instance id* > *Actions* > *Connect
     1. `His $` `java -jar my_application.jar`
 1. **connect**
     + to *Public IPv4 address* `my.app.ip.address:my_app_port` or *Public IPv4 DNS* `ec2-18-156-77-60.eu-central-1.compute.amazonaws.com`
- 
-
-
-
 
 
 ### Examples
