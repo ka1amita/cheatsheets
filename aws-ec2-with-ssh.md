@@ -81,19 +81,15 @@ see *EC2* > *Resources* >  *Instances* > my *Instance id* > *Actions* > *Connect
 ### Examples
 
 ##### connect and upload
+
 `EC2_DOMAIN=ec2-18-156-77-60.eu-central-1.compute.amazonaws.com`
-
 ...
-
 `ssh -i ~/.ssh/aws-ec2-dev.pem ec2-user@$EC2_DOMAIN`
-
 `scp build/libs/application.jar ec2-user@$EC2_DOMAIN:/home/ec2-user`
-
 
 ##### application environmental variables
 
 `scp dev.env ec2-user@$EC2_DOMAIN:/home/ec2-user`
-
 `dev.env`:
 ```properties
 PORT=8080
