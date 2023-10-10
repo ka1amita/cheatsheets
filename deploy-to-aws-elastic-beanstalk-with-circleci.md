@@ -4,7 +4,40 @@
 
 ## Glossary
 
-+ **JAR** == *Java Archive*
++ **AWS** = *Amazon Web Services*
++ **RDS** = *Relational Database Service*
++ **S3** = *Simple Storage Service*
++ **EC2** = *Elastic Compute Cloud*
++ **JAR** = *Java Archive*
++ **IAM user** = an *identity* with **long-term** *credentials* that is used to **interact** with *AWS* in an account.[^5]
++ **IAM role** = an *identity* you can create that has **specific** *permissions* with **short-term** *credentials*. *Roles* can be assumed by *entities* that you trust.[^5]
++ **IAM policy** = an **object** in *AWS* that **defines** *permissions*.
+
+[^5]: However, instead of being uniquely associated with one person, a *IAM role* can be assumed by **anyone** who needs it. A *role* does not have standard long-term *credentials* such as a password or access keys associated with it. Instead, when you assume a role, it provides you with temporary security *credentials* for your *role* *session*.
+
+You can use roles to delegate *access* to **users**, **applications**, or **services** that don't normally have *access* to your *AWS* *resources*.
+
+[^8]: Policies are JSON documents in AWS that let you specify who has access to AWS resources, and what actions they can perform on those resources. You can attach a policy to an identity or resource to define their permissions. AWS evaluates these policies when the IAM principal makes a request. Permissions in the policies determine whether the request is allowed or denied.
+
+### Versions
+
+> **major.minor.patch**
+
+> The `~>` symbol allows the *patch* version to be **greater** but requires the *major* and *minor* versions (0.12) to **match** the version that the *configuration* specifie
+```json
+terraform {
+  required_providers {
+    aws = {
+      version = "~> 2.13.0"
+    }
+    random = {
+      version = ">= 2.1.2"
+    }
+  }
+
+  required_version = "~> 0.12.29"
+}
+```
 
 ---
 
@@ -89,14 +122,14 @@ Using the *zip* command including **hidden** **files** and **folders**
 
 ### How-to use Load Balancer
 
-> Elastic Beanstalk creates and configures the load balancer to **listen** for HTTP traffic on **port 80** and **forward** this traffic to instances on **the same port**[^2].
+> Elastic Beanstalk creates and configures the load balancer to **listen** for HTTP traffic on **port 80** and **forward** this traffic to instances on **the same port**[^6].
 
-[^2]: From which it is forwarded further by *nginx* server reverse proxy to the **application port** (default **5000** for Java SE)
+[^6]: From which it is forwarded further by *nginx* server reverse proxy to the **application port** (default **5000** for Java SE)
 ---
 
 ##### How to access *Environment Variables* and *System Properties*
 
-> *environment variables* != *system properties*[^3]
+> *environment variables* != *system properties*[^7]
 
 ```java
 // Java SE
@@ -109,7 +142,7 @@ String endpoint = System.getProperty("MY_PROP");
 [Accessing environment properties][11]
 
 
-[^3]: *System properties* are **set** on the *Java* **command line** using the `-Dmy_prop=my_value`. They can also be **added** at **runtime** using `System.setProperty("my_prop", "my_value")` or via the various `System.getProperties().load()` **methods**.
+[^7]: *System properties* are **set** on the *Java* **command line** using the `-Dmy_prop=my_value`. They can also be **added** at **runtime** using `System.setProperty("my_prop", "my_value")` or via the various `System.getProperties().load()` **methods**.
 They can be **read** by `System.getProperty("my_prop")` or `System.getProperty("my_prop", "my_def")`.
 *Environment variables* are **set** in the **OS** and unlike properties, may **not be set at runtime**.
 They can be **read** by `System.getenv("my_env")`.
@@ -382,7 +415,6 @@ global:
   sc: git
   workspace_type: Application
 ```
-
 
 ---
 
