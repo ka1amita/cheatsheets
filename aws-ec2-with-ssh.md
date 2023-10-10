@@ -29,8 +29,6 @@
     User my_user
     Port
     ```
-    + use `ssh -i path/to/my_key_pair.pem instance_user@in.stan.ce.ip` with a file not configured
-        + for more see [Forum][2]
 1. \> *Network settings*
     + Allow **SSH** traffic from ...
 ### How-to Create a RDS 
@@ -49,8 +47,13 @@
 
 
 ### How-to upload and execute application
+
 1. **login** with *Secure Shell*
-    1. `ssh instance_user@x.y.z.w`
+see *EC2* > *Resources* >  *Instances* > my *Instance id* > *Actions* > *Connect* > **SSH client**
+    + use `ssh instance_user@x.y.z.w` with configured `~/.ssh/config`
+    + use `ssh -i path/to/my_key_pair.pem instance_user@in.stan.ce.ip` with a file
+        + [Forum][2]
+
 1. **install** *Java* with *yum* Package Manager
     1. `His $` `sudo yum update -y`
     1. `His $` `sudo yum install java-1.8.0-amazon-corretto` or `sudo yum install java-1.8.0-amazon-corretto-devel`
@@ -77,11 +80,21 @@
 
 ### Examples
 
-`scp filepath/to/my_code.jar ec2-user@z.y.z.w:/home/ec2-user`
+##### connect and upload
+`EC2_DOMAIN=ec2-18-156-77-60.eu-central-1.compute.amazonaws.com`
+
+...
+
+`ssh -i ~/.ssh/aws-ec2-dev.pem ec2-user@$EC2_DOMAIN`
+
+`scp build/libs/application.jar ec2-user@$EC2_DOMAIN:/home/ec2-user`
 
 
 ##### application environmental variables
 
+`scp dev.env ec2-user@$EC2_DOMAIN:/home/ec2-user`
+
+`dev.env`:
 ```properties
 PORT=8080
 
@@ -91,6 +104,7 @@ RDS_DB_NAME=elastic_beanstalk
 RDS_USERNAME=root
 RDS_PASSWORD=password
 ```
+`export $(grep -v '^#' dev.env | xargs)`
 
 ---
 
