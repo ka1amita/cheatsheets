@@ -59,7 +59,7 @@ see *EC2* > *Resources* >  *Instances* > my *Instance id* > *Actions* > *Connect
     1. `His $` `java -version`[^java-version]
     + [Docs][1]
     1. do whatever you want
-1. logout
+1. **logout**
     + `His $` `logout`
 1. **upload** with *Secure copy*
     + `Matej's $` `scp -i path/to/my_key_pair.pem path/to/my_code.jar instance_userin.stan.ce.ip:file/path`
