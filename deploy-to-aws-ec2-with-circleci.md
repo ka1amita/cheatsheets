@@ -173,38 +173,64 @@ spusteni pomoci *inline-scriptu* bez ktereho **zustane** client **pripojen** k h
 ssh $SSH_USER@$SSH_HOST \>>EOF export $(grep -v "^#" .env.dev | xargs) && java -jar $(find . -name *.jar) EOF
 ```
 
+##### no-hang-up
 
-
-##### execute java over ssh in circleCI pipeline and successfuly finish the job (exit)
-
-
-```yml
-...
-run: ssh $SSH_USER@$SSH_HOST './run.sh' & sleep 15
-# run: ssh $SSH_USER@$SSH_HOST './run.sh' & # doesn't work!
-```
-`./run.sh`:
 ```sh
-#!/bin/bash
-export $(grep -v "^#" .env.dev | xargs)
-nohup java -jar *.jar &
+nohup java -jar *.jar & # note the `&`
 ```
-+ don't forget to `chmod 744 run.sh` to add `x` 
++ `nohup:ignoring input and appending output to 'nohup.out'` is normal output
++ [stackoverflow][4]
 
 ##### execute java over ssh in circleCI pipeline and successfuly finish the job (exit)
++ with **script**
+    ```sh
+    ...
+    ssh $SSH_USER@$SSH_HOST './run.sh' & sleep 15
+    # ssh $SSH_USER@$SSH_HOST './run.sh' & # doesn't work!
+    ```
+    `./run.sh`:
+    ```sh
+    #!/bin/bash
+    export $(grep -v "^#" .env.dev | xargs)
+    nohup java -jar *.jar & 
+    ```
+    + don't forget to `chmod 744 run.sh` to add `x`
++ with **chained command**
+    ```sh
+    ssh $SSH_USER@$SSH_HOST 'export $(grep -v "^#" .env* | xargs) && nohup java -jar *.jar &' & sleep 15
+    ```
+    or
+    ```sh
+    ssh $SSH_USER@$SSH_HOST "export $(grep -v '^#' .env.$ENV | xargs) && nohup java -jar *.jar &" & sleep 15
+    ```
+    + note the `""` (`$ENV` has to be **locally** *expanded*)
++ with *\<<BLOCK*[^EOF] a.k.a *inline script* 
+    ```sh
+    ssh $SSH_USER@$SSH_HOST \<<EOF
+        export $(grep -v "^#" .env.* | xargs)
+        nohup java -jar *.jar &
+        EOF & sleep 15
+    ```
+    
+    + note is has to be **escaped** like `\<<` in *CircleCI* `config.yml`
 
-```yml
-run: ssh $SSH_USER@$SSH_HOST 'export $(grep -v "^#" .env* | xargs) && nohup java -jar *.jar &' & sleep 15
-```
-
-##### execute java over ssh in circleCI pipeline and successfuly finish the job (exit)
-
-
-note the `""` (`$ENV` has to be **locally** *expanded*)
+[EOF:]`<< EoF` means:
+> `<<` **read** the *multi-line input* that begins from the next line onward, and treat it as if it's **code in a separate file**
+> `EoF` **stop reading** immediately after the word `EoF` is found in the *multi-line input*
 
 ---
 
 ## Misc
+
+##### epanding the inputs
+```sh
+ssh $SSH_USER@$SSH_HOST java -jar $(find . -name *.jar) # find on local
+
+ssh $SSH_USER@$SSH_HOST 'java -jar $(find . -name *.jar)' # find on host
+
+ssh $SSH_USER@$SSH_HOST "java -jar $(find . -name *.jar)" # find on local
+
+```
 
 ##### kill running *App* instance based on *port*
 1. find out the *PID*
@@ -212,6 +238,9 @@ note the `""` (`$ENV` has to be **locally** *expanded*)
     +   `lsof -i :8080 -S`
     +   `netstat -nlp | grep :8080`
 2.  `kill my_PID`
+
+---
+
 [^public-key]: the one set in `~/.ssh/config` under *IdentityFile* key
 
 [^java-version]: should be:
@@ -221,6 +250,9 @@ note the `""` (`$ENV` has to be **locally** *expanded*)
     OpenJDK 64-Bit Server VM Corretto-8.232.09.1 (build 25.232-b09, mixed mode)
     ```
 
+---
+
 [1]: https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/amazon-linux-install.html
 [2]: https://superuser.com/questions/772660/howto-force-ssh-to-use-a-specific-private-key
 [3]: https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs
+[4]: https://stackoverflow.com/questions/24646320/nohupignoring-input-and-appending-output-to-nohup-out
