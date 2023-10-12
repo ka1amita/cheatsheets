@@ -30,6 +30,8 @@
 
 [^1]: The `$BASH_ENV` workaround only **works** with *bash*, and has **not** been **confirmed** to work with **other** *shells*.
 
+> *Vars* in a *container* in this way are not available to steps run within the *container*, they are only **available** to the *entrypoint/command* run by the **container**. 
+
 ```yml
 version: 2.1
 - run:
@@ -40,6 +42,7 @@ version: 2.1
       echo "export VERY_IMPORTANT=VALUE_CONTENT" >> "${BASH_ENV}" # or ~/.shrc
       source "$BASH_ENV"
 ```
+[Docs on reusable code][7]
 
 ##### How-to substitute *vars*
 
@@ -344,5 +347,72 @@ ssh $SSH_USER@$SSH_HOST "java -jar $(find . -name *.jar)" # find on local
 [2]: https://superuser.com/questions/772660/howto-force-ssh-to-use-a-specific-private-key
 [3]: https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs
 [4]: https://stackoverflow.com/questions/24646320/nohupignoring-input-and-appending-output-to-nohup-out
-[5]: https://circleci.com/docs/env-vars/#parameters-and-bash-environment
+[5]: https://circleci.com/docs/env-vars
 [6]: https://circleci.com/docs/variables/#built-in-environment-variables
+[7]: https://circleci.com/docs/reusing-config/#using-the-parameters-declaration
+
+# Dodatek
+
+## Exercises
+
+[precedence](https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash)
+
+#####
+
+1. `echo 'TEST=$USER' > test.user`
+    `ssh $EC2_USER@$EC2_HOST_STG "echo $(cat test.user) > test.user"`[^50] 
+1.  `echo TEST=$USER > test.user`
+    `ssh $EC2_USER@$EC2_HOST_STG "echo $(cat test.user) > test`[^51]
+
+[^50]: #host's USER because only the `cat` command was run on local
+```
+#test.user
+TEST=$USER
+```
+[^51]:
+```
+#test.user
+TEST=ka1amita
+```
+
+1. `ssh $EC2_USER@$EC2_HOST_STG "echo export TEST=$USER >> ~/.bashrc"`[^52]
+1. `ssh $EC2_USER@$EC2_HOST_STG "echo 'export TEST=$USER' >> ~/.bashrc"`[^53]
+1. ```ssh $EC2_USER@$EC2_HOST_STG "echo `export TEST=$USER` >> ~/.bashrc"```[^54]
+1. `ssh $EC2_USER@$EC2_HOST_STG echo export ENV_NAME=$USER >> ~/.bashrc`[^55]
+1. `ssh $EC2_USER@$EC2_HOST_STG 'echo export ENV_NAME=$USER' >> ~/.bashrc`[^56]
+[^52]: see [^53]
+[^53]: 
+```
+#host:~/.bashrc
+export TEST=kalamita
+```
+[^54]:
+```
+#host:~/.bashrc
+(only a `newline`!)
+```
+[^55]:
+```
+#local:~/.bashrc
+export ENV_NAME=local-user
+```
+[^56]:
+```
+#local:~/.bashrc
+export ENV_NAME=host-user
+```
+
+
+##### nit
+
+` ssh -i $EC2_KEY $EC2_USER@$EC2_HOST_STG cat ~/.bashrc`
+ results in local interpolation of `~` with host execution!
+
+##### nit
+
+ `ssh -i $EC2_KEY $EC2_USER@$EC2_HOST_STG mv test.ka1amita test.kalamita` works on host
+
+  `ssh -i $EC2_KEY $EC2_USER@$EC2_HOST_STG mv test.ka1amita test.kalamita &` works on host and logouts as expected
+
+##### nit
+
