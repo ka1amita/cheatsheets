@@ -1,5 +1,92 @@
+#
 
 ## How-to
+
+### How-to debug
+
+[Docs on SSH access](https://circleci.com/docs/ssh-access-jobs/)
+
+### How-to use environmental variables
+
+> *CircleCI* **does not** support **interpolating** *environment variables* in the *configuration*!
+> Values used are **treated** as *literals*. This can cause issues when defining `working_directory`, modifying `PATH`, and **sharing** variables **across** multiple **run steps**.
+
+> *Vars* **declared** inside a *shell* command `run` *step* will **override** *vars* declared with the environment and *contexts* keys! Contexts *vars* will take precedence over *vars* **added** on the *Project Settings* page!
+
++ Both `${VAR}` and `$VAR` are supported.
+
++ *Secrets masking* is **applied** to *vars* set within *Project Settings* or *Contexts* in the *web app* **only**. 
+
+[Docs on env. variables][5]
+[Docs on built in env. variables][6]
+
+#### How-to share values across steps!
+
+> While *CircleCI* does **not support** *interpolation* when setting *environment variables* (*vars*), it is possible to set variables for the **current** *shell* by using `BASH_ENV`. This is useful for both **modifying** your `PATH` and *setting environment* variables that **reference other variables**.
+
+> Depending on your *shell*, you may have to **append** the new *var* to a *shell* *startup file* like `~/.tcshrc` or `~/.zshrc` (or even `~/.bashrc`?).
+
+> *CircleCI* uses *bash* to source `BASH_ENV` in **every** *step*. Allowing you to use *interpolation* and share *vars* **across run** *steps*[^1].
+
+[^1]: The `$BASH_ENV` workaround only **works** with *bash*, and has **not** been **confirmed** to work with **other** *shells*.
+
+```yml
+version: 2.1
+- run:
+    name: Update PATH and Define Environment Variable at Runtime
+    # Add source command to execute code and make variables available in current step.
+    command: |
+      echo 'export PATH=/path/to/foo/bin:"$PATH"' >> "$BASH_ENV" # or ~/.shrc
+      echo "export VERY_IMPORTANT=VALUE_CONTENT" >> "${BASH_ENV}" # or ~/.shrc
+      source "$BASH_ENV"
+```
+
+##### How-to substitute *vars*
+
+> The `circleci env subst` command can accept text input from `stdin` or as an *argument*.
+
+Tthe `<` symbol is used to **redirect** the contents of the `template.file` **file** as *input* to the `env subst` command, while the `>` symbol is used to **redirect** the *output* of the `env subst` command to the `output.file`.
+
+`template.file` e.g. as *json*:
+```json
+{
+  "foo": "$FOO",
+  "provider": "${PROVIDER}"
+}
+```
+
+```yml
+- run:
+    name: Process template file
+    environment:
+      # Environment variables would typically be served via a context
+      # FOO: bar
+      # PROVIDER: circleci
+    command: circleci env subst < template.file > output.file
+
+- run: circleci env subst "hello \$WORLD" > output.json
+```
+
+#### How-to share *vars* with host
+
+```yml
+- run:
+    name: Share VAR with host
+    command: ssh $SSH_USER@$SSH_HOST "echo VAR=$LOCAL_VAR >> ~/.bashrc" # `"` necessary!
+```
+```yml
+- run:
+    name: Read VAR at host
+    command: ssh $SSH_USER@$SSH_HOST 'echo $LOCAL_VAR' # `'` necessary!
+# output: local_value
+```
+
+### How-to manage SSH keys
+
+##### convert ppk (puTTy) key into OpenSSH's private key format:
+
+`puttygen mykey.ppk -O private-openssh -o my-openssh-key` (without extension)
+`puttygen mykey.ppk -O public-openssh -o my-openssh-key.pub`
 
 ### How-to create necessary *AWS Resources*
 
@@ -199,9 +286,10 @@ nohup java -jar *.jar & # note the `&`
     ```sh
     ssh $SSH_USER@$SSH_HOST 'export $(grep -v "^#" .env* | xargs) && nohup java -jar *.jar &' & sleep 15
     ```
-    or
+    or 
     ```sh
-    ssh $SSH_USER@$SSH_HOST "export $(grep -v '^#' .env.$ENV | xargs) && nohup java -jar *.jar &" & sleep 15
+    #DOESN'T WORK! `grep -v '^#' .env.$ENV | xargs` expanded and executed on local
+    #ssh $SSH_USER@$SSH_HOST "export $(grep -v '^#' .env.$ENV | xargs) && nohup #java -jar *.jar &" & sleep 15
     ```
     + note the `""` (`$ENV` has to be **locally** *expanded*)
 + with *\<<BLOCK*[^EOF] a.k.a *inline script* 
@@ -256,3 +344,5 @@ ssh $SSH_USER@$SSH_HOST "java -jar $(find . -name *.jar)" # find on local
 [2]: https://superuser.com/questions/772660/howto-force-ssh-to-use-a-specific-private-key
 [3]: https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs
 [4]: https://stackoverflow.com/questions/24646320/nohupignoring-input-and-appending-output-to-nohup-out
+[5]: https://circleci.com/docs/env-vars/#parameters-and-bash-environment
+[6]: https://circleci.com/docs/variables/#built-in-environment-variables
