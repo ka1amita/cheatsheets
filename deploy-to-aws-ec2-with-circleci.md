@@ -447,8 +447,7 @@ TEST=ka1amita
 > #host:~/.bashrc
 > export TEST=kalamita
 > ```
-[^54]:
-> ```
+[^54]: > ```
 > #host:~/.bashrc
 > (only a `newline`!)
 > ```
