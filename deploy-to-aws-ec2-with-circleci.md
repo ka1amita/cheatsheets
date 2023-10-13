@@ -6,6 +6,27 @@
 
 [Docs on SSH access](https://circleci.com/docs/ssh-access-jobs/)
 
+
+### How-to add *keys* to *SSH Agent*
+
+- Add the default ssh keys in `~/.ssh` to the ssh-agent:
+    `ssh-add`
+
+- Add a specific key to the ssh-agent:
+    `ssh-add path/to/my_private_key`
+
+### How-to add *keys* to a *remote* 
+
++ manually
+`ssh -i "my_authorized.pem" user@host "echo $(cat ~/.ssh/my_unauthorized.pub) >> ~/.ssh/authorized_keys"`
+
++ `ssh-copy-id`
+    + Copy **all** your *public keys* to the *remote* (use `-n` to do a dry-run):
+        `ssh-copy-id user@host`
+    + Copy the **given** *public key* to the *remote*:
+        `ssh-copy-id -i path/to/my_certificate usern@host`
+
+
 ### How-to use environmental variables
 
 > *CircleCI* **does not** support **interpolating** *environment variables* in the *configuration*!
@@ -48,8 +69,6 @@ version: 2.1
 
 > The `circleci env subst` command can accept text input from `stdin` or as an *argument*.
 
-Tthe `<` symbol is used to **redirect** the contents of the `template.file` **file** as *input* to the `env subst` command, while the `>` symbol is used to **redirect** the *output* of the `env subst` command to the `output.file`.
-
 `template.file` e.g. as *json*:
 ```json
 {
@@ -69,6 +88,7 @@ Tthe `<` symbol is used to **redirect** the contents of the `template.file` **fi
 
 - run: circleci env subst "hello \$WORLD" > output.json
 ```
+The `<` symbol is used to **redirect** the contents of the `template.file` **file** as *input* to the `env subst` command, while the `>` symbol is used to **redirect** the *output* of the `env subst` command to the `output.file`.
 
 #### How-to share *vars* with host
 
@@ -286,13 +306,13 @@ nohup java -jar *.jar & # note the `&`
     ```
     + don't forget to `chmod 744 run.sh` to add `x`
 + with **chained command**
+    + export **to** host from **local**'s `.env.local_env`[^41] with `exec` and store the *PID* (**inherits** from the *shell*):
     ```sh
-    ssh $SSH_USER@$SSH_HOST 'export $(grep -v "^#" .env* | xargs) && nohup java -jar *.jar &' & sleep 15
+    ssh $SSH_USER@$SSH_HOST "export $(grep -v ^# .env.$ENV | xargs) && echo \${$} > app.pid && exec java -jar *.jar" & sleep 15`
     ```
-    or 
+    + export **on** host from **host**'s `.env.local_env`[^40] with `nohup` and `&`:
     ```sh
-    #DOESN'T WORK! `grep -v '^#' .env.$ENV | xargs` expanded and executed on local
-    #ssh $SSH_USER@$SSH_HOST "export $(grep -v '^#' .env.$ENV | xargs) && nohup #java -jar *.jar &" & sleep 15
+    #ssh $SSH_USER@$SSH_HOST "export \$(grep -v '^#' .env.$ENV | xargs) && nohup #java -jar *.jar &" & sleep 15
     ```
     + note the `""` (`$ENV` has to be **locally** *expanded*)
 + with *\<<BLOCK*[^EOF] a.k.a *inline script* 
@@ -309,6 +329,23 @@ nohup java -jar *.jar & # note the `&`
 > `<<` **read** the *multi-line input* that begins from the next line onward, and treat it as if it's **code in a separate file**
 > `EoF` **stop reading** immediately after the word `EoF` is found in the *multi-line input*
 
+### How-to check if process is running
++ List ALL running *processes*
+    `ps aux`
++ List all running *processes* that have a given *file* **open**:
+    `lsof $(find path/to/file -type f -name "*.jar")`
++ List all running *processes* **with** a *PID*
+    `cat my_app.pid | xargs ps`
++ List all running *processes* **on** *port*
+    `lsof -i :$MY_PORT -S`
+
+### How-to kill process / restart 
++ Restart machine
+    `reboot`   
++ Terminate using the default `SIGTERM` (*terminate*) signal
+    `killall -v java || true` # to avoid `exit 1` if there is no such process; there is another option to force *CircleCI* to run after *failed job*
++ Terminate a program based on *PID* using the default `SIGTERM` (*terminate*) signal:
+    `kill process_id`
 ---
 
 ## Misc
@@ -355,14 +392,26 @@ ssh $SSH_USER@$SSH_HOST "java -jar $(find . -name *.jar)" # find on local
 
 ## Exercises
 
-[precedence](https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash)
+### Value Interpolation / Expansion
+
+[Stackoverflow on value interpolation / expansion](https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash)
+
+##### export *vars* **on** *host* through *ssh*
+
+1. `ssh $SSH_USER@$SSH_HOST "export \$(grep -v ^# .env.$ENV | xargs)"`[^40]
+1. `ssh $SSH_USER@$SSH_HOST "export $(grep -v ^# .env.$ENV | xargs)"`[^41]
+1. `ssh $SSH_USER@$SSH_HOST 'export $(grep -v ^# .env.$ENV | xargs).`[^42]
+
+[^40]: export **on** host from **host**'s `.env.local_env`
+[^41]: export **to** host from **local**'s `.env.local_env`
+[^42]: export **on** host from **host**'s `.env.host_env` (if `ENV` present)
 
 #####
 
 1. `echo 'TEST=$USER' > test.user`
-    `ssh $EC2_USER@$EC2_HOST_STG "echo $(cat test.user) > test.user"`[^50] 
-1.  `echo TEST=$USER > test.user`
-    `ssh $EC2_USER@$EC2_HOST_STG "echo $(cat test.user) > test`[^51]
+   `ssh $EC2_USER@$EC2_HOST_STG "echo $(cat test.user) > test.user"`[^50] 
+1. `echo TEST=$USER > test.user`
+   `ssh $EC2_USER@$EC2_HOST_STG "echo $(cat test.user) > test`[^51]
 
 [^50]: #host's USER because only the `cat` command was run on local
 ```
@@ -375,44 +424,80 @@ TEST=$USER
 TEST=ka1amita
 ```
 
+#####
+
 1. `ssh $EC2_USER@$EC2_HOST_STG "echo export TEST=$USER >> ~/.bashrc"`[^52]
 1. `ssh $EC2_USER@$EC2_HOST_STG "echo 'export TEST=$USER' >> ~/.bashrc"`[^53]
 1. ```ssh $EC2_USER@$EC2_HOST_STG "echo `export TEST=$USER` >> ~/.bashrc"```[^54]
-1. `ssh $EC2_USER@$EC2_HOST_STG echo export ENV_NAME=$USER >> ~/.bashrc`[^55]
-1. `ssh $EC2_USER@$EC2_HOST_STG 'echo export ENV_NAME=$USER' >> ~/.bashrc`[^56]
+1. `ssh $EC2_USER@$EC2_HOST_STG echo export TEST=$USER >> ~/.bashrc`[^55]
+1. `ssh $EC2_USER@$EC2_HOST_STG 'echo export TEST=$USER' >> ~/.bashrc`[^56]
+1. `ssh $EC2_USER@$EC2_HOST_STG 'echo export TEST=$USER >> ~/.bashrc'`[^57]
 [^52]: see [^53]
-[^53]: 
-```
-#host:~/.bashrc
-export TEST=kalamita
-```
+[^53]: `'` has no special meaning inside `""`, but `echo "'$USER'"` results in `'user'`!
+> ```
+> #host:~/.bashrc
+> export TEST=kalamita
+> ```
 [^54]:
-```
-#host:~/.bashrc
-(only a `newline`!)
-```
+> ```
+> #host:~/.bashrc
+> (only a `newline`!)
+> ```
 [^55]:
-```
-#local:~/.bashrc
-export ENV_NAME=local-user
-```
+> ```
+> #local:~/.bashrc
+> export TEST=local
+> ```
 [^56]:
+> ```
+> #local:~/.bashrc
+> export TEST=host
+> ```
+[^57]:
+> ```
+> #host:~/.bashrc
+> export TEST=host
+> ```
+
+##### nit
+
+`ssh $EC2_USER@$EC2_HOST_STG cat ~/.bashrc`[^60]
+[^60]: `~` interpolates on *local*, runs on *host*!
+
+##### nit
+
+`ssh $EC2_USER@$EC2_HOST_STG mv test.ka1amita test.kalamita`[^61]
+[^61]: `mv` runs on *host*
+
+`ssh $EC2_USER@$EC2_HOST_STG mv test.ka1amita test.kalamita &` command runs on + *host* and in the backgroud from the point of *local*!
+
+##### nit
+1. `ssh $EC2_USER@$EC2_HOST_STG cat test.$USER`[^62]
+1. `ssh $EC2_USER@$EC2_HOST_STG "cat test.$USER"`[^63]
+1. `ssh $EC2_USER@$EC2_HOST_STG 'cat test.$USER'`[^64]
+1. `ssh $EC2_USER@$EC2_HOST_STG cat $(echo test.$USER)`[^65]
+1. `"cat 'test.$USER'"`[^66]
+
 ```
-#local:~/.bashrc
-export ENV_NAME=host-user
+#host:test.local
+Correct!
 ```
+[^62]: > Correct!
+[^63]: > Correct!
+[^64]: > cat: test.ec2-user: No such file or directory
+[^65]: > Correct!
+[^66]: > Correct!
 
+#####
+```
+#host:test.local
+Correct!
+#Incorrect
+```
+1. `ssh $EC2_USER@$EC2_HOST_STG $(echo grep -v ^# test.$USER)`
+1. ```ssh $EC2_USER@$EC2_HOST_STG `echo grep -v ^# test.$USER` ```
+1. `ssh $EC2_USER@$EC2_HOST_STG "echo grep -v ^# test.$USER"`
 
-##### nit
-
-` ssh -i $EC2_KEY $EC2_USER@$EC2_HOST_STG cat ~/.bashrc`
- results in local interpolation of `~` with host execution!
-
-##### nit
-
- `ssh -i $EC2_KEY $EC2_USER@$EC2_HOST_STG mv test.ka1amita test.kalamita` works on host
-
-  `ssh -i $EC2_KEY $EC2_USER@$EC2_HOST_STG mv test.ka1amita test.kalamita &` works on host and logouts as expected
-
-##### nit
-
+: Correct!
+: Correct!
+: > grep -v ^# test.kalamita
