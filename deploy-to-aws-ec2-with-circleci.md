@@ -538,19 +538,19 @@ Correct!
     + `background` execution will **immediately** **proceed** to the next step
 
     + **`-e`**
-    > Exit **immediatly** if a *pipeline* (which may consist of a single simple command), a subshel command enclosed in parentheses, or **one** of the commands executed as part of a command list enclosed by braces exits with a **non-zero status**.
+        > Exit **immediatly** if a *pipeline* (which may consist of a single simple command), a subshel command enclosed in     parentheses, or **one** of the commands executed as part of a command list enclosed by braces exits with a **non-zero   status**.
     
-    override shell configuratio or add `set +e` *run* step to a command
+        override shell configuratio or add `set +e` *run* step to a command
 
     + **`-o pipefail`**
 
-    > If `pipefail` is enabled, the pipeline’s *return status* is the value of the **last** (**rightmost**) command to `exit` with a **non-zero status**, or zero if all commands exit successfully. The shell **waits** for **all** commands in the pipeline to terminate **before** **returning** a value.
+        > If `pipefail` is enabled, the pipeline’s *return status* is the value of the **last** (**rightmost**) command to `exit` with a **non-zero status**, or zero if all commands exit successfully. The shell **waits** for **all** commands in the pipeline to terminate **before** **returning** a value.
 
-    override shell configuratio or add `set +o pipefail` *run* step to a command
+        override shell configuratio or add `set +o pipefail` *run* step to a command
 
-    > For jobs that run on ***Linux***, the default value of the *shell* option is **`/bin/ bash -eo pipefail`** if `/bin/bash` is present in the build container. Otherwise it  is **`/bin/sh -eo pipefail`**.
+        > For jobs that run on ***Linux***, the default value of the *shell* option is **`/bin/ bash -eo pipefail`** if `/bin/bash` is present in the build container. Otherwise it  is **`/bin/sh -eo pipefail`**.
 
-    > For jobs that run on ***macOS***, the default shell is **`/bin/bash --login -eo pipefail`**. The shell is a non-interactive *login shell*. The shell will **execute** `/etc/profile/` followed by `~/.bash_profile` before every step.
+        > For jobs that run on ***macOS***, the default shell is **`/bin/bash --login -eo pipefail`**. The shell is a non-interactive *login shell*. The shell will **execute** `/etc/profile/` followed by `~/.bash_profile` before every step.
 
-    [Docs](https://circleci.com/docs/configuration-reference/#default-shell-options)
+        [Docs](https://circleci.com/docs/configuration-reference/#default-shell-options)
 
