@@ -447,7 +447,7 @@ TEST=ka1amita
         export TEST=kalamita
         ```
         `'` has no special meaning inside `""`, but `echo "'$USER'"` results in `'user'`!
-[^54]: host:~/.bashrc
+[^54]:  `host:~/.bashrc`
         ```
         (only a `newline`!)
         ```
@@ -481,7 +481,7 @@ TEST=ka1amita
 1. `ssh $EC2_USER@$EC2_HOST_STG "cat test.$USER"`[^63]
 1. `ssh $EC2_USER@$EC2_HOST_STG 'cat test.$USER'`[^64]
 1. `ssh $EC2_USER@$EC2_HOST_STG cat $(echo test.$USER)`[^65]
-1. `"cat 'test.$USER'"`[^66]
+1. `ssh $EC2_USER@$EC2_HOST_STG "cat 'test.$USER'"`[^66]
 
 ```
 #host:test.local
