@@ -6,6 +6,11 @@
 
 [Docs on SSH access](https://circleci.com/docs/ssh-access-jobs/)
 
+### How-to parse terraform outpu json
+
+1. `jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' environment_variables.dev`
+1. `kalamita@Matejs-MacBook-Air backend % cat environment_variables.dev | jq '.["dns_address"]'`
+
 
 ### How-to add *keys* to *SSH Agent*
 
@@ -46,6 +51,10 @@
 > While *CircleCI* does **not support** *interpolation* when setting *environment variables* (*vars*), it is possible to set variables for the **current** *shell* by using `BASH_ENV`. This is useful for both **modifying** your `PATH` and *setting environment* variables that **reference other variables**.
 
 > Depending on your *shell*, you may have to **append** the new *var* to a *shell* *startup file* like `~/.tcshrc` or `~/.zshrc` (or even `~/.bashrc`?).
+
+> On *Linux*, the default *shell* is not a *login shell* (`--login` or `-l` are not specified). Hence, the shell will **not source** your `~/.bash_profile`, `~/.bash_login`, `~/.profile` files.
+
+> For jobs that run on *macOS*, the shell is a non-interactive login shell. The shell will execute /etc/profile/ followed by ~/.bash_profile before every step.
 
 > *CircleCI* uses *bash* to source `BASH_ENV` in **every** *step*. Allowing you to use *interpolation* and share *vars* **across run** *steps*[^1].
 
@@ -501,3 +510,49 @@ Correct!
 : Correct!
 : Correct!
 : > grep -v ^# test.kalamita
+
+### How-to continue job after a failed steps
+
++ Using logical *OR* `||` iside a shell command
+    `command --fail || true` # always results in `exit 0`
+
++ **pipefail**
+    
+    + The whole step does **not fail** on `exit` != `0`
+        `set +e` # override shell configuratio or add a *run* step to a command
+    ```yml
+    - run:
+      command: |
+        echo Running test
+        set +e
+        mkdir -p /tmp/test-results
+        make test
+    ```
+
+    + `when` under `job`
+        + dafault `on_success`
+        + `always` for e.g. **upload** *logs* or *code-coverage *data somewhere.
+        + `on_fail` for e.g. **store** some diagnostic data to help debug test failures, or to *run custom notifications*
+
+    + `when` under `step`
+    ...
+
+    + `background` execution will **immediately** **proceed** to the next step
+
+    + **`-e`**
+    > Exit **immediatly** if a *pipeline* (which may consist of a single simple command), a subshel command enclosed in parentheses, or **one** of the commands executed as part of a command list enclosed by braces exits with a **non-zero status**.
+    
+    override shell configuratio or add `set +e` *run* step to a command
+
+    + **`-o pipefail`**
+
+    > If `pipefail` is enabled, the pipeline’s *return status* is the value of the **last** (**rightmost**) command to `exit` with a **non-zero status**, or zero if all commands exit successfully. The shell **waits** for **all** commands in the pipeline to terminate **before** **returning** a value.
+
+    override shell configuratio or add `set +o pipefail` *run* step to a command
+
+    > For jobs that run on ***Linux***, the default value of the *shell* option is **`/bin/ bash -eo pipefail`** if `/bin/bash` is present in the build container. Otherwise it  is **`/bin/sh -eo pipefail`**.
+
+    > For jobs that run on ***macOS***, the default shell is **`/bin/bash --login -eo pipefail`**. The shell is a non-interactive *login shell*. The shell will **execute** `/etc/profile/` followed by `~/.bash_profile` before every step.
+
+    [Docs](https://circleci.com/docs/configuration-reference/#default-shell-options)
+
