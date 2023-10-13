@@ -338,43 +338,36 @@ nohup java -jar *.jar & # note the `&`
 > `<<` **read** the *multi-line input* that begins from the next line onward, and treat it as if it's **code in a separate file**
 > `EoF` **stop reading** immediately after the word `EoF` is found in the *multi-line input*
 
-### How-to check if process is running
+### How-to find a proccess and check it's running
 + List ALL running *processes*
-    `ps aux`
+    + `ps aux`
 + List all running *processes* that have a given *file* **open**:
-    `lsof $(find path/to/file -type f -name "*.jar")`
+    + `lsof $(find path/to/file -type f -name "*.jar")`
 + List all running *processes* **with** a *PID*
-    `cat my_app.pid | xargs ps`
+    + `cat my_app.pid | xargs ps`
 + List all running *processes* **on** *port*
-    `lsof -i :$MY_PORT -S`
+    + `lsof -i :MY_PORT -S`
+    + `lsof -i :MY_PORT -S`
+    + `netstat -nlp | grep :MY_PORT`
+
+##### kill running *App* instance based on *port*
+
+1. find out the *PID*
+1. `kill my_PID`
 
 ### How-to kill process / restart 
 + Restart machine
-    `reboot`   
+    + `reboot`   
 + Terminate using the default `SIGTERM` (*terminate*) signal
-    `killall -v java || true` # to avoid `exit 1` if there is no such process; there is another option to force *CircleCI* to run after *failed job*
+    + `killall -v java || true` 
+        + `|| true` appended to avoid `exit 1` if there is no such process; there is another option to force *CircleCI* to run after *failed job*
 + Terminate a program based on *PID* using the default `SIGTERM` (*terminate*) signal:
-    `kill process_id`
+    + `kill process_id`
 ---
 
 ## Misc
 
-##### epanding the inputs
-```sh
-ssh $SSH_USER@$SSH_HOST java -jar $(find . -name *.jar) # find on local
 
-ssh $SSH_USER@$SSH_HOST 'java -jar $(find . -name *.jar)' # find on host
-
-ssh $SSH_USER@$SSH_HOST "java -jar $(find . -name *.jar)" # find on local
-
-```
-
-##### kill running *App* instance based on *port*
-1. find out the *PID*
-    +   `fuser 8080/tcp`
-    +   `lsof -i :8080 -S`
-    +   `netstat -nlp | grep :8080`
-2.  `kill my_PID`
 
 ---
 
@@ -405,6 +398,15 @@ ssh $SSH_USER@$SSH_HOST "java -jar $(find . -name *.jar)" # find on local
 
 [Stackoverflow on value interpolation / expansion](https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash)
 
+##### eppanding an inputs
+```sh
+ssh $SSH_USER@$SSH_HOST java -jar $(find . -name *.jar) # find on local
+
+ssh $SSH_USER@$SSH_HOST 'java -jar $(find . -name *.jar)' # find on host
+
+ssh $SSH_USER@$SSH_HOST "java -jar $(find . -name *.jar)" # find on local
+```
+
 ##### export *vars* **on** *host* through *ssh*
 
 1. `ssh $SSH_USER@$SSH_HOST "export \$(grep -v ^# .env.$ENV | xargs)"`[^40]
@@ -418,29 +420,28 @@ ssh $SSH_USER@$SSH_HOST "java -jar $(find . -name *.jar)" # find on local
 #####
 
 1. `echo 'TEST=$USER' > test.user`
-   `ssh $EC2_USER@$EC2_HOST_STG "echo $(cat test.user) > test.user"`[^50] 
+   `ssh $EC2_USER@$EC2_HOST "echo $(cat test.user) > test.user"`[^50] 
 1. `echo TEST=$USER > test.user`
-   `ssh $EC2_USER@$EC2_HOST_STG "echo $(cat test.user) > test`[^51]
+   `ssh $EC2_USER@$EC2_HOST "echo $(cat test.user) > test.user`[^51]
 
-[^50]: #host's USER because only the `cat` command was run on local
-```
-#test.user
-TEST=$USER
-```
-[^51]:
-```
-#test.user
-TEST=ka1amita
-```
+[^50]: `test.user`:
+    ```
+    TEST=$USER
+    ```
+    host's `USER` because only the `cat` command was run on local
+[^51]: `test.user`:
+    ```
+    TEST=ka1amita
+    ```
 
 #####
 
-1. `ssh $EC2_USER@$EC2_HOST_STG "echo export TEST=$USER >> ~/.bashrc"`[^52]
-1. `ssh $EC2_USER@$EC2_HOST_STG "echo 'export TEST=$USER' >> ~/.bashrc"`[^53]
-1. ```ssh $EC2_USER@$EC2_HOST_STG "echo `export TEST=$USER` >> ~/.bashrc"```[^54]
-1. `ssh $EC2_USER@$EC2_HOST_STG echo export TEST=$USER >> ~/.bashrc`[^55]
-1. `ssh $EC2_USER@$EC2_HOST_STG 'echo export TEST=$USER' >> ~/.bashrc`[^56]
-1. `ssh $EC2_USER@$EC2_HOST_STG 'echo export TEST=$USER >> ~/.bashrc'`[^57]
+1. `ssh $EC2_USER@$EC2_HOST "echo export TEST=$USER >> ~/.bashrc"`[^52]
+1. `ssh $EC2_USER@$EC2_HOST "echo 'export TEST=$USER' >> ~/.bashrc"`[^53]
+1. ```ssh $EC2_USER@$EC2_HOST "echo `export TEST=$USER` >> ~/.bashrc"```[^54]
+1. `ssh $EC2_USER@$EC2_HOST echo export TEST=$USER >> ~/.bashrc`[^55]
+1. `ssh $EC2_USER@$EC2_HOST 'echo export TEST=$USER' >> ~/.bashrc`[^56]
+1. `ssh $EC2_USER@$EC2_HOST 'echo export TEST=$USER >> ~/.bashrc'`[^57]
 [^52]: see [^53]
 [^53]: `host:~/.bashrc:`
         ```
@@ -464,48 +465,49 @@ TEST=ka1amita
         export TEST=host
         ```
 
-##### nit
+##### ssh with a command and it's arguments
 
-`ssh $EC2_USER@$EC2_HOST_STG cat ~/.bashrc`[^60]
+`ssh $EC2_USER@$EC2_HOST cat ~/.bashrc`[^60]
 [^60]: `~` interpolates on *local*, runs on *host*!
 
-##### nit
-
-`ssh $EC2_USER@$EC2_HOST_STG mv test.ka1amita test.kalamita`[^61]
+`ssh $EC2_USER@$EC2_HOST mv test.ka1amita test.kalamita`[^61]
 [^61]: `mv` runs on *host*
 
-`ssh $EC2_USER@$EC2_HOST_STG mv test.ka1amita test.kalamita &` command runs on + *host* and in the backgroud from the point of *local*!
+`ssh $EC2_USER@$EC2_HOST mv test.ka1amita test.kalamita &`[^59]
+[^59]: command runs on + *host* and in the backgroud from the point of *local*!
 
-##### nit
-1. `ssh $EC2_USER@$EC2_HOST_STG cat test.$USER`[^62]
-1. `ssh $EC2_USER@$EC2_HOST_STG "cat test.$USER"`[^63]
-1. `ssh $EC2_USER@$EC2_HOST_STG 'cat test.$USER'`[^64]
-1. `ssh $EC2_USER@$EC2_HOST_STG cat $(echo test.$USER)`[^65]
-1. `ssh $EC2_USER@$EC2_HOST_STG "cat 'test.$USER'"`[^66]
+##### `ssh` with `cat`
 
+`host:test.local`:
 ```
-#host:test.local
 Correct!
 ```
-[^62]: > Correct!
-[^63]: > Correct!
-[^64]: > cat: test.ec2-user: No such file or directory
-[^65]: > Correct!
-[^66]: > Correct!
+1. `ssh $EC2_USER@$EC2_HOST cat test.$USER`[^62]
+1. `ssh $EC2_USER@$EC2_HOST "cat test.$USER"`[^63]
+1. `ssh $EC2_USER@$EC2_HOST 'cat test.$USER'`[^64]
+1. `ssh $EC2_USER@$EC2_HOST cat $(echo test.$USER)`[^65]
+1. `ssh $EC2_USER@$EC2_HOST "cat 'test.$USER'"`[^66]
 
-#####
+[^62]: Correct!
+[^63]: Correct!
+[^64]: cat: test.ec2-user: No such file or directory
+[^65]: Correct!
+[^66]: Correct!
+
+##### `ssh` with `echo` of `grep`
+`
+`host:test.local`:
 ```
-#host:test.local
 Correct!
 #Incorrect
 ```
-1. `ssh $EC2_USER@$EC2_HOST_STG $(echo grep -v ^# test.$USER)`
-1. ```ssh $EC2_USER@$EC2_HOST_STG `echo grep -v ^# test.$USER` ```
-1. `ssh $EC2_USER@$EC2_HOST_STG "echo grep -v ^# test.$USER"`
+1. `ssh $EC2_USER@$EC2_HOST $(echo grep -v ^# test.$USER)`[^67]
+1. ```ssh $EC2_USER@$EC2_HOST `echo grep -v ^# test.$USER` ```[^68]
+1. `ssh $EC2_USER@$EC2_HOST "echo grep -v ^# test.$USER"`[^69]
 
-: Correct!
-: Correct!
-: > grep -v ^# test.kalamita
+[^67]: Correct!
+[^68]: Correct!
+[^69]: *`grep -v ^# test.kalamita`*
 
 ### How-to continue job after a failed steps
 
