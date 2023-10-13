@@ -442,30 +442,27 @@ TEST=ka1amita
 1. `ssh $EC2_USER@$EC2_HOST_STG 'echo export TEST=$USER' >> ~/.bashrc`[^56]
 1. `ssh $EC2_USER@$EC2_HOST_STG 'echo export TEST=$USER >> ~/.bashrc'`[^57]
 [^52]: see [^53]
-[^53]: `'` has no special meaning inside `""`, but `echo "'$USER'"` results in `'user'`!
-> ```
-> #host:~/.bashrc
-> export TEST=kalamita
-> ```
-[^54]: > ```
-> #host:~/.bashrc
-> (only a `newline`!)
-> ```
-[^55]:
-> ```
-> #local:~/.bashrc
-> export TEST=local
-> ```
-[^56]:
-> ```
-> #local:~/.bashrc
-> export TEST=host
-> ```
-[^57]:
-> ```
-> #host:~/.bashrc
-> export TEST=host
-> ```
+[^53]: `host:~/.bashrc:`
+        ```
+        export TEST=kalamita
+        ```
+        `'` has no special meaning inside `""`, but `echo "'$USER'"` results in `'user'`!
+[^54]: host:~/.bashrc
+        ```
+        (only a `newline`!)
+        ```
+[^55]: `local:~/.bashrc`
+        ```
+        export TEST=local
+        ```
+[^56]: `local:~/.bashrc`
+        ```
+        export TEST=host
+        ```
+[^57]: `host:~/.bashrc`
+        ```
+        export TEST=host
+        ```
 
 ##### nit
 
