@@ -78,7 +78,7 @@ version: 2.1
 
 > The `circleci env subst` command can accept text input from `stdin` or as an *argument*.
 
-`template.file` e.g. as *json*:
+`template.file` e.g. a *json*:
 ```json
 {
   "foo": "$FOO",
@@ -343,10 +343,9 @@ nohup java -jar *.jar & # note the `&`
     + `ps aux`
 + List all running *processes* that have a given *file* **open**:
     + `lsof $(find path/to/file -type f -name "*.jar")`
-+ List all running *processes* **with** a *PID*
++ List all running *processes* **with** a *PID*s
     + `cat my_app.pid | xargs ps`
 + List all running *processes* **on** *port*
-    + `lsof -i :MY_PORT -S`
     + `lsof -i :MY_PORT -S`
     + `netstat -nlp | grep :MY_PORT`
 
@@ -514,8 +513,10 @@ Correct!
 + Using logical *OR* `||` iside a shell command
     `command --fail || true` # always results in `exit 0`
 
-+ **pipefail**
++ **`pipefail`**
     
+    [Docs](https://circleci.com/docs/configuration-reference/#default-shell-options)
+
     + The whole step does **not fail** on `exit` != `0`
         `set +e` # override shell configuratio or add a *run* step to a command
     ```yml
@@ -533,12 +534,12 @@ Correct!
         + `on_fail` for e.g. **store** some diagnostic data to help debug test failures, or to *run custom notifications*
 
     + `when` under `step`
-    ...
+        ...
 
     + `background` execution will **immediately** **proceed** to the next step
 
     + **`-e`**
-        > Exit **immediatly** if a *pipeline* (which may consist of a single simple command), a subshel command enclosed in     parentheses, or **one** of the commands executed as part of a command list enclosed by braces exits with a **non-zero   status**.
+        > Exit **immediatly** if a *pipeline* (which may consist of a single simple command), a subshel command enclosed in parentheses, or **one** of the commands executed as part of a command list enclosed by braces exits with a **non-zero status**.
     
         override shell configuratio or add `set +e` *run* step to a command
 
@@ -552,5 +553,5 @@ Correct!
 
         > For jobs that run on ***macOS***, the default shell is **`/bin/bash --login -eo pipefail`**. The shell is a non-interactive *login shell*. The shell will **execute** `/etc/profile/` followed by `~/.bash_profile` before every step.
 
-        [Docs](https://circleci.com/docs/configuration-reference/#default-shell-options)
+        
 
