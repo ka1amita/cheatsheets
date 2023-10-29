@@ -25,13 +25,13 @@
         * [Variables](#variables)
         * [**`source`**](#source)
     * [Examples](#examples)
-      * [n/a](#na)
-      * [sourcing from files before executing commands](#sourcing-from-files-before-executing-commands)
-      * [n/a](#na-1)
-      * [passing of arguments](#passing-of-arguments)
-      * [`$@` and `$*` are the same](#-and--are-the-same)
-      * [`"$@"` vs `"$*"`](#-vs-)
-      * [`$variable` vs `"$variable"`](#variable-vs-variable)
+        * [n/a](#na)
+        * [sourcing from files before executing commands](#sourcing-from-files-before-executing-commands)
+        * [n/a](#na-1)
+        * [passing of arguments](#passing-of-arguments)
+        * [`$@` and `$*` are the same](#-and--are-the-same)
+        * [`"$@"` vs `"$*"`](#-vs-)
+        * [`$variable` vs `"$variable"`](#variable-vs-variable)
 
 <!-- TOC -->
 
@@ -85,6 +85,7 @@
 + `*`[^asterisk]
 + `dirname $0`[^dirname]
 + `"$variable"` vs `$variable`
++ `${#my_array[@]}`
 
 [^dirname]: `The `dirname` _argument_ `$0` is just the **full name** of the _sourcing_ script.
 [^asterisk]: X _list_ of all _files_ and _directories_ in current location
@@ -138,9 +139,9 @@ $ my_function # simple name is enough as a function call (just like any command)
 
 + `$1`...`$N` **returns** the **Nth** _argument_ (**indexed** from **1**!)
 + `$#` returns the total number of arguments
-+ `$*`, `$@` returns the _list_ of all **arguments**
-+ `"*"`
-+ `"$@"`
++ `$*`, `$@` returns the **_list_** (or a **_space_** **delimited** _string_) of all _arguments_
++ `"*"` see below
++ `"$@"` see below
 
 + `wrapped_script "$@"`
 
@@ -253,8 +254,17 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
 
 ### Arithmetics
 
+| Operator | Operation      |
+|----------|----------------|
+| `+`      | plus           |
+| `-`      | minus          |
+| `*`      | multiplication |
+| `/`      | division       |
+| `%`      | modulo         |
+| `**`     | exponentiation |
+
 + ~~`$(( 1 * 0.5 ))`~~
-+ `echo $(( 1 * 0.5 ))`
++ `echo $((1* 0.5 ))`
 + ~~`expr 1 \* 0.5`~~
 + `expr 1 \* 1` **evaluates** a mathematical expression and **prints** the result to _stdout_, but
   note
@@ -262,6 +272,15 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
 + `let c=$a+($b*$c)` or `let c++` **evaluates** a mathematical expression and **assigns** the result
   to a variable
 + `echo 'scale=30;sqrt(2)' | bc` allows to use decimal numbers with big number of significant digits
+
+### Basic String Operations
+
++ `expr index "$STRING" "$SUBSTRING"`  **finds** the numerical **position** in `$STRING` of **any** 
+  **single** _character_ in `$SUBSTRING` that **matches**. Note that the `expr` _command_ is used 
+  in this case.
++ `echo ${STRING:$POS:$LEN}` extract substring of length $LEN from $STRING starting after position 
+  `$POS`. Note that first position is `0`.
+  + If `:$LEN` is **omitted**, extract substring **from** `$POS` to **end of line**
 
 ### Variables
 
@@ -277,7 +296,8 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
   variable names are **reserved** for _internal_ _shell_ _variables_, and you run a risk of
   overwriting them.
 + _Variables_ can be **assigned** with the value of a _command_ **output**. This is referred to as  
-  **_substitution_**. Substitution can be done by **encapsulating** the command with ``` `` ``` or `$()`
+  **_substitution_**. Substitution can be done by **encapsulating** the command with ``` `` ```
+  or `$()`
     + Note that when the _script_ runs, it will **run** the command **inside** the `$()`and
       **capture** its _output_.
 
@@ -327,6 +347,20 @@ result is the `default`.
 `${variable:+override}` indicates that if variable is **set** then `override` will be the **result
 **, **otherwise** the
 result is the **empty** string.
+
+### Arrays
+
++ An _array_ can **hold** **several** _values_ under **one** _variable_.
++ An _array_ is **initialized** by assign _space_-**delimited** values **enclosed** in `()`
++ Array members need **not** be _consecutive_ or _contiguous_. Some _elements_ of the _array_ can be
+  **left** **uninitialized**.
++ `${#my_array[@]}` outputs **list** of _elements_ in the _array_
++ `${#my_array[@]}` outputs the **total** **number** of _elements_ in the _array_
+    + note that _curly brackets_ `{}` are **needed**
++ `${my_array[3]}` outputs the **value** of the 4th _element_
+    + note that _curly brackets_ `{``}` are **needed**
++ arrays are **indexed** from `0`
++
 
 ## Examples
 
@@ -446,4 +480,19 @@ wrapped $*:
 greeting='Hello   world!'
 echo $greeting" now with spaces: $greeting"
 #> Hello world! now with spaces: Hello   world!
+```
+
+##### arrays
+
+```shell
+echo ${#my_array[@]}
+```
+
+```shell
+i=5
+echo ${my_array[$i]}
+```
+
+```shell
+echo ${NUMBERS[@]}
 ```
