@@ -278,9 +278,19 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
 + `expr index "$STRING" "$SUBSTRING"`  **finds** the numerical **position** in `$STRING` of **any** 
   **single** _character_ in `$SUBSTRING` that **matches**. Note that the `expr` _command_ is used 
   in this case.
-+ `echo ${STRING:$POS:$LEN}` extract substring of length $LEN from $STRING starting after position 
++ `echo ${STRING:$POS:$LEN}` extract substring of length `$LEN` from `$STRING` starting after position 
   `$POS`. Note that first position is `0`.
   + If `:$LEN` is **omitted**, extract substring **from** `$POS` to **end of line**
++ `expr string : s` **finds** the numerical _position_ in `$STRING` of **any** **single** _character_ in 
+  `$SUBSTRING` that **matches**.
++ `[[ $stringZ =~ $re ]] && echo ${#BASH_REMATCH}`
++ `echo STRING[@]/one/replace` **replaces** **first** occurrence of _substring_ with replacement
++ `echo ${STRING[@]//all/replace}` **replaces** **all** occurrences of _substring_
++ `echo ${STRING[@]// all_remove/}` **deletes** **all** occurrences of _substring_ (**replaces** with
++ `echo ${STRING[@]/#beginning/replace}` **replaces** occurrence of substring if at the **beginning** of `$STRING`
++ `echo ${STRING[@]/%end/replace}` **replaces** occurrence of substring if at the **end** of `$STRING`
+empty string)
++ 
 
 ### Variables
 
