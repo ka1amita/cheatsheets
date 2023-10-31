@@ -6,6 +6,7 @@
     * [Rules of Thumb](#rules-of-thumb)
     * [Glossary](#glossary)
     * [Overview](#overview)
+        * [commands](#commands)
     * [Theory](#theory)
         * [Outputs](#outputs)
         * [Inputs](#inputs)
@@ -17,13 +18,21 @@
             * [example](#example)
         * [Comparisons](#comparisons)
         * [Conditional statements](#conditional-statements)
+            * [If](#if)
+            * [Case](#case)
         * [Loops](#loops)
             * [For](#for)
             * [While](#while)
+            * [Controlling loop execution](#controlling-loop-execution)
             * [Until](#until)
         * [Arithmetics](#arithmetics)
+        * [Basic String Operations](#basic-string-operations)
         * [Variables](#variables)
         * [**`source`**](#source)
+        * [Arrays](#arrays)
+        * [**`trap`**](#trap)
+        * [Pipelines (Pipes)](#pipelines-pipes)
+        * [Process Substitution](#process-substitution)
     * [Examples](#examples)
         * [n/a](#na)
         * [sourcing from files before executing commands](#sourcing-from-files-before-executing-commands)
@@ -32,6 +41,13 @@
         * [`$@` and `$*` are the same](#-and--are-the-same)
         * [`"$@"` vs `"$*"`](#-vs-)
         * [`$variable` vs `"$variable"`](#variable-vs-variable)
+        * [arrays](#arrays-1)
+        * [_if clause_](#if-clause)
+        * [_loop_ with _if-clause_ and **`break`**](#loop-with-if-clause-and-break)
+        * [**`case`**](#case-1)
+        * [testing _filenames_](#testing-filenames)
+        * [Pipes](#pipes)
+        * [Process Substitution](#process-substitution-1)
 
 <!-- TOC -->
 
@@ -58,6 +74,9 @@
 
 ## Overview
 
++ `^C` keybinding
++ `^D` keybinding
++ `^Z` keybinding
 + `#!` **sha-bang**
 + `#`
 + `${variable:-word}`
@@ -74,18 +93,63 @@
 + `$?`
 + `!`
 + `exit`
-+ _command substitution_
++ _command substitution_`$()`
 + `for` `in` `do` `done`
 + `while` `do` `done`
 + `until` `do` `done`
-+ `$(( $a * $b ))`
++ `break`
++ `continue`
++ `$(( $a * $b ))` or `$(($a*$b))`
 + `expr $a \* $b`
-+ `let c++`
++ `let c++`or `c=$(($c + 1))`
 + `echo 'scale=50;expression' | bc`
 + `*`[^asterisk]
 + `dirname $0`[^dirname]
 + `"$variable"` vs `$variable`
-+ `${#my_array[@]}`
++ `my_array=(a b c)`
++ ~~`my_array="a b c"`~~
++ `${my_array[@]}`
++ `${#my_array[*]}`
++ `arr=()`
++ `arr=(1 2 3)`
++ `${arr[2]}`
++ `${arr[@]}`
++ `${!arr[@]}`
++ `${#arr[@]}`
++ `arr[0]=3`
++ `arr+=(4,5)`
++ `str=$(ls)`
++ `arr=( $(ls) )`
++ `${arr[@]:s:n}`
++ `echo ${STRING:$POS:$LEN}`
++ `echo ${STRING::$LEN+1}`
++ `echo ${STRING:$POS}`
++ `echo ${STRING[@]/one/replace}`
++ `echo ${STRING[*]//all/replace}`
++ `echo ${STRING[@]//all_remove/}`
++ `echo ${STRING[*]/#beginning/replace}`
++ `echo ${STRING[@]/%end/replace}`
++ `[[ $string =~ ^s.* ]] && echo ${BASH_REMATCH}`
++ `[[ $string =~ ^s.* ]] && echo ${#BASH_REMATCH}`
++ `|`
++ `|&`, `2>&1 |`
++ _process substitution_ `<(command)`, `>(command)`
+
+### commands
+
++
++ `trap`
++
++ `head`, `tail`
++ `wc`
++ `sort`
++ `diff`
++ `tee`
++ `tr` translate
++ `sed`
++ `awk`
++ `grep`
++ `sort`
 
 [^dirname]: `The `dirname` _argument_ `$0` is just the **full name** of the _sourcing_ script.
 [^asterisk]: X _list_ of all _files_ and _directories_ in current location
@@ -113,11 +177,13 @@
 
 ### Functions
 
-> Allow us to **organize** and **reuse** _code_
++ A function is a subroutine
++ Allow us to **organize** and **reuse** _code_
+
 > The moment your _script_ contains two _lines_ of the **same** _code_, you may **consider** to
 > **enact** a _function_ instead.
 
-> function _definition_ must **precede** function _call_
++ function _definition_ must **precede** function _call_
 
 #### Definition
 
@@ -135,54 +201,54 @@ $ my_function # simple name is enough as a function call (just like any command)
 
 #### Parameters
 
-[//]: # (`$0` returns TODO)
-
-+ `$1`...`$N` **returns** the **Nth** _argument_ (**indexed** from **1**!)
-+ `$#` returns the total number of arguments
-+ `$*`, `$@` returns the **_list_** (or a **_space_** **delimited** _string_) of all _arguments_
-+ `"*"` see below
-+ `"$@"` see below
+| Expression | Meaning                                                                                                                                                                                  |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `$0`       | The **_filename_** of the **current** _script_.                                                                                                                                          |
+| `$n`       | The Nth _argument_ passed to script was invoked or function was called (**indexed** from **1**!).                                                                                        |
+| `$#`       | The **total** number of _argument_ **passed** to _script_ or function.                                                                                                                   |
+| `$@`, `$*` | **joins** all arguments by **single** _spaces_ as well and then **splits** the string as the _shell_ does, thus it **splits** an _argument_ containing _spaces_ into several _arguments_ |
+| `"*"`      | **passes** over **exactly** **one** _argument_, containing all original _arguments_, separated by **single** _spaces_                                                                    |)
+| `"$@"`     | **passes over** all _arguments_ in the **exact** way it had received them, i.e. as several arguments, each of them **containing** **all** the _spaces_ and other _ugliness_ they have.   |
+| `$?`       | The exit status of the last command executed.                                                                                                                                            |
+| `$$`       | The process ID of the current shell. For shell scripts, this is the process ID under which they are executing.                                                                           |
+| `$!`       | The process number of the last background command.                                                                                                                                       |
 
 + `wrapped_script "$@"`
-
-> this is correct and will hand over all arguments in the way we received them, i. e. as several
-> arguments, each of them containing all the spaces and other uglinesses they have.
+  **passes over** all _arguments_ in the **exact** way it had received them, i.e. as several
+  arguments, each of them **containing** **all** the _spaces_ and other _ugliness_ they have
 
 + `wrapped_script "$*"`
+  **passes** over **exactly** **one** _argument_, containing all original _arguments_, separated by
+  **single** _spaces_
 
-> this will hand over exactly one argument, containing all original arguments, separated by single
-> spaces.
++ `wrapped_script $*` and `$@`
+  **joins** all arguments by **single** _spaces_ as well and then **splits** the string as the
+  _shell_ does, thus it **splits** an _argument_ containing _spaces_ into several _arguments_
 
-+ `wrapped_script $*`
+##### example
 
-> this will join all arguments by single spaces as well and will then split the string as the shell
-> does on the command line, thus it will split an argument containing spaces into several arguments.
+`wrapper "o n e" two    three "fo   ur"`
+
++ `"$@"`: `wrapped "o n e" two three "fo   ur"`
++ `"$*"`: `wrapped "o n e two three fo   ur"`
+    + These _spaces_ here ware **part**(^^^) of the original argument and are **not changed**.
++ `$*`, `$@`: `wrapped o n e two three fo ur`
 
 ### Cron
 
 `crontab -l` and `crontab -e` to list and set *cronjob*s
 `/var/log/syslog` _cron_ _logs_ on linux
 
-##### example
-
-`wrapper "one two    three" four five "six seven"`
-
-+ `"$@"`: `wrapped "one two    three" four five "six seven"`
-+ `"$*"`: `wrapped "one two    three four five six seven"`
-    + These _spaces_ here are^^^^ **part** of the first argument and are **not changed**.
-+ `$*`:   `wrapped one two three four five six seven`
-
 ### Comparisons
 
-| Description              | Numeric Comparison        | String Comparison             |
-|--------------------------|---------------------------|-------------------------------|
-| Less than                | `-lt`                     | N/A                           |
-| Greater than             | `-gt`                     | N/A                           |
-| Equal                    | `-eq`                     | `=`                           |
-| Not equal                | `-ne`                     | `!=`                          |
-| Less or equal            | `-le`                     | N/A                           |
-| Greater or equal         | `-ge`                     | N/A                           |
-| Shell comparison example | `[ 100 -eq 50 ]; echo $?` | `[ "GNU" = "UNIX" ]; echo $?` |
+| Description           | Numeric Comparison | Example                   | Result   |
+|-----------------------|--------------------|---------------------------|----------|
+| Less than             | `-lt`              |                           |          |
+| Greater than          | `-gt`              |                           |          |
+| Equal                 | `-eq`              | `[ 100 -eq 50 ]; echo $?` | `exit 1` |
+| Not equal (different) | `-ne`              |                           |          |
+| Less or equal         | `-le`              |                           |          |
+| Greater or equal      | `-ge`              |                           |          |
 
 + note the _whitespaces_ around `[]` are **obligatory** `[ ` ` ]`
 + > **Comparing** _strings_ with _integers_ using **numeric** _comparison_ _operators_ will result
@@ -190,19 +256,46 @@ $ my_function # simple name is enough as a function call (just like any command)
 + > When comparing values, you may want to use **`echo`** _command_ to **confirm** that your
   variables hold **expected** values before using them as part of the comparison operation.
 
-| Description      | Numeric Comparison | Example             | Result   |
-|------------------|--------------------|---------------------|----------|
-| Empty string     | `-z`               | `[ -z "" ]`         | `exit 0` |
-| Empty string     | `-z`               | `[ -z "string" ]`   | `exit 1` |
-| File string      | `-f`               | `[ -f file ]`       |          |
-| Directory string | `-d`               | `[ -d directory/ ]` |          |
+| Description                   | String Comparison | Example                              | Result  |
+|-------------------------------|-------------------|--------------------------------------|---------|
+| Any strings                   |                   | `[ "any" ]`,`[ any ]`                | `true`  |
+| Any strings                   |                   | `[ " " ]`                            | `true`  |
+| Empty strings                 |                   | `[ "" ]`, `[   ]`                    | `false` |
+| Equal strings                 | `=` or `==`       | `[ "GNU" = "UNIX" ]`                 | `false` |
+| Not equal (different) strings | `!=`              | `[ "GNU" != "UNIX" ]`                | `true`  |
+| Empty string                  | `-z`              | `[ -z "" ]`                          | `true`  |
+| Empty string                  | `-z`              | `[ -z "string" ]`                    | `false` |
+| File exists                   | `-e`, `-f`        | `[ -e filename ]`, `[ -f filename ]` |         |
+| Directory exists              | `-d`              | `[ -d directory ]`                   |         |
+| File has read permission      | `-r`              | `[ -r filename ]`                    |         |
+| File has read permission      | `-r`              | `[ -r file ]`                        |         |
 
-`!` **reverts** the _logic_ e.g. `[ ! -d "/home/$1" ]`
-`exit` _command_ causing _script_ execution **termination**
++ An **empty** _string_ or a string **consisting** of _spaces_ or an **undefined** _variable_ name,
+  are evaluated as **_false_** with `-z`
++ `!` **reverts** the _logic_ e.g. `[ ! -d "/home/$1" ]`
++ `exit` _command_ causing _script_ execution **termination**
++ _whitespace_ around `=` is **required**
++ use `""` around _string_ _variables_ to **avoid** _shell_ **expansion** of _special characters_
+  as `*`
 
 ### Conditional statements
 
-`if` `then` `else`
+The expression used by the conditional construct is evaluated to either true or false.
+
+Logical operators
+
++ `&&` _AND_ (_conjunction_)
++ `||` _OR_ (_disjunction_)
++ `!` _NOT_
++ **Combined** conditional expressions should be surrounded by double brackets `[[` `]]`
+  (outputs _stderr_ `exit 2` otherwise)
+    + `[[ "a" && "b" ]]` returns
+
++ `if`
++ `then`
++ `else`
+
+#### If
 
 ```shell
 if [ condition ]; then
@@ -212,6 +305,19 @@ elif [ condition ]; then
 else
     action
 fi # don't forget!
+```
+
+#### Case
+
+```shell
+case "$variable" in
+    "$condition1" )
+        command...
+    ;;
+    "$condition2" )
+        command...
+    ;;
+esac
 ```
 
 ### Loops
@@ -235,6 +341,11 @@ done
 ```
 
 _action_ is **executed** only **when** the _condition_ is `true`
+
+#### Controlling loop execution
+
++ `continue` **skips** the rest of a particular _loop_ **iteration**
++ `break` **skips** the **entire** rest of _loop_
 
 #### Until
 
@@ -275,22 +386,35 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
 
 ### Basic String Operations
 
-+ `expr index "$STRING" "$SUBSTRING"`  **finds** the numerical **position** in `$STRING` of **any** 
-  **single** _character_ in `$SUBSTRING` that **matches**. Note that the `expr` _command_ is used 
++ ~~`expr index "$STRING" "$SUBSTRING"`~~  **finds** the numerical **position** in `$STRING` of *
+  *any**
+  **single** _character_ in `$SUBSTRING` that **matches**. Note that the `expr` _command_ is used
   in this case.
-+ `echo ${STRING:$POS:$LEN}` extract substring of length `$LEN` from `$STRING` starting after position 
++ `expr string : s` ~~**finds** the numerical _position_ of **any** **single** _character_
+  that **matches**~~.
++ `echo ${STRING:$POS:$LEN}` extract substring of length `$LEN` from `$STRING` starting after
+  position
   `$POS`. Note that first position is `0`.
-  + If `:$LEN` is **omitted**, extract substring **from** `$POS` to **end of line**
-+ `expr string : s` **finds** the numerical _position_ in `$STRING` of **any** **single** _character_ in 
-  `$SUBSTRING` that **matches**.
-+ `[[ $stringZ =~ $re ]] && echo ${#BASH_REMATCH}`
-+ `echo STRING[@]/one/replace` **replaces** **first** occurrence of _substring_ with replacement
-+ `echo ${STRING[@]//all/replace}` **replaces** **all** occurrences of _substring_
-+ `echo ${STRING[@]// all_remove/}` **deletes** **all** occurrences of _substring_ (**replaces** with
-+ `echo ${STRING[@]/#beginning/replace}` **replaces** occurrence of substring if at the **beginning** of `$STRING`
-+ `echo ${STRING[@]/%end/replace}` **replaces** occurrence of substring if at the **end** of `$STRING`
-empty string)
-+ 
+    + `echo ${STRING::$index}` if `:$POS` is **omitted**  then the _substring_ starts from index `0`
+    + `echo ${STRING::$index + 2}` **arithmetic** expressions can be evaluated inside _arguments_
+    + ~~`echo ${STRING:$POS:}`~~ means empty (zero length) _substring_
+    + `echo ${STRING:$POS}` if `:$LEN` is **omitted**, extract _substring_ **from** `$POS` to **end
+      of line**
++ `[[ $string =~ ^s.* ]]; echo $?` returns `0` if **matches**, **otherwise** returns `1`
++ `[[ $string =~ ^s.* ]] && echo ${BASH_REMATCH}` outputs the **matched** _substring_
++ `[[ $string =~ ^s.* ]] && echo ${#BASH_REMATCH}` outputs the **length** of **matched** _substring_
++ `echo ${STRING[@]/one/replace}` or `echo ${STRING[*]/one/replace}` **replaces** **first**
+  occurrence of _substring_ with replacement
++ `echo ${STRING[*]//all/replace}` or ... **replaces** **all** occurrences of _substring_
++ `echo ${STRING[@]//all_remove/}` or ... **deletes** **all** occurrences of _substring_ (**replaces
+  ** with
++ `echo ${STRING[*]/#beginning/replace}` or ... **replaces** occurrence of substring if at the *
+  *beginning** of `$STRING`
++ `echo ${STRING[@]/%end/replace}` or ... **replaces** occurrence of substring if at the **end**
+  of `$STRING`
+  empty string)
+    + note that all the above **replace** **consecutive** _whitespaces_ with a **single** one
++
 
 ### Variables
 
@@ -360,17 +484,72 @@ result is the **empty** string.
 
 ### Arrays
 
-+ An _array_ can **hold** **several** _values_ under **one** _variable_.
-+ An _array_ is **initialized** by assign _space_-**delimited** values **enclosed** in `()`
-+ Array members need **not** be _consecutive_ or _contiguous_. Some _elements_ of the _array_ can be
-  **left** **uninitialized**.
-+ `${#my_array[@]}` outputs **list** of _elements_ in the _array_
+[learnshell.org](https://www.learnshell.org/)
+[freecodecamp.org](https://www.freecodecamp.org/news/bash-scripting-tutorial-linux-shell-script-and-command-line-for-beginners/)
+[learn.microsoft.com](https://learn.microsoft.com/en-us/training/modules/bash-introduction/0-introduction)
+
+| Syntax                   | Result                                                                                                       |
+|--------------------------|--------------------------------------------------------------------------------------------------------------|
+| `arr=()`                 | Creates an **empty** _array_                                                                                 |
+| `arr=(1 2 3)`            | **Initializes** _array_                                                                                      |
+| `${arr[2]}`              | Retrieves **third** (_sic_) element                                                                          |
+| `${arr[@]}`, `${arr[*]}` | Retrieves **all** _elements_ (**divides** them on _whitespaces_ into more)                                   |
+| `"${arr[@]}"`            | Retrieves all _elements_, **exactly** as they were initialized (**doesn't** divide them on _whitespaces_)    |
+| `"${arr[*]}"`            | Retrieves **single** _element_ of all _elements_ separated by **single** _whitespaces_ (**single** _string_) |
+| `${!arr[@]}`             | **Retrieves** _array_ **_indices_**                                                                          |
+| `${#arr[@]}`             | Calculates _array_ **_size_**                                                                                |
+| `arr[0]=3`               | **Overwrites** 1st element                                                                                   |
+| `arr+=(4,5)`             | **Appends** value(s)                                                                                         |
+| `str=$(ls)`              | Assigns `ls` _output_ as a **_string_**                                                                      |
+| `arr=( $(ls) )`          | Assigns `ls` _output_ as an **_array_**                                                                      |
+| `${arr[@]:s:n}`          | Retrieves **subarray** of `n` elements starting at _index_ `s`                                               |
+
+[opensource.com (in the comments)](https://opensource.com/article/18/5/you-dont-know-bash-intro-bash-arrays)
+
++ an _array_ can **hold** **several** _values_ under **one** _variable_
++ an _array_ is **initialized** by assign _space_-**delimited** values **enclosed** in `()`
++ array members need **not** be _consecutive_ or _contiguous_. Some _elements_ of the _array_ can be
+  **left** **uninitialized**
++ arrays are **indexed** from `0`
++ `${my_array[@]}` or `${my_array[*]}` outputs **array** (list) of _elements_ in the _array_
+  variable
 + `${#my_array[@]}` outputs the **total** **number** of _elements_ in the _array_
     + note that _curly brackets_ `{}` are **needed**
 + `${my_array[3]}` outputs the **value** of the 4th _element_
     + note that _curly brackets_ `{``}` are **needed**
-+ arrays are **indexed** from `0`
-+
++ `my_array=(a b c)`
+    + ~~`my_array="a b c"`~~ is not a real _array_ despite `${my_array[@]}` works but
+      `"${my_array[@]}"` doesn't)
+
+### **`trap`**
+
+synopsis: `trap <arg/function> <signal>`
+
+| Signal  | Keybinding | Number | Meaning                            |
+|---------|------------|--------|------------------------------------|
+| SIGINT  | ^C         | 2      | **interrupt** signal               |
+| SIGQUIT | ^D         | 3      | **quit** signal                    |
+| SIGTERM |            | 15     |                                    |
+| SIGFPE  |            | 8      | **illegal mathematical operation** |   
+| ...     |            |        |                                    |
+
+ref: `kill -l`
+
+usage: `trap "rm -f folder; exit" 2` to **cleanup** _temporary files_:
+
+### Pipelines (Pipes)
+
+**_Pipeline_** `command1 | command2` is a way to **chain** _commands_ and **connect** _output_ from
+one _command_ to the _input_ of the next.
+By default _pipelines_ **redirects** only the standard _output_ (**_stdout_**), if you want to
+include the
+standard _error_ (**_stderr_**) you need to use the form `|&` which is a **shorthand** for `2>&1 |`
+
+### Process Substitution
+
+**_Process substitution_** allows a process’s _input_ or _output_ to be **referred** to using a
+_filename_.
+It has two forms: `<(cmd)` **output** form and **input** `>(cmd)`.
 
 ## Examples
 
@@ -473,15 +652,11 @@ done
 ##### `"$@"` vs `"$*"`
 
 ```shell
-wrapper "one two    three" four five "six seven"
+`wrapper "o n e" two    three "fo   ur"`
 
-wrapped "$@"
-#> wrapped "one two    three" four five "six seven"
-wrapped "$*"
-#> wrapped "one two    three four five six seven" 
-# The _spaces_ are **part** of the first argument and are **not changed**.
-wrapped $*:
-#> wrapped one two three four five six seven
++ `"$@"`: `wrapped "o n e" two three "fo   ur"`
++ `"$*"`: `wrapped "o n e two three fo   ur"`
++ `$*`, `$@`: `wrapped o n e two three fo ur`
 ```
 
 ##### `$variable` vs `"$variable"`
@@ -505,4 +680,95 @@ echo ${my_array[$i]}
 
 ```shell
 echo ${NUMBERS[@]}
+```
+
+##### _if clause_
+
+```shell
+if [[ $VAR_A[0] -eq 1 && ($VAR_B = "bee" || $VAR_T = "tee") ]] ; then
+    command...
+fi
+```
+
+##### _loop_ with _if-clause_ and **`break`**
+
+```shell
+for n in ${NUMBERS[@]}; do
+    if [ $n -eq $LAST ]; then
+        break
+    fi
+	if [ $(($n % 2)) = 0 ]; then
+    	echo $n
+    fi
+done
+```
+
+##### **`case`**
+
+```shell
+my_case=1
+case $my_case in
+    1) echo "You selected bash";;
+    2) echo "You selected perl";;
+    3) echo "You selected phyton";;
+    4) echo "You selected c++";;
+    5) exit
+esac
+```
+
+##### testing _filenames_
+
++ `-e` tests if _file_ **exist**
+
+```shell
+#!/bin/bash
+filename="sample.md"
+if [ -e "$filename" ]; then
+echo "$filename exists as a file"
+fi
+```
+
++ `-d` tests if _directory_ **exists**
+
+```shell
+#!/bin/bash
+directory_name="test_directory"
+if [ -d "$directory_name" ]; then
+echo "$directory_name exists as a directory"
+fi
+```
+
++ `-r` tests if file **has** **read** _permission_ for the _user_ **running** the _script/test_
+
+```shell
+#!/bin/bash
+filename="sample.md"
+if [ ! -f "$filename" ]; then
+touch "$filename"
+fi
+if [ -r "$filename" ]; then
+echo "you are allowed to read $filename"
+else
+echo "you are not allowed to read $filename"
+fi
+```
+
+##### Pipes
+
+`ls / | wc -l`
+`ls / | head`
+`ls / | grep <pattern>` #patterns should be quoted
+
+##### Process Substitution
+
+```shell
+sort file1 > sorted_file1
+sort file2 > sorted_file2
+diff sorted_file1 sorted_file2
+```
+
+with process substitution turns into
+
+```shell
+diff <(sort file1) <(sort file2)
 ```
