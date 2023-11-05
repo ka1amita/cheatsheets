@@ -1,4 +1,4 @@
-Spring Data JPA (Jakarta Persistance API)
+Spring Data JPA (Jakarta Persistence API)
 ===============
 
 ## Introduction
@@ -235,18 +235,18 @@ List<Fox› findAllByColorEqual (String color);
 List<Post> findAllByAuthorFirstName(String first);
 List<Post> findAllByAuthorFirstNameIgnoreCase(String first);
 List<Post> findAllByAuthorFirstNameIgnoreCaseOrderByPostedOnDesc(String first);
-List<Post> findAllByAuthorFirstNameAndAuthorLastName(String first, String last);|
+List<Post> findAllByAuthorFirstNameAndAuthorLastName(String first, String last);
 ```
 #### Ralationships
 
 ##### 1..1
-```sql
+```java
 @Entity
 public class User {
   @Id
   @Generted Value(strategy = GeneratedValue.IDENTITY)
   private long id;
-  ...
+  // ...
   @OneTone(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name ="userprofile_id")
   private UserProfile userProfile;
@@ -257,19 +257,19 @@ public class UserProfile {
   @Id
   @Generted Value(strategy = GeneratedValue.IDENTITY)
   private long id;
-  ...
+  // ...
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userProfile")
   private User user;
 }
 ```
 ##### 1..*
-```sql
+```java
 @Entity
 public class Course {
   @Id
   @Generted Value(strategy = GeneratedValue.IDENTITY)
   private long id;
-  ...
+  // ...
   @ManyToOne (mappedBy = "")
   private List<Device> devices; // List of !
 }
@@ -279,7 +279,7 @@ public class Device {
   @Id
   @Generted Value(strategy = GeneratedValue.IDENTITY)
   private long id;
-  ...
+  // ...
   @
   private 
 
