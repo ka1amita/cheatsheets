@@ -113,7 +113,7 @@ MySQL <a name="top"></a>
 * `AS <alias>` can be imitted
 * `WITH <alias>`
 
-## Datatypes
+## Datatype
 
 * [mysql docs](https://dev.mysql.com/doc/refman/8.0/en/data-types.html)
 * [3schools](https://www.w3schools.com/sql/sql_datatypes.asp)
@@ -147,7 +147,7 @@ MySQL <a name="top"></a>
   * \[`CONSTRAINT` \<name> ...\]
 * `UNIQUE INDEX` (\<foreign_id>)
 
-### catching errors
+### Catching Errors
 
 * `IF EXISTS`
 * `IF NOT EXISTS`
@@ -173,17 +173,21 @@ MySQL <a name="top"></a>
 * `DROP`
   * `TABLE` \[`IF EXISTS`] \<table>
   * `SCHEMA` \<schema>
-* `ALTER` `TABLE` \<table> `DROP` \<column>;
+* `ALTER` `TABLE` \<table>
+  * `DROP` \<column>;
+  * `MODIFY` \<column> {`NOT NULL` |...}
 
 ### *CRUD* Keywords
 
-* `INSERT INTO` \<table> \[(\<column,...>)\] `VALUES` (\<value,...>)
+* `INSERT INTO` \<table> \[(\<column,...>)[^columns]\] `VALUES` (\<value,...>)
 * `UPDATE` \<table>
   * `SET` \<column> `=` \<value> `WHERE` \<condition>
 * `DELETE FROM` \<table> `WHERE` \<condition>
 > If you decide to **leave out** the `WHERE` constraint, then **all** rows are removed, which is a quick and easy way to clear out a table completely (if intentional).
 
 * `SELECT` <column,... or `*`> `FROM` \[`WHERE`, ...] \[`JOIN`...]
+
+[^columns]: more robust way (in case of future column modification)
 
 ### Other Clauses Keywords
 
@@ -213,6 +217,13 @@ MySQL <a name="top"></a>
   * `CROSS JOIN`
   * ~~`OUTER JOIN`~~ **doesn't exist**, use `UNION` with two `JOIN`s [stack overflow](https://stackoverflow.com/questions/4796872/how-can-i-do-a-full-outer-join-in-mysql)
 
+```sql
+SELECT `l`.`column`, `r`.`column`
+    FROM `left` AS `l`
+    LEFT JOIN `right` AS `r` ON `l`.`id` = `r`.`left_id`
+    GROUP BY `id`;
+```
+
 ### Cross Product
 
 > CROSS JOINs are used to combine **each row** of one table with **each row** of another table, and return the *Cartesian product*
@@ -227,20 +238,48 @@ MySQL <a name="top"></a>
 * `INTERSECT` returns rows **in common**, **omitting** _any duplicates_.
 * `EXCEPT` returns rows **from A** which are **not in B**, **omitting** any _duplicates_.
 
-### Group By and aggregate Functions
+### Functions
+
+* `COALESCE` takes **any number** of arguments and returns the **first not null** value.
+* `IFNULL` takes **two** arguments and returns the first value that is not null.
+
+ 
+### Aggregate Functions
+
+[MySQL docs: Aggregate Function Descriptions](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions-and-modifiers.html)
+
+**_Aggregate functions_** **operate on sets** of _values_. 
+They are often **used** **with** a `GROUP BY` clause to **group** _values_ into **subsets**.
+
+* `DISTINCT` *use without ()*
+* `COUNT(*)`, `COUNT(DISTINCT)`, `SUM()`, `AVG()`, `MIN()`, `MAX()`, `STDDEV()`, ... many more icl.
+  statistical
+* `CONCAT()`, `GROUP_CONCAT()`
+
+[//]: # (* ~~`FIRST`~~, ~~`LAST`~~ returns the **first** or the **last** value of a column in a group)
+
+### `GROUP BY`
 
 * `GROUP BY` \<column>
 
-go with `GROUP BY` and the columns **must be** for most functions listed in the `GROUP BY` statement
+##### `GROUP BY` and functional dependence
 
-### Aggregate Functions
+`SELECT name, address, MAX(age) FROM t GROUP BY name;`
 
-* `DISTINCT` *use without ()*
-* `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, ... many more icl. statistical
-* `FIRST`, `LAST` returns the **first** or the **last** value of a column in a group
-* `CONCAT`, `GROUP_CONCAT`
-* `COALESCE` takes **any number** of arguments and returns the **first not null** value.
-* `IFNULL` takes **two** arguments and returns the first value that is not null.
+> The query is invalid if `name` is not a _primary key_ of `t` or a _unique_ `NOT NULL` column. 
+> In this case, no functional dependency can be inferred and an error occurs:
+
+To tell _MySQL_ to accept the query, you can **use** the `ANY_VALUE()` function or **disable** `ONLY_FULL_GROUP_BY`[^functional-dependence].
+
+[^functional-dependence]: _MySQL_ implements **detection** of _functional dependence_.
+  If the `ONLY_FULL_GROUP_BY` SQL mode is enabled (which it is by **default**),
+  _MySQL_ **rejects** queries for which the select list,
+  `HAVING` condition, or `ORDER BY` list refer to _nonaggregated_ columns that are
+  **neither named** in the `GROUP BY` clause nor are functionally **dependent** on them.
+  **Disabling** `ONLY_FULL_GROUP_BY` is useful primarily when you **know** that,
+  due to some property of the data,
+  all values in each nonaggregated column not named in the `GROUP BY` are **the same** for each group.
+
 
 ## Order of Execution
 
@@ -275,41 +314,48 @@ go with `GROUP BY` and the columns **must be** for most functions listed in the 
 #### CRUD
 
 ##### create and use databese (schema), create table
-```sql
-CREATE DATABASE IF NOT EXISTS database;
 
-USE databese;
+```mysql
+CREATE DATABASE IF NOT EXISTS `database`;
 
-CREATE TABLE orders (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY(id)
-  CONSTRAINT FK_person_order FOREIGN KEY(persons_id) REFERENCES persons(id) -- optional naming of constraint
+USE `databese`;
+
+CREATE TABLE `orders`
+(
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+    CONSTRAINT `FK_person_order` FOREIGN KEY (`persons_id`) REFERENCES persons(`id`) -- optional naming of constraint
 );
 ```
 ##### insert row
 ```sql
-INSERT INTO albums (name, release_year, band_id) --more robust way (in case of future column modification)
+INSERT INTO `albums` (`name`, `release_year`, `band_id`) -- more robust way (in case of future column modification)
   VALUES (...);
 ```
 ##### insert multiple rows
 ```sql
-INSERT INTO bands (name)
+INSERT INTO `bands` (`name`)
   VALUES ('Deuce'), ('Avenged Sevenfold'), ('Ankor'); --note the parentheses!;
 ```
 ##### modify values
 ```sql
-UPDATE albums
-  SET release_year = 1982
-  WHERE id = 1;
+UPDATE `albums`
+SET `release_year` = 1982
+WHERE `id` = 1;
 ```
 ##### delete rows
 ```sql
-DELETE FROM mytable -- always do a dry run with SELECT!
+DELETE
+FROM `mytable` -- always do a dry run with SELECT!
   WHERE condition;
 ```
 ##### COALESCE
 ```sql
 COALESCE(party,'None')
+```
+
+```sql
+
 ```
 ##### UNION
 ```sql
@@ -338,42 +384,44 @@ SELECT *
 ```
 ##### Subquery
 ```sql
-SELECT *,
-FROM mytable
+SELECT *
+FROM `mytable`
 WHERE column
   NOT IN (SELECT another_column
             FROM another_table);
 ```
-#### get doday's date
+
+#### get today's date
 ```sql
 CAST(NOW() as DATE);
 ```
 ```sql
-created DATE NOT NULL DEFAULT (CAST(NOW() as DATE)),
+`created` DATE NOT NULL DEFAULT (CAST(NOW() as DATE)),
 ```
 
 #### Troubleshooting
 
 ##### drop schema
 ```sql
-DROP SCHEMA IF EXISTS database;
+DROP SCHEMA IF EXISTS `database`;
 ```
 ##### drop table
 ```sql
-DROP TABLE table;
+DROP TABLE `table`;
 ```
 ##### add column
 ```sql
-ALTER TABLE albums ADD (release_year INT);
+ALTER TABLE `albums`
+  ADD (`release_year` INT);
 ```
 ##### rename table
 ```sql
-ALTER TABLE table
+ALTER TABLE `table`
   RENAME TO new_table;
 ```
 ##### modify column
 ```sql
-ALTER TABLE todos 
+ALTER TABLE `todos`
   CHANGE COLUMN column new_name DATATYPE MODIFIERS; -- both necessary! it rewrites whole column definition
 ```
 ##### add foreign key constraint to existing column
