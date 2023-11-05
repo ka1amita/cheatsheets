@@ -97,10 +97,9 @@ MySQL <a name="top"></a>
 
 ## Syntax
 
-* **statemnents**
-  * **queries** are statements with `SELECT` 
+* **queries** are _statements_ with `SELECT`
 
-* \`\` aka backticks (can be) are used to **quote** table and column names
+* ``` `` ``` aka backticks (can be) are used to **quote** table and column _names_
   > that becomes necessary when useing **reserved keywords** as names, e.g. table
 * `''` aka single quotes are used for **string input**
   > **not reccomanded** for number type as it has to be **type converted** and can result in some inconsistencies
@@ -140,37 +139,53 @@ MySQL <a name="top"></a>
 ### Column Constraints (Modifiers)
   
 * `NOT NULL`
-* `AUTO_INCREMENT`
-* `DEFAULT` *\<value>*
-* `PRIMARY KEY`*(\<id>)* goes at the end of declaration
-* `FOREIGN KEY` *(\<foreign_id>)* `REFERENCES` *\<table>*(*\<id>*) note above; the DB is checking for Constraint and it doesn't allow removing the entry before removing the relatonship!
-  * `CONSTRAINT` \<name> optional naming
-* `UNIQUE INDEX` *(\<foreign_id>)*
-* 
+* `AUTO_INCREMENT` \[`=` \<step>\]
+* `DEFAULT` \<value>
+* `PRIMARY KEY`(\<id>) goes at the end of declaration
+* `FOREIGN KEY` (\<foreign_id>) `REFERENCES` \<table>(\<id>) note above; the DB is checking for
+  Constraint and it doesn't allow removing the entry before removing the relatonship!
+  * \[`CONSTRAINT` \<name> ...\]
+* `UNIQUE INDEX` (\<foreign_id>)
 
-### chatching errors
+### catching errors
 
 * `IF EXISTS`
 * `IF NOT EXISTS`
 
+### _DDL_ Keywords
+
+* `CREATE` vs `DROP`
+  * `TABLE` \<table> (\<column>
+    \<datatype> \[`AUTO_INCREMENT`, `UNIQUE`, `NOT NULL`, `PRIMARY KEY`, ...\], \[`CONSTRAINT`
+    \<constraint_name> `PRIMARY KEY`(\<column>)\])
+  * `DATABASE` \<database>
+  * `SCHEMA` \<schema>
+* `RENAME TABLE` \<table> `TO` \<new_name>
+* `ALTER TABLE` \<table>
+  * `RENAME TO` \<new_table>
+  * `ADD`
+    * \<column> \<datatype> \[<ddl,...>]
+    * `CONSTRAINT` \<constraint_name> `REFERENCES` \<table> (id) \[`ON` `DELETE`
+      \<option>] \[`ON` `UPDATE`\<option>]
+  * `DROP` `CONSTRAINT` \<constraint_name>
+  * `CHANGE COLUMN` \<column> \<new_name> `DATATYPE` `MODIFIERS` necessary!, it rewrites the whole
+    definition
+* `DROP`
+  * `TABLE` \[`IF EXISTS`] \<table>
+  * `SCHEMA` \<schema>
+* `ALTER` `TABLE` \<table> `DROP` \<column>;
+
 ### *CRUD* Keywords
 
-* `INSERT INTO` \<table> (\<column>) `VALUES` (\<value>)
-* `CREATE` vs `DROP`
-  * `TABLE` \<table>
-  * `DATABASE` \<databese> == `SCHEMA` \<schema>
-* `ALTER TABLE` \<table>
-  * `ADD` \<column>
-  * `RENAME TO` \<new_table>
-  * `CHANGE COLUMN` \<column> \<new_name> `DATATYPE` `MODIFIERS` necessary!, it rewrites the whole definition
+* `INSERT INTO` \<table> \[(\<column,...>)\] `VALUES` (\<value,...>)
 * `UPDATE` \<table>
-  * `SET` \<column> = \<value> `WHERE` \<consition>
-  * `RENAME TO` \<new_table>
-* `DELETE FROM` \<table>
-
+  * `SET` \<column> `=` \<value> `WHERE` \<condition>
+* `DELETE FROM` \<table> `WHERE` \<condition>
 > If you decide to **leave out** the `WHERE` constraint, then **all** rows are removed, which is a quick and easy way to clear out a table completely (if intentional).
 
-### Other Clasuse Keywords
+* `SELECT` <column,... or `*`> `FROM` \[`WHERE`, ...] \[`JOIN`...]
+
+### Other Clauses Keywords
 
 * `ORDER BY` \<column>
   * `ASC`, `DESC`
@@ -180,25 +195,23 @@ MySQL <a name="top"></a>
 
 * `=`
 * `!=` or `<>`
-* `LIKE` \<pattern> accepts `%` wildcart
+* `LIKE` \<pattern> accepts `%` wildcard
 * `OR`, `AND`
-* `CASE` \<value> `WHEN` <compare_value> `THEN` \<result> `ELSE` \<result> `END` don't forget the `END`! there is alse `CASE` 
-* `CASE` `WHEN` \<condition> `THEN` \<result> `ELSE` \<result> `END` there is alse `CASE` *Statement*
+* `CASE` \<value> `WHEN` <condition> `THEN` \<result> `ELSE` \<result> `END` - don't forget the `END`! there is also `CASE` *Statement*
 * ... many more
 
 ### Joins
 
 >  Returns all records from the right table, and the matching records from the left table
 
-> It does'm mean tha there is (exactly) only one row from the right table. E.g. the rows from right table are "copied" as long as there are unique rows in left table with corresponding match.
+> It doesn't mean tha there is (exactly) only one row from the right table. E.g. the rows from right table are "copied" as long as there are unique rows in left table with corresponding match.
 
 * `FROM` \<table1>,\<table2> `WHERE` \<condition> corresponds to **cross product**; deprecated in favour of `JOIN`s
 * `JOIN`s
-  * `INNER JOIN`  == `JOIN`
-  * `LEFT JOIN`
-  * `RIGHT JOIN`
+  * `INNER JOIN` == `JOIN`
+  * `{ LEFT | RIGHT } [ OUTER ] JOIN`
   * `CROSS JOIN`
-  * **OUTER JOIN** does't exist, use `UNION` with two `JOIN`s [stack overflow](https://stackoverflow.com/questions/4796872/how-can-i-do-a-full-outer-join-in-mysql)
+  * ~~`OUTER JOIN`~~ **doesn't exist**, use `UNION` with two `JOIN`s [stack overflow](https://stackoverflow.com/questions/4796872/how-can-i-do-a-full-outer-join-in-mysql)
 
 ### Cross Product
 
@@ -210,18 +223,17 @@ MySQL <a name="top"></a>
 
 > set operations **combine results** of multiple query blocks into a **single result** assuming that they have the same column **count**, **order** and **data type**
 
-* `UNION`, `UNION ALL`
-  > `UNION` returns **all distinct** rows (omitting any duplicates), in contrast, `UNION ALL` returns **all** rows, including **duplicates** rows
-* `INTERSECT`
-  > returns rown **in common**, omitting any duplicates.
-* `EXCEPT`
-  > returns rows **from A** which are **not in B**, omitting any duplicates.
+* `UNION`, `UNION ALL` returns **all distinct** rows (omitting any duplicates), in contrast, `UNION ALL` returns **all** rows, including **duplicates** rows
+* `INTERSECT` returns rows **in common**, **omitting** _any duplicates_.
+* `EXCEPT` returns rows **from A** which are **not in B**, **omitting** any _duplicates_.
 
-### Group By and gregate Functions
+### Group By and aggregate Functions
 
 * `GROUP BY` \<column>
 
-go with `GROUP BY` and the columns **must be** for most functions listed in the `GROUP BY` statemnet
+go with `GROUP BY` and the columns **must be** for most functions listed in the `GROUP BY` statement
+
+### Aggregate Functions
 
 * `DISTINCT` *use without ()*
 * `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`, ... many more icl. statistical
@@ -244,12 +256,12 @@ go with `GROUP BY` and the columns **must be** for most functions listed in the 
 8. ORDER BY
 9. LIMIT / OFFSET
 
-## Subqueries
+## Sub-queries
 
 > A *subquery* can be referenced anywhere a normal table can be referenced.
 > Inside a `FROM` clause, you can `JOIN` subqueries with other tables, inside a `WHERE` or `HAVING` constraint, you can test expressions against the results of the subquery, and even in expressions in the SELECT clause.
 
-### Correlated Subqueries
+### Correlated Sub-queries
 
 > In *correlated Subqueries* the inner query **references**, and is dependent on, a **column** or **alias** from the **outer query**.
 > Unlike the subqueries above, **each** of these **inner querie**s need to be **run** for **each** of the of the **outer query row**s
