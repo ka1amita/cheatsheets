@@ -1,7 +1,6 @@
 # Bash
 
 <!-- TOC -->
-
 * [Bash](#bash)
     * [Rules of Thumb](#rules-of-thumb)
     * [Glossary](#glossary)
@@ -14,8 +13,8 @@
             * [Definition](#definition)
             * [Call](#call)
             * [Parameters](#parameters)
-        * [Cron](#cron)
-            * [example](#example)
+                * [example](#example)
+      * [Cron](#cron)
         * [Comparisons](#comparisons)
         * [Conditional statements](#conditional-statements)
             * [If](#if)
@@ -33,6 +32,18 @@
         * [**`trap`**](#trap)
         * [Pipelines (Pipes)](#pipelines-pipes)
         * [Process Substitution](#process-substitution)
+      * [Parse CSV file](#parse-csv-file)
+          * [Reading lines](#reading-lines)
+          * [Ignoring the Header Line](#ignoring-the-header-line)
+              * [using `tail` _command_ to **read** from the **second** _line_ of the
+                _file_:](#using-tail-command-to-read-from-the-second-line-of-the-file)
+              * [using `exec` _command_ to **change** the _standard input_ to **read** from the
+                _file_](#using-exec-command-to-change-the-standard-input-to-read-from-the-file)
+          * [Parsing Values From a CSV File](#parsing-values-from-a-csv-file)
+              * [From the First few Columns](#from-the-first-few-columns)
+              * [From Specific Columns](#from-specific-columns)
+              * [From Specific Column Names](#from-specific-column-names)
+          * [Mapping Columns of CSV File into Bash Arrays](#mapping-columns-of-csv-file-into-bash-arrays)
     * [Examples](#examples)
         * [n/a](#na)
         * [sourcing from files before executing commands](#sourcing-from-files-before-executing-commands)
@@ -48,7 +59,9 @@
         * [testing _filenames_](#testing-filenames)
         * [Pipes](#pipes)
         * [Process Substitution](#process-substitution-1)
-
+      * [`awk`](#awk)
+      * [`read`](#read)
+      * [`tr` & `nl` translate & number lines](#tr--nl-translate--number-lines)
 <!-- TOC -->
 
 ## Rules of Thumb
@@ -86,8 +99,10 @@
 + `date`
 + `$BASH_VERSION`
 + `which <command>`
-+ `>` `2>` `&>`
 + `<`
++ `>` `2>` `&>`
++ `|&`, `2>&1 |`
++ `>&2 echo "error message"` or `1>&2 echo ...`
 + `$0`, `$1`, `$#`, `$*`,`"$*"`, `$@`, `"$@"`[^commands]
 + `$$`
 + `$?`
@@ -132,8 +147,15 @@
 + `[[ $string =~ ^s.* ]] && echo ${BASH_REMATCH}`
 + `[[ $string =~ ^s.* ]] && echo ${#BASH_REMATCH}`
 + `|`
-+ `|&`, `2>&1 |`
 + _process substitution_ `<(command)`, `>(command)`
++ `IFS=","`
++ `read -r rec_column0 rec_remaining`
++ `open .` opens finder in the current location
++ `open - GUI Applaication`
++ `read`
++ `awk`
++ `tr`
++ `nl`
 
 ### commands
 
@@ -160,11 +182,16 @@
 ### Outputs
 
 > The difference between _**stdout**_ and _**stderr**_ _output_ is an essential concept as it allows
-> us to a threat, that is, to **redirect** each output **separately**. The **`>`** notation is used
-> to redirect **_stdout_** to a **file** whereas **`2>`** notation is used to redirect **_stderr_**
-> and **`&>`** is used to redirect **both**.
+> us to a threat, that is, to **redirect** each output **separately**.
 
-+ e.g. `2> /dev/null` to discard `stderr` output
++ **`>`** redirects **_stdout_** to a **file**
++ **`2>`** redirects **_stderr_**
++ **`&>`** redirects **both**.
+
+e.g.:
+
++ `2> /dev/null` to discard `stderr` output
++ `>&2 echo "error message"` or `1>&2 echo ...` to print to _stderr_
 
 ### Inputs
 
@@ -208,7 +235,7 @@ $ my_function # simple name is enough as a function call (just like any command)
 | `$#`       | The **total** number of _argument_ **passed** to _script_ or function.                                                                                                                   |
 | `$@`, `$*` | **joins** all arguments by **single** _spaces_ as well and then **splits** the string as the _shell_ does, thus it **splits** an _argument_ containing _spaces_ into several _arguments_ |
 | `"*"`      | **passes** over **exactly** **one** _argument_, containing all original _arguments_, separated by **single** _spaces_                                                                    |)
-| `"$@"`     | **passes over** all _arguments_ in the **exact** way it had received them, i.e. as several arguments, each of them **containing** **all** the _spaces_ and other _ugliness_ they have.   |
+| `"$@"`     | **passes over all** _arguments_ in the **exact** way it had received them, i.e. as several arguments, each of them **containing** **all** the _spaces_ and other _ugliness_ they have.   |
 | `$?`       | The exit status of the last command executed.                                                                                                                                            |
 | `$$`       | The process ID of the current shell. For shell scripts, this is the process ID under which they are executing.                                                                           |
 | `$!`       | The process number of the last background command.                                                                                                                                       |
@@ -256,20 +283,22 @@ $ my_function # simple name is enough as a function call (just like any command)
 + > When comparing values, you may want to use **`echo`** _command_ to **confirm** that your
   variables hold **expected** values before using them as part of the comparison operation.
 
-| Description                   | String Comparison | Example                              | Result  |
-|-------------------------------|-------------------|--------------------------------------|---------|
-| Any strings                   |                   | `[ "any" ]`,`[ any ]`                | `true`  |
-| Any strings                   |                   | `[ " " ]`                            | `true`  |
-| Empty strings                 |                   | `[ "" ]`, `[   ]`                    | `false` |
-| Equal strings                 | `=` or `==`       | `[ "GNU" = "UNIX" ]`                 | `false` |
-| Not equal (different) strings | `!=`              | `[ "GNU" != "UNIX" ]`                | `true`  |
-| Empty string                  | `-z`              | `[ -z "" ]`                          | `true`  |
-| Empty string                  | `-z`              | `[ -z "string" ]`                    | `false` |
-| File exists                   | `-e`, `-f`        | `[ -e filename ]`, `[ -f filename ]` |         |
-| Directory exists              | `-d`              | `[ -d directory ]`                   |         |
-| File has read permission      | `-r`              | `[ -r filename ]`                    |         |
-| File has read permission      | `-r`              | `[ -r file ]`                        |         |
+| Description                   | String Comparison | Example               | Result  |
+|-------------------------------|-------------------|-----------------------|---------|
+| Any strings                   |                   | `[ "any" ]`,`[ any ]` | `true`  |
+| Any strings                   |                   | `[ " " ]`             | `true`  |
+| Empty strings                 |                   | `[ "" ]`, `[   ]`     | `false` |
+| Equal strings                 | `=` or `==`       | `[ "GNU" = "UNIX" ]`  | `false` |
+| Not equal (different) strings | `!=`              | `[ "GNU" != "UNIX" ]` | `true`  |
+| Empty string                  | `-z`              | `[ -z "" ]`           | `true`  |
+| Empty string                  | `-z`              | `[ -z "string" ]`     | `false` |
+| File exists                   | `-f`              | `[ -f script.sh ]`    | `false` |
+| File exists                   | `-e`              | `[ -e script.sh ]`    | `true`  |
+| Directory exists              | `-d`              | `[ -d directory ]`    |         |
+| File has read permission      | `-r`              | `[ -r filename ]`     |         |
+| File has read permission      | `-r`              | `[ -r file ]`         |         |
 
++`-f` wont' find _directories_, _symlinks_, etc.
 + An **empty** _string_ or a string **consisting** of _spaces_ or an **undefined** _variable_ name,
   are evaluated as **_false_** with `-z`
 + `!` **reverts** the _logic_ e.g. `[ ! -d "/home/$1" ]`
@@ -414,7 +443,6 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
   of `$STRING`
   empty string)
     + note that all the above **replace** **consecutive** _whitespaces_ with a **single** one
-+
 
 ### Variables
 
@@ -475,12 +503,10 @@ or `VAR=val && exec java app.jar`
 
 [posix]: https://en.wikipedia.org/wiki/POSIX
 
-`${variable:-default}` indicates that if variable is **set** then the result will be that **value**,
-**otherwise** the
-result is the `default`.
-`${variable:+override}` indicates that if variable is **set** then `override` will be the **result
-**, **otherwise** the
-result is the **empty** string.
+`${variable:-default}` indicates that if variable is **not defined**
+then the result will be that **value**, **otherwise** the result is the `default`.
+`${variable:+override}` indicates that if variable is **defined**
+then `override` will be the **result**, **otherwise** the result is the **empty** string.
 
 ### Arrays
 
@@ -488,21 +514,22 @@ result is the **empty** string.
 [freecodecamp.org](https://www.freecodecamp.org/news/bash-scripting-tutorial-linux-shell-script-and-command-line-for-beginners/)
 [learn.microsoft.com](https://learn.microsoft.com/en-us/training/modules/bash-introduction/0-introduction)
 
-| Syntax                   | Result                                                                                                       |
-|--------------------------|--------------------------------------------------------------------------------------------------------------|
-| `arr=()`                 | Creates an **empty** _array_                                                                                 |
-| `arr=(1 2 3)`            | **Initializes** _array_                                                                                      |
-| `${arr[2]}`              | Retrieves **third** (_sic_) element                                                                          |
-| `${arr[@]}`, `${arr[*]}` | Retrieves **all** _elements_ (**divides** them on _whitespaces_ into more)                                   |
-| `"${arr[@]}"`            | Retrieves all _elements_, **exactly** as they were initialized (**doesn't** divide them on _whitespaces_)    |
-| `"${arr[*]}"`            | Retrieves **single** _element_ of all _elements_ separated by **single** _whitespaces_ (**single** _string_) |
-| `${!arr[@]}`             | **Retrieves** _array_ **_indices_**                                                                          |
-| `${#arr[@]}`             | Calculates _array_ **_size_**                                                                                |
-| `arr[0]=3`               | **Overwrites** 1st element                                                                                   |
-| `arr+=(4,5)`             | **Appends** value(s)                                                                                         |
-| `str=$(ls)`              | Assigns `ls` _output_ as a **_string_**                                                                      |
-| `arr=( $(ls) )`          | Assigns `ls` _output_ as an **_array_**                                                                      |
-| `${arr[@]:s:n}`          | Retrieves **subarray** of `n` elements starting at _index_ `s`                                               |
+| Syntax                   | Result                                                                                                        |
+|--------------------------|---------------------------------------------------------------------------------------------------------------|
+| `arr=()`                 | Creates an **empty** _array_                                                                                  |
+| `arr=(1 2 3)`            | **Initializes** _array_                                                                                       |
+| `${arr[2]}`              | Retrieves **third** (_sic_) element                                                                           |
+| `${arr[@]}`, `${arr[*]}` | Retrieves **all** _elements_ (**divides** them on _whitespaces_ into more arguments)                          |
+| `"${arr[@]}"`            | Retrieves **all** _elements_, **exactly** as they were initialized (**doesn't** divide them on _whitespaces_) |
+| `"${arr[*]}"`            | Retrieves **single** _element_ of all _elements_ separated by **single** _whitespaces_ (**single** _string_)  |
+| `${!arr[@]}`             | **Retrieves** _array_ **_indices_**                                                                           |
+| `${#arr[@]}`, `${#arr}`  | Calculates _array_ **_size_**                                                                                 |
+| `arr[0]=3`               | **Overwrites** 1st element                                                                                    |
+| `arr+=(4,5)`             | **Appends** value(s)                                                                                          |
+| `str=$(ls)`              | Assigns `ls` _output_ as a **_string_**                                                                       |
+| `arr=( $(ls) )`          | Assigns `ls` _output_ as an **_array_**                                                                       |
+| `arr=( "$(ls)" )`        | Assigns `ls` _output_ as a single **single array element** (sic)                                              |
+| `${arr[@]:s:n}`          | Retrieves **subarray** of `n` elements starting at _index_ `s`                                                |
 
 [opensource.com (in the comments)](https://opensource.com/article/18/5/you-dont-know-bash-intro-bash-arrays)
 
@@ -510,7 +537,7 @@ result is the **empty** string.
 + an _array_ is **initialized** by assign _space_-**delimited** values **enclosed** in `()`
 + array members need **not** be _consecutive_ or _contiguous_. Some _elements_ of the _array_ can be
   **left** **uninitialized**
-+ arrays are **indexed** from `0`
++ arrays are **indexed** from either `0`(_bash_) or `1`(in _zsh_) depending on the shell
 + `${my_array[@]}` or `${my_array[*]}` outputs **array** (list) of _elements_ in the _array_
   variable
 + `${#my_array[@]}` outputs the **total** **number** of _elements_ in the _array_
@@ -550,6 +577,122 @@ standard _error_ (**_stderr_**) you need to use the form `|&` which is a **short
 **_Process substitution_** allows a process’s _input_ or _output_ to be **referred** to using a
 _filename_.
 It has two forms: `<(cmd)` **output** form and **input** `>(cmd)`.
+
+### Parse CSV file
+
+[Baeldung](https://www.baeldung.com/linux/csv-parsing)
+
+Let’s briefly review the standards defined for CSV files:
+
+1. **Each** _record_ is on a **separate line**, **delimited** by a _line break_.
+2. The **last record** in the file **may** or **may not** end with a line break.
+3. There may be an **optional** **_header line_ appearing as the first line of the file
+   with the **same format** as regular _record lines_.
+4. Within the header and records, there may be one or more fields separated by a comma.
+5. Fields containing _line breaks_, `"`, and `,`
+   should be **enclosed** in _double-quotes_.
+6. If _double-quotes_ are used to **enclose fields**,
+   then a `"` appearing inside a field must be **escaped** by preceding it with **another double
+   quote** like `""`.
+
+#### Reading lines
+
+```shell
+#!/bin/bash
+while read line
+do
+   echo "Record is : $line"
+done < input.csv
+```
+
+`read` _command_ to **read** the _line-break_ `\n` separated records of our _CSV_ file.
+
+#### Ignoring the Header Line
+
+##### using `tail` _command_ to **read** from the **second** _line_ of the _file_:
+
+`<(tail -n +2 input.csv)`
+
+##### using `exec` _command_ to **change** the _standard input_ to **read** from the _file_
+
+```shell
+#!/bin/bash
+exec < input.csv
+read header
+while read line; do
+   echo "Record is : $line"
+done 
+```
+
+#### Parsing Values From a CSV File
+
+##### From the First few Columns
+
+We’ll use _process substitution_ and a `tail` _command_
+
+```shell
+#! /bin/bash
+while IFS="," read -r column0 remaining
+do
+  echo "Displaying 1st Column: $column0"
+#  ...
+done < <(tail -n +2 input.csv)
+```
+
++ **_Internal (Input) Field Separator_** (**IFS**)
+
+> Is a special _environment variable_ that **defines** the **_delimiter_**
+> used for word splitting in _Unix shells_.
+
+The **default** **value** of **_IFS_** is a _space_, _tab_, and _newline_.
+
++ note the `rec_remaining` that **stores** the **remaining** _fields_
+
+##### From Specific Columns
+
+We’ll use _process substitution_ to **pass** only **specific** _columns_ to the _while loop_ for
+reading.
+
+Print a specific character/field range of each line:
+`command | cut -c|f 1|1,10|1-10|1-|-10` are the range options
+
+Print a range of each line of a specific file:
+`cut -c 1 path/to/file`
+
+```shell
+#! /bin/bash
+while IFS="," read -r $column1 $column2
+do
+  echo "Displaying 1st Column: $column1"
+done < <(cut -d "," -f1,3 input.csv | tail -n +2)
+```
+
+##### From Specific Column Names
+
+[baeldung](https://www.baeldung.com/linux/csv-parsing#4-from-specific-column-names)
+
+#### Mapping Columns of CSV File into Bash Arrays
+
+`column1=( $(tail -n +2 input.csv | cut -d ',' -f1) )`
+`echo "Data in first column: ${column1[@]}"`
+
+#### Parsing CSV File Into a Bash Array
+
+```shell
+while IFS= read -r line 
+do
+    arr_csv+=("$line")
+done < input.csv
+```
+
+#### Parsing CSV Files Having Line Breaks and Commas Within Records
+
+> There can be several more permutations and combinations of _line-breaks_, _commas_, and _quotes_ within
+> CSV files. 
+> For this reason, it’s a complex task to process such CSV files with only Bash built-in
+> utilities. Generally, third-party tools, like **_csvkit_**, are employed for advanced CSV parsing.
+
+> However, another suitable alternative is _Python_’s **_CSV module_**, as Python is generally pre-installed on most Linux distributions.
 
 ## Examples
 
@@ -772,3 +915,51 @@ with process substitution turns into
 ```shell
 diff <(sort file1) <(sort file2)
 ```
+
+##### `awk`
+
+**Print** the **last column** of each line in a file, **using** a _comma_ (instead of _space_) as a
+field
+separator:
+
+```shell
+    awk -F ',' '{print $NF}' path/to/file
+```
+
+##### `read`
+
+```shell
+while read line; do
+    echo "$line"
+done < "$filename"
+```
+
+```shell
+read "Custom prompt: " my_veriable
+```
+
+**Prompts** the user to enter the name of the column they want to extract.
+The entered value is stored in the variable
+
+##### `tr` & `nl` translate & number lines
+
+```shell
+loc_col_b=$(head -1 input.csv | tr ',' '\n' | nl | grep -w "$col_b" | tr -d " " | awk -F " " '{print $1}
+```
+
++ `tr ',' '\n'`: **translates** each _comma_ in the header to a _newline character_, effectively
+  **converting** the CSV _header_ into a **_list_ of column names**.
++ `nl`: **Numbers** each _line_.
++ `grep -w "$match"`: **searches** for the **exact match**.
++ `tr -d " "`: **deletes** any spaces in the output.
++ `awk -F " " '{print $1}'`: **prints** the first field
+  taking the _whitespace_ as the field separator. This effectively extracts the line number where
+  the specified column name is found.
+
+##### `readarray`
+
+For _Bash_ versions **4+**, we can also populate the array using the `readarray` _command_:
+
+`readarray -t my_array < input.csv`
+
+The -t option will remove the trailing newlines from each line.
