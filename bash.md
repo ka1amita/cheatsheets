@@ -1,67 +1,68 @@
 # Bash
 
 <!-- TOC -->
-* [Bash](#bash)
-    * [Rules of Thumb](#rules-of-thumb)
-    * [Glossary](#glossary)
-    * [Overview](#overview)
-        * [commands](#commands)
-    * [Theory](#theory)
-        * [Outputs](#outputs)
-        * [Inputs](#inputs)
-        * [Functions](#functions)
-            * [Definition](#definition)
-            * [Call](#call)
-            * [Parameters](#parameters)
-                * [example](#example)
-      * [Cron](#cron)
-        * [Comparisons](#comparisons)
-        * [Conditional statements](#conditional-statements)
-            * [If](#if)
-            * [Case](#case)
-        * [Loops](#loops)
-            * [For](#for)
-            * [While](#while)
-            * [Controlling loop execution](#controlling-loop-execution)
-            * [Until](#until)
-        * [Arithmetics](#arithmetics)
-        * [Basic String Operations](#basic-string-operations)
-        * [Variables](#variables)
-        * [**`source`**](#source)
-        * [Arrays](#arrays)
-        * [**`trap`**](#trap)
-        * [Pipelines (Pipes)](#pipelines-pipes)
-        * [Process Substitution](#process-substitution)
-      * [Parse CSV file](#parse-csv-file)
-          * [Reading lines](#reading-lines)
-          * [Ignoring the Header Line](#ignoring-the-header-line)
-              * [using `tail` _command_ to **read** from the **second** _line_ of the
-                _file_:](#using-tail-command-to-read-from-the-second-line-of-the-file)
-              * [using `exec` _command_ to **change** the _standard input_ to **read** from the
-                _file_](#using-exec-command-to-change-the-standard-input-to-read-from-the-file)
-          * [Parsing Values From a CSV File](#parsing-values-from-a-csv-file)
-              * [From the First few Columns](#from-the-first-few-columns)
-              * [From Specific Columns](#from-specific-columns)
-              * [From Specific Column Names](#from-specific-column-names)
-          * [Mapping Columns of CSV File into Bash Arrays](#mapping-columns-of-csv-file-into-bash-arrays)
-    * [Examples](#examples)
-        * [n/a](#na)
-        * [sourcing from files before executing commands](#sourcing-from-files-before-executing-commands)
-        * [n/a](#na-1)
-        * [passing of arguments](#passing-of-arguments)
-        * [`$@` and `$*` are the same](#-and--are-the-same)
-        * [`"$@"` vs `"$*"`](#-vs-)
-        * [`$variable` vs `"$variable"`](#variable-vs-variable)
-        * [arrays](#arrays-1)
-        * [_if clause_](#if-clause)
-        * [_loop_ with _if-clause_ and **`break`**](#loop-with-if-clause-and-break)
-        * [**`case`**](#case-1)
-        * [testing _filenames_](#testing-filenames)
-        * [Pipes](#pipes)
-        * [Process Substitution](#process-substitution-1)
-      * [`awk`](#awk)
-      * [`read`](#read)
-      * [`tr` & `nl` translate & number lines](#tr--nl-translate--number-lines)
+- [Bash](#bash)
+  - [Rules of Thumb](#rules-of-thumb)
+  - [Glossary](#glossary)
+  - [Overview](#overview)
+    - [commands](#commands)
+  - [Theory](#theory)
+    - [Outputs](#outputs)
+    - [Inputs](#inputs)
+    - [Functions](#functions)
+      - [Definition](#definition)
+      - [Call](#call)
+      - [Parameters](#parameters)
+        - [example](#example)
+    - [Cron](#cron)
+    - [Comparisons](#comparisons)
+    - [Conditional statements](#conditional-statements)
+      - [If](#if)
+      - [Case](#case)
+    - [Loops](#loops)
+      - [For](#for)
+      - [While](#while)
+      - [Controlling loop execution](#controlling-loop-execution)
+      - [Until](#until)
+    - [Arithmetics](#arithmetics)
+    - [Basic String Operations](#basic-string-operations)
+    - [Variables](#variables)
+    - [**`source`**](#source)
+    - [Arrays](#arrays)
+    - [**`trap`**](#trap)
+    - [Pipelines (Pipes)](#pipelines-pipes)
+    - [Process Substitution](#process-substitution)
+    - [Parse CSV file](#parse-csv-file)
+      - [Reading lines](#reading-lines)
+      - [Ignoring the Header Line](#ignoring-the-header-line)
+        - [using `tail` _command_ to **read** from the **second** _line_ of the _file_:](#using-tail-command-to-read-from-the-second-line-of-the-file)
+        - [using `exec` _command_ to **change** the _standard input_ to **read** from the _file_](#using-exec-command-to-change-the-standard-input-to-read-from-the-file)
+      - [Parsing Values From a CSV File](#parsing-values-from-a-csv-file)
+        - [From the First few Columns](#from-the-first-few-columns)
+        - [From Specific Columns](#from-specific-columns)
+        - [From Specific Column Names](#from-specific-column-names)
+      - [Mapping Columns of CSV File into Bash Arrays](#mapping-columns-of-csv-file-into-bash-arrays)
+      - [Parsing CSV File Into a Bash Array](#parsing-csv-file-into-a-bash-array)
+      - [Parsing CSV Files Having Line Breaks and Commas Within Records](#parsing-csv-files-having-line-breaks-and-commas-within-records)
+  - [Examples](#examples)
+        - [n/a](#na)
+        - [sourcing from files before executing commands](#sourcing-from-files-before-executing-commands)
+        - [n/a](#na-1)
+        - [passing of arguments](#passing-of-arguments)
+        - [`$@` and `$*` are the same](#-and--are-the-same)
+        - [`"$@"` vs `"$*"`](#-vs-)
+        - [`$variable` vs `"$variable"`](#variable-vs-variable)
+        - [arrays](#arrays-1)
+        - [_if clause_](#if-clause)
+        - [_loop_ with _if-clause_ and **`break`**](#loop-with-if-clause-and-break)
+        - [**`case`**](#case-1)
+        - [testing _filenames_](#testing-filenames)
+        - [Pipes](#pipes)
+        - [Process Substitution](#process-substitution-1)
+        - [`awk`](#awk)
+        - [`read`](#read)
+        - [`tr` \& `nl` translate \& number lines](#tr--nl-translate--number-lines)
+        - [`readarray`](#readarray)
 <!-- TOC -->
 
 ## Rules of Thumb
@@ -99,6 +100,7 @@
 + `date`
 + `$BASH_VERSION`
 + `which <command>`
++ `<<<`
 + `<`
 + `>` `2>` `&>`
 + `|&`, `2>&1 |`
@@ -144,8 +146,11 @@
 + `echo ${STRING[@]//all_remove/}`
 + `echo ${STRING[*]/#beginning/replace}`
 + `echo ${STRING[@]/%end/replace}`
-+ `[[ $string =~ ^s.* ]] && echo ${BASH_REMATCH}`
-+ `[[ $string =~ ^s.* ]] && echo ${#BASH_REMATCH}`
++ `echo ${STRING^}`, `echo ${STRING^^}`
++ `echo ${STRING,}`, `echo ${STRING,,}`
++ `echo ${STRING~}`, `echo ${STRING~~}`
++ `[[ $STRING =~ ^s.* ]] && echo ${BASH_REMATCH}`
++ `[[ $STRING =~ ^s.* ]] && echo ${#BASH_REMATCH}`
 + `|`
 + _process substitution_ `<(command)`, `>(command)`
 + `IFS=","`
@@ -154,8 +159,11 @@
 + `open - GUI Applaication`
 + `read`
 + `awk`
-+ `tr`
 + `nl`
++ `tr`
++ `echo "$STRING" | tr '[a-z]' '[A-Z]'`
++ `echo "$STRING" | tr '[A-Z]' '[a-z]'`
++ `"$(tr '[:lower:]' '[:upper:]' <<< ${STRING})"`
 
 ### commands
 
@@ -201,6 +209,8 @@ e.g.:
 + e.g. `cat > cat.txt` redirects `stdout` to a _file_ and reads `stdin`: I can type `stdin` until
   press `Ctrl+D`
 + e.g. `cat < cat.txt` (the same as `cat cat.txt`) reads input from a _file_
+
++ `<<<` is a *here-string*. It **passes** the **word** on the right to the **_standard input_** of the *command* on the **left**
 
 ### Functions
 
@@ -443,6 +453,16 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
   of `$STRING`
   empty string)
     + note that all the above **replace** **consecutive** _whitespaces_ with a **single** one
+
++ `echo ${STRING^}` **converts** the **first** letter to *uppercase*
++ `echo ${STRING^^}` **converts all** letters to *uppercase*
++ `echo ${STRING,}` **converts** the **first** letter to *lowercase*
++ `echo ${STRING,,}` **converts all** letters to *lowercase*
++ `echo ${STRING~}` **toggles case** of the **first** letter
++ `echo ${STRING~~}` **toggles case** of **all** letters
++ `echo "$STRING" | tr '[a-z]' '[A-Z]'` **converts all** letters to *uppercase*
++ `echo "$STRING" | tr '[A-Z]' '[a-z]'` **converts all** letters to *lowercase*
++ `"$(tr '[:lower:]' '[:upper:]' <<< ${STRING})"` **converts all** letters
 
 ### Variables
 
