@@ -141,16 +141,16 @@
 + `echo ${STRING:$POS:$LEN}`
 + `echo ${STRING::$LEN+1}`
 + `echo ${STRING:$POS}`
-+ `echo ${STRING[@]/one/replace}`
-+ `echo ${STRING[*]//all/replace}`
-+ `echo ${STRING[@]//all_remove/}`
-+ `echo ${STRING[*]/#beginning/replace}`
-+ `echo ${STRING[@]/%end/replace}`
++ `echo ${STRINGS[*]/one/replace}`
++ `echo ${STRING//all/replace}`
++ `echo ${STRINGS[@]//all_remove/}`
++ `echo ${STRING/#beginning/replace}`
++ `echo ${STRING/%end/replace}`
 + `echo ${STRING^}`, `echo ${STRING^^}`
 + `echo ${STRING,}`, `echo ${STRING,,}`
 + `echo ${STRING~}`, `echo ${STRING~~}`
-+ `[[ $STRING =~ ^s.* ]] && echo ${BASH_REMATCH}`
-+ `[[ $STRING =~ ^s.* ]] && echo ${#BASH_REMATCH}`
++ `[[ $STRING =~ ^s.* ]] && echo ${BASH_REMATCH}`[^dontquoteregex]
++ `[[ $STRING =~ ^s.* ]] && echo ${#BASH_REMATCH}`[^dontquoteregex]
 + `|`
 + _process substitution_ `<(command)`, `>(command)`
 + `IFS=","`
@@ -239,12 +239,12 @@ $ my_function # simple name is enough as a function call (just like any command)
 #### Parameters
 
 | Expression | Meaning                                                                                                                                                                                  |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `$0`       | The **_filename_** of the **current** _script_.                                                                                                                                          |
 | `$n`       | The Nth _argument_ passed to script was invoked or function was called (**indexed** from **1**!).                                                                                        |
 | `$#`       | The **total** number of _argument_ **passed** to _script_ or function.                                                                                                                   |
 | `$@`, `$*` | **joins** all arguments by **single** _spaces_ as well and then **splits** the string as the _shell_ does, thus it **splits** an _argument_ containing _spaces_ into several _arguments_ |
-| `"*"`      | **passes** over **exactly** **one** _argument_, containing all original _arguments_, separated by **single** _spaces_                                                                    |)
+| `"*"`      | **passes** over **exactly** **one** _argument_, containing all original _arguments_, separated by **single** _spaces_                                                                    | ) |
 | `"$@"`     | **passes over all** _arguments_ in the **exact** way it had received them, i.e. as several arguments, each of them **containing** **all** the _spaces_ and other _ugliness_ they have.   |
 | `$?`       | The exit status of the last command executed.                                                                                                                                            |
 | `$$`       | The process ID of the current shell. For shell scripts, this is the process ID under which they are executing.                                                                           |
@@ -279,7 +279,7 @@ $ my_function # simple name is enough as a function call (just like any command)
 ### Comparisons
 
 | Description           | Numeric Comparison | Example                   | Result   |
-|-----------------------|--------------------|---------------------------|----------|
+| --------------------- | ------------------ | ------------------------- | -------- |
 | Less than             | `-lt`              |                           |          |
 | Greater than          | `-gt`              |                           |          |
 | Equal                 | `-eq`              | `[ 100 -eq 50 ]; echo $?` | `exit 1` |
@@ -294,7 +294,7 @@ $ my_function # simple name is enough as a function call (just like any command)
   variables hold **expected** values before using them as part of the comparison operation.
 
 | Description                   | String Comparison | Example               | Result  |
-|-------------------------------|-------------------|-----------------------|---------|
+| ----------------------------- | ----------------- | --------------------- | ------- |
 | Any strings                   |                   | `[ "any" ]`,`[ any ]` | `true`  |
 | Any strings                   |                   | `[ " " ]`             | `true`  |
 | Empty strings                 |                   | `[ "" ]`, `[   ]`     | `false` |
@@ -405,7 +405,7 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
 ### Arithmetics
 
 | Operator | Operation      |
-|----------|----------------|
+| -------- | -------------- |
 | `+`      | plus           |
 | `-`      | minus          |
 | `*`      | multiplication |
@@ -437,23 +437,21 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
     + `echo ${STRING::$index}` if `:$POS` is **omitted**  then the _substring_ starts from index `0`
     + `echo ${STRING::$index + 2}` **arithmetic** expressions can be evaluated inside _arguments_
     + ~~`echo ${STRING:$POS:}`~~ means empty (zero length) _substring_
-    + `echo ${STRING:$POS}` if `:$LEN` is **omitted**, extract _substring_ **from** `$POS` to **end
-      of line**
-+ `[[ $string =~ ^s.* ]]; echo $?` returns `0` if **matches**, **otherwise** returns `1`
-+ `[[ $string =~ ^s.* ]] && echo ${BASH_REMATCH}` outputs the **matched** _substring_
-+ `[[ $string =~ ^s.* ]] && echo ${#BASH_REMATCH}` outputs the **length** of **matched** _substring_
-+ `echo ${STRING[@]/one/replace}` or `echo ${STRING[*]/one/replace}` **replaces** **first**
+    + `echo ${STRING:$POS}` if `:$LEN` is **omitted**, extract _substring_ **from** `$POS` to the
+    **end of line**
++ `[[ $string =~ ^s.* ]]; echo $?`[^dontquoteregex] returns `0` if **matches**, **otherwise** returns `1`
++ `[[ $string =~ ^s.* ]] && echo ${BASH_REMATCH[*]}`[^dontquoteregex] outputs the **matched** _substrings_
++ `[[ $string =~ ^s.* ]] && echo ${#BASH_REMATCH[*]}`[^dontquoteregex] outputs the **length** of **matched** _substrings_
++ `echo ${STRING/one/replace}` or `echo ${STRINGS[*]/one/replace}` **replaces** **first**
   occurrence of _substring_ with replacement
-+ `echo ${STRING[*]//all/replace}` or ... **replaces** **all** occurrences of _substring_
-+ `echo ${STRING[@]//all_remove/}` or ... **deletes** **all** occurrences of _substring_ (**replaces
-  ** with
-+ `echo ${STRING[*]/#beginning/replace}` or ... **replaces** occurrence of substring if at the *
-  *beginning** of `$STRING`
-+ `echo ${STRING[@]/%end/replace}` or ... **replaces** occurrence of substring if at the **end**
-  of `$STRING`
-  empty string)
-    + note that all the above **replace** **consecutive** _whitespaces_ with a **single** one
-
++ `echo ${STRINGS[*]//all/replace}` or ... **replaces** **all** occurrences of _substring_
++ `echo ${STRING//all_remove/}` or ... **deletes** **all** occurrences of _substring_ 
+(**replaces** with empty string)
++ `echo ${STRINGS[*]/#beginning/replace}` or ... **replaces** occurrence of substring 
+if at the **beginning** of `$STRING`
++ `echo ${STRING/%end/replace}` or ... **replaces** occurrence of substring 
+if at the **end** of `$STRING` 
+  + note that all the above **replace** **consecutive** _whitespaces_ with a **single** one
 + `echo ${STRING^}` **converts** the **first** letter to *uppercase*
 + `echo ${STRING^^}` **converts all** letters to *uppercase*
 + `echo ${STRING,}` **converts** the **first** letter to *lowercase*
@@ -463,6 +461,8 @@ _action_ is **executed** **until** the _condition_ **becomes** `true` (i.e. only
 + `echo "$STRING" | tr '[a-z]' '[A-Z]'` **converts all** letters to *uppercase*
 + `echo "$STRING" | tr '[A-Z]' '[a-z]'` **converts all** letters to *lowercase*
 + `"$(tr '[:lower:]' '[:upper:]' <<< ${STRING})"` **converts all** letters
+
+[^dontquoteregex]: **Don't quote** right-hand side of `=~`, it'll match *literally* rather then then as *ReGex*
 
 ### Variables
 
@@ -535,7 +535,7 @@ then `override` will be the **result**, **otherwise** the result is the **empty*
 [learn.microsoft.com](https://learn.microsoft.com/en-us/training/modules/bash-introduction/0-introduction)
 
 | Syntax                   | Result                                                                                                        |
-|--------------------------|---------------------------------------------------------------------------------------------------------------|
+| ------------------------ | ------------------------------------------------------------------------------------------------------------- |
 | `arr=()`                 | Creates an **empty** _array_                                                                                  |
 | `arr=(1 2 3)`            | **Initializes** _array_                                                                                       |
 | `${arr[2]}`              | Retrieves **third** (_sic_) element                                                                           |
@@ -573,11 +573,11 @@ then `override` will be the **result**, **otherwise** the result is the **empty*
 synopsis: `trap <arg/function> <signal>`
 
 | Signal  | Keybinding | Number | Meaning                            |
-|---------|------------|--------|------------------------------------|
+| ------- | ---------- | ------ | ---------------------------------- |
 | SIGINT  | ^C         | 2      | **interrupt** signal               |
 | SIGQUIT | ^D         | 3      | **quit** signal                    |
 | SIGTERM |            | 15     |                                    |
-| SIGFPE  |            | 8      | **illegal mathematical operation** |   
+| SIGFPE  |            | 8      | **illegal mathematical operation** |
 | ...     |            |        |                                    |
 
 ref: `kill -l`
