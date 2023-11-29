@@ -1,12 +1,9 @@
 MySQL <a name="top"></a>
 =====
 
-[](#General-notes)
-[](#normalization-forms)
-
 ## Introduction
 
-### Instalation
+### Installation
 
 ##### MySQL locations[^3]
 
@@ -20,16 +17,19 @@ MySQL <a name="top"></a>
 
 `mysql -u root -p`
 
-### Definitionas and General Notes
+### Definitions and General Notes
 
 * **instead** od **deleting** a row, column *deleted* is set to **false**; it should be **indexed** for faster performence
 
-* **primary key** can be **combination of more columns** that is **unique**! e.g. palyer_inventory table with player-item pairs
+* **primary key** can be **combination of more columns** that is **unique**! e.g. player_inventory table with player-item pairs
 
 ### Material Review
 
 * Questions
   > Answers 
+
+
+
 
 ## Table Relationship
 
@@ -37,7 +37,8 @@ MySQL <a name="top"></a>
   * by using `FOREIGN KEY` together with `UNIQUE INDEX`
 
 * \*..1 `>--+`
-  * by using `FOREIGN KEY` so the DB is checking for *constraint* and it **doesn't allow removing** the entry **until** the *relatonship* is **removed**
+  * by using `FOREIGN KEY` so the DB is checking for *constraint* and it **doesn't allow removing** 
+  the entry **until** the *relationship* is **removed** (also see `ON DELETE` \<option>)
 
 * \*..\* `>--<`
   * by using **junction (join) table** with `FOREIGN KEY`s
@@ -46,15 +47,17 @@ MySQL <a name="top"></a>
 
 ### Reasons
 
-* minimaze **duplicate data**
-  * **increases storage** and **decreases performance**
-  * difficult to **maintain**
-* avoid data **modification issues**
-* **simplyfy queries**
+* **minimize** **duplicate** data
+  * duplicate data **increase storage** and **decrease performance**
+  * duplicate data are difficult to **maintain**
+* **avoid** data **modification issues**
+* **simplify queries**
 
 ### But!
 > There are times when you’ll intentionally **denormalize data**.
-> If you need to **present** **summarized data** to a user, and that data is very time **consuming** or **resource intensive** to **create**, it may make sense to **maintain** this data **separately**.
+> If you need to **present** **summary data** to a user, 
+> and that data is very **time-consuming** or **resource intensive** to **create**, 
+> it may make sense to **maintain** this data **separately**.
 
 ### Anomalies
 
@@ -67,29 +70,34 @@ MySQL <a name="top"></a>
 
 ### Dependencies
 
-* dependency --> e.g. man --> age
-* multi-value -->> e.g. man -->> nationality 
+* dependency `-->`, e.g. man --> age
+* multi-value `-->>`, e.g. man -->> nationality 
 
 ## Normalization Forms
-> The forms are **progressive**, meaning that to **qualify** for **2nd** normal form a table must first satisfy the rules for **1st** normal form etc.
+> The forms are **progressive**, meaning that to **qualify** for **2nd** normal form a table 
+> must first satisfy the rules for **1st** normal form etc.
 
 * 1NF
   > row **order** must **not** convey **information**
   > **mixing** **data types** is not allowed, i.e. they are *atomic values*[^2]
-  > table must have a **primary keys** (can be conbination of more columns)
+  > table must have a _primary keys_ (_primary key_ can be combination of more columns)
   > table must not have **repeating group** on a **single row**
 * 2NF
-  > each **non-key attribute**[^1] must **depend** on the **entire** **primary key**
+  > each **non-key attribute**[^1] must **depend** on the **entire** _primary key_
 * 3NF
-  > each (**non-key**) **attribute** must **depend** on the the primary key, the entire primary key, and **nothing but** the **primary key**
-  > *transiont dependencies* are **not allowed**
+  > each (non-key) **attribute** must **depend** on the _primary key_, 
+  > the **entire** _primary key_, and **nothing but** the **_primary key_**
+  > *transient dependencies* are **not allowed**
 * 4NF
-  > only allowed **multivalued dependencies** in a table must be multivalued dependencies **on the key**
+  > **only allowed** _multivalued dependencies_ in a table 
+  > must be **_multivalued dependencies_** on the **_primary key_**
   > e.g. student id student's classes and student's hobbies
 * 5NF
-  > the table (in 4NF) musn't be **describable** as the logical result of **joining** some **other tables** together (contain **independen't** attributers)
-  > e.g person, favourite brands and favourite flavours can't be together in single table in **not 5NF**
-  > but e.g. particular supplier suppling a particular part to a particular customer (signel order) **is** in **5NF**
+  > the table (in 4NF) mustn't be **describable** as the logical result of **joining** 
+  > some **other tables** together (contain **independent** attributes) e.g. person, 
+  > favourite brands and favourite flavours can't be together in single table in **not 5NF** but, 
+  > e.g. particular supplier supplying a particular part to a particular customer (single order) 
+  > **is** in **5NF**
 
 ## Style Guide
 
@@ -102,7 +110,8 @@ MySQL <a name="top"></a>
 * ``` `` ``` aka backticks (can be) are used to **quote** table and column _names_
   > that becomes necessary when useing **reserved keywords** as names, e.g. table
 * `''` aka single quotes are used for **string input**
-  > **not reccomanded** for number type as it has to be **type converted** and can result in some inconsistencies
+  > **not reccomanded** for number type as it has to be **type converted** and can result in 
+  > some inconsistencies
   
   
 * <i>**not** case sensitive</i>
@@ -153,6 +162,8 @@ MySQL <a name="top"></a>
 * `IF NOT EXISTS`
 
 ### _DDL_ Keywords
+
+[mysql docs: DDL](https://dev.mysql.com/doc/refman/8.0/en/sql-data-definition-statements.html)
 
 * `CREATE` vs `DROP`
   * `TABLE` \<table> (\<column>
